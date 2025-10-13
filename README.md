@@ -1,0 +1,2 @@
+# vite-indoorcyclingblog
+School project
