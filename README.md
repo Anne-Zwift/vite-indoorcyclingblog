@@ -4,7 +4,7 @@ School project
 
 ## 🌟Highlights of this Project
 - The Front-end will allow users to perform CRUD operations (Create, Read, Update, and Delete) on their own posts.
-- Features such as following/unfollowing users, commenting on posts, and reacting to a post with an emoji.
+- Features such as following/unfollow users, commenting on posts, and reacting to a post with an emoji.
 
 ## ℹ️Overview
 This is a Front-end for a social media application, it is a single-page application (SPA) with Vite and vanilla TypeScript.
@@ -38,7 +38,7 @@ The external persistent data store used by Server.
 ## 💻 Technologies
 #### Language: 
 - TypeScript
-#### Fameworks & Libraries:
+#### Frameworks & Libraries:
 - Vite
 - Jest
 
@@ -54,7 +54,7 @@ The project follows a standard file structure for Vite Application.
 * `jest.config.js`: Configuration file for unit tests.
 * `tsconfig.json`: TypeScript configuration.
 
-### ✍️ Autor
+### ✍️ Author
 I'm a Front End Developer Student [@Anne-Zwift](https://github.com/Anne-Zwift/) and this is my [project](https://github.com/Anne-Zwift/vite-indoorcyclingblog/) building a Social Media Application.
 
 ## 🚀 Usage
@@ -75,7 +75,7 @@ You need to have [Node.js](https://nodejs.org) and npm installed on your compute
 ### Running the Project
 To start the development server and view the application in your browser, run the following command:
 `npm run dev`
-The application will be availeble at a local URL, typically `http://localhost:5173`.
+The application will be available at a local URL, typically `http://localhost:5173`.
 
 ## 💭 Feedback and Contributing
 #### 🎓 This is a project for my education purpose only.
