@@ -46,9 +46,15 @@ The external persistent data store used by Server.
 The project follows a standard file structure for Vite Application.
 
 * `src/api/`: Contains service files for handling API requests.
+* `src/api/Client.ts`: Central file for API wrapper.
 * `src/components/`: Houses UI components.
-* `src/pages/`: Contains the main pages of the application.
+* `src/pages/`: Contains the main pages of the application (e.g., `PostFeed.ts`, `Login.ts`, `UserProfile.ts`).
 * `src/utils/`: Stores reusable utility functions, like data transformers.
+* `src/utils/constants.ts`: Holds the API URL.
+* `src/utils/store.ts`: Contains functions and logic for managing application state, including authentication status(`login`, `logout`) and user data.
+* `src/router.ts`: Router logic.
+* `src/main.ts`: The main application entry file, router initialize.
+* `src/style.css`: The main styles.
 * `index.html`: The entry point of the application.
 * `package.json`: Manages project dependencies and scripts.
 * `jest.config.js`: Configuration file for unit tests.
