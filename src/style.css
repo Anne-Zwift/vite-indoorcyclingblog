@@ -40,7 +40,7 @@
   text-align: center;
 }
 
-a {
+/*a {
   font-weight: 500;
   color: #646cff;
   text-decoration: inherit;
@@ -48,19 +48,22 @@ a {
 
 a:hover {
   color: #535bf2;
-}
+}*/
 
-body {
+/*body {
   margin: 0;
   display: flex;
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
-}
+}*/
 
-h1 {
+#h1 {
+  font-family: var(--font-family-h1);
+  color: var(--color-primary);
   font-size: var(--font-size-x-large);
   line-height: 1.1;
+  font-weight: var(--font-weight-text-bolder);
 }
 
 /*#app {
