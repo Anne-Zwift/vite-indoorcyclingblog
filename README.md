@@ -19,6 +19,7 @@ A separate Project Plan includes details about the steps of this project.
 
 ### Out of Scope:
 The importance of this assignment is to demonstrate JavaScript. Therefore, there will not be an amazing design for the project, just some basic styling in place.
+Note: No front-end frameworks like React, Vue or Angular are used in this project.
 
 ## System Architecture:
 ### Backend Context
