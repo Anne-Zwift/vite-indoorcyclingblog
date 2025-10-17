@@ -23,6 +23,8 @@ export function login(token: string, profile: Profile): void {
   if (state.router) {
     state.router.navigate('/profile')
   }
+
+  subscribers.forEach(callback => callback());
 }
 
 export function logout(): void {
@@ -33,8 +35,21 @@ export function logout(): void {
   if (state.router) {
     state.router.navigate('/login')
   }
+
+  subscribers.forEach(callback => callback());
 }
 
 export function setRouter(routerInstance: any): void {
   state.router = routerInstance;
 }
+
+const subscribers: (() => void)[] = [];
+
+/**
+ * Registers a function to be called whenever the state changes.
+ * @param {() => void} callback - the function to execute on state change.
+ */
+export function subscribe(callback: () => void): void {
+  subscribers.push(callback);
+}
+
