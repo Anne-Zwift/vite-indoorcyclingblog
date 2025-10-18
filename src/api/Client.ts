@@ -89,7 +89,7 @@ export const put = <T, D = unknown>(endpoint: string, body?: D): Promise<ApiResp
 export const getPosts = async (): Promise<PostDetails[]> => {
   const endpoint = '/social/posts?_author=true&_comments=true&_reactions=true';
 
-  const response = await get<PostDetails[]>(endpoint);
+  const response = await get<PostDetails[]>(endpoint);// error handling
 
   return response?.data || [];
 };
