@@ -6,7 +6,7 @@ import { ProfilePage } from '../pages/ProfilePage.ts';
 import { RegisterPage } from '../pages/RegisterPage.ts';
 
 export interface Route {
-  component: () => HTMLDivElement;
+  component: (param?: string) => HTMLDivElement;
   protected: boolean;
 }
 
@@ -24,21 +24,42 @@ const navigate = (path: string) => {
 
 let contentElement: HTMLDivElement;
 
+export interface Route {
+  component: (param?: string) => HTMLDivElement;
+  protected: boolean;
+}
+
 const resolveRoute = () => {
-  const hashPath = '/' + window.location.hash.slice(1).toLocaleLowerCase() || '';
-  let currentRoute: Route | undefined = routes[hashPath];
+  const hashPath = '/' + window.location.hash.slice(1).toLocaleLowerCase() || '/';
+  
+  let matchedRoute: Route | undefined;
+  let routeParam: string | undefined;
+
+  for (const routePath in routes) {
+    const pattern = new RegExp(`^${routePath.replace(/:\w+/g, '([\\w-]+)')}$`);
+    const match = hashPath.match(pattern);
+
+    if (match) {
+      matchedRoute = routes[routePath];
+      routeParam = match.length > 1 ? match[1] : undefined;
+      break;
+    }
+  }
+
+  let currentRoute = matchedRoute;
 
   if (!currentRoute) {
     currentRoute = routes['/'];
+    routeParam = undefined;
   }  
 
-  if (currentRoute?.protected && !state.isLoggedIn) {
+  if (currentRoute.protected && !state.isLoggedIn) {
     return navigate('/login');
   }
 
   if (currentRoute && contentElement) {
     contentElement.innerHTML = '';
-    contentElement.appendChild(currentRoute.component());
+    contentElement.appendChild(currentRoute.component(routeParam));
   }
 };
 
