@@ -183,3 +183,19 @@ export const getPostsByProfile = async (name: string): Promise<PostDetails[]> =>
 
   return response?.data || [];
 };
+
+//Placeholder for later
+
+/**
+ * Search for profiles by query string.
+ * @param {string} query - The search term (e.g., a name or email part).
+ * @returns {Promise<Profile[]>} A promise that resolves with an array of matching Profile objects.
+ */
+
+/*export const getSearchProfiles = async (query: string): Promise<Profile[]> => {
+  const endpoint = `/social/profiles/search?q=${encodeURIComponent(query)}`;
+
+  const response = await get<Profile[]>(endpoint);
+
+  return response?.data || [];
+};*/
