@@ -1,5 +1,5 @@
 import type { Profile } from "../types/Profile";
-import { getAccessToken, clearAccessToken, setAccessToken } from "./authUtils";
+import { getAccessToken, clearAccessToken, setAccessToken, saveProfile, clearProfile } from "./authUtils";
 //router import
 
 const hasToken = !!getAccessToken();
@@ -17,6 +17,8 @@ export function login(token: string, profile: Profile): void {
   }
 
   setAccessToken(token);
+  saveProfile(profile);
+
   state.isLoggedIn = true;
   state.userProfile = profile;
 
@@ -29,6 +31,8 @@ export function login(token: string, profile: Profile): void {
 
 export function logout(): void {
   clearAccessToken();
+  clearProfile();
+  
   state.isLoggedIn = false;
   state.userProfile = null;
 
