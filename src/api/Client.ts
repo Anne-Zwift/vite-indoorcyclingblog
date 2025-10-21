@@ -88,7 +88,7 @@ export const put = <T, D = unknown>(endpoint: string, body?: D): Promise<ApiResp
  * @throws {Error} Generates any API or network errors from the base client.
  */
 export const getPosts = async (): Promise<PostDetails[]> => {
-  const endpoint = '/social/posts?_author=true&_comments=true&_reactions=true';
+  const endpoint = 'social/posts?_author=true&_comments=true&_reactions=true';
 
   const response = await get<PostDetails[]>(endpoint);// error handling
 
@@ -122,11 +122,6 @@ export const login = async (email: string, password: string): Promise<LoginRespo
   }
   return response.data;
 }
-
-/*export interface LoginResponse {
-  accessToken: string;
-  profile: Profile;
-}*/
 
 /**
  * Sends credentials to the register endpoint.
