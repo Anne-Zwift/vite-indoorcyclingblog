@@ -15,6 +15,7 @@ function initializeApp(): void {
   const routerInstance = initRouter(contentArea as HTMLDivElement);
 
   state.router = routerInstance;
+  console.log(routerInstance);
 
   const navBar = createNavigation();
 
