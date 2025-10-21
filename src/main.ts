@@ -1,4 +1,29 @@
-import './style.css'
+import './style.css';
+import { initRouter } from './utils/router';
+import { createNavigation } from './components/Navigation';
+import { state } from './utils/store';
+
+const contentArea = document.getElementById('content-area');
+const navContainer = document.getElementById('nav-container');
+
+if (!contentArea || !navContainer) {
+  console.error('FATAL: Required DOM containers (#content-area or #nav-Container) not found');
+  throw new Error('Application failed to initialize.');
+}
+
+function initializeApp(): void {
+  const routerInstance = initRouter(contentArea as HTMLDivElement);
+
+  state.router = routerInstance;
+
+  const navBar = createNavigation();
+
+  navContainer?.appendChild(navBar);
+
+  console.log('Application initialized. Router listening for URL hash changes.');
+}
+
+initializeApp();
 
 
 
