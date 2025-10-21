@@ -11,14 +11,14 @@ export interface Route {
 }
 
 export const routes: { [Key: string]: Route } = {
-  '/': { component: PostFeed, protected: false },
+  '/': { component: PostFeed, protected: true },
   '/login': { component: LoginPage, protected: false },
   '/register': { component: RegisterPage, protected: false },
   '/post/:id': { component: PostPage, protected: false },
   '/profile': { component: ProfilePage, protected: true },
 } as const;
 
-const navigate = (path: string) => {
+export const navigate = (path: string) => {
   window.location.hash = path;
 };
 
@@ -27,6 +27,10 @@ let contentElement: HTMLDivElement;
 export interface Route {
   component: (param?: string) => HTMLDivElement;
   protected: boolean;
+}
+
+export interface routerInstance {
+  navigate: (path: string) => void;
 }
 
 const resolveRoute = () => {
@@ -63,7 +67,7 @@ const resolveRoute = () => {
   }
 };
 
-export const initRouter = (rootElement: HTMLDivElement) => {
+export const initRouter = (rootElement: HTMLDivElement): routerInstance => {
   contentElement = rootElement;
 
   window.addEventListener('hashchange', resolveRoute);
