@@ -19,15 +19,11 @@ export const routes: { [Key: string]: Route } = {
 } as const;
 
 export const navigate = (path: string) => {
-  window.location.hash = path;
+  const hashPath = path.startsWith('/') ? path.substring(1) : path;
+  window.location.hash = hashPath;
 };
 
 let contentElement: HTMLDivElement;
-
-export interface Route {
-  component: (param?: string) => HTMLDivElement;
-  protected: boolean;
-}
 
 export interface routerInstance {
   navigate: (path: string) => void;
@@ -75,6 +71,6 @@ export const initRouter = (rootElement: HTMLDivElement): routerInstance => {
   resolveRoute();
 
   return {
-    navigate: (path: string) => navigate(path.startsWith('/') ? path : '/' + path),
+    navigate: navigate,
   };
 };
