@@ -9,7 +9,6 @@ import { navigate } from '../utils/router';
 
 export function RegisterPage(): HTMLDivElement {
   const pageContainer = document.createElement('div');
-  pageContainer.className = 'register-page';
   pageContainer.className = 'register-page-container';
   
   const title = document.createElement('h2');
@@ -45,7 +44,7 @@ export function RegisterPage(): HTMLDivElement {
     messageArea.textContent = ''; //clear old messages
     messageArea.style.color = 'red';
 
-    const submitButton = document.getElementById('registerSubmitButton') as HTMLButtonElement;
+    const submitButton = registerForm.querySelector('#registerSubmitButton') as HTMLButtonElement;
 
     if (submitButton) {
       submitButton.disabled = true;
