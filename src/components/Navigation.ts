@@ -1,4 +1,5 @@
 import { state, logout, subscribe } from "../utils/store";
+import { navigate} from '../utils/router';
 
 
 /**
@@ -41,10 +42,10 @@ linksToShow.forEach(linkNav => {
 
   if (linkNav.path === '/logout') {
     logout();
+    navigate('/login');
+
   } else {
-    if (state.router && state.router.navigate) {
-      state.router.navigate(linkNav.path);
-    }
+    navigate(linkNav.path);
   }
 
   });
