@@ -193,4 +193,11 @@ export const getPostsByProfile = async (name: string): Promise<PostDetails[]> =>
   const response = await get<Profile[]>(endpoint);
 
   return response?.data || [];
-};*/
+};
+
+export const getSearchPosts = async (query: string): Promise<PostDetails[]> => {
+const endpoint = `/social/posts/search?q=${encodeURIComponent(query)}&_author=true`;
+const response = await get<PostDetails[]>(endpoint);
+return response?.data || [];
+};
+*/
