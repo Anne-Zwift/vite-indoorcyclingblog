@@ -12,14 +12,24 @@ export function PostCard(post: PostDetails): HTMLElement {
   article.classList.add('post-card');
   article.dataset.postId = post.id.toString();
   
-  if (post.media && post.media.url) {
-    const postMedia: Media = post.media;
-    const imageElement = document.createElement('img');
-    imageElement.src = postMedia.url;
-    imageElement.alt = postMedia.alt || post.title;
-    imageElement.classList.add('post-image');
-    article.appendChild(imageElement);
+  if (Array.isArray (post.media) && post.media.length > 0) {
+    const postMedia: Media = post.media[0];
+
+    if (postMedia.url) {
+      const imageElement = document.createElement('img');
+      imageElement.src = postMedia.url;
+      imageElement.alt = postMedia.alt || post.title;
+      imageElement.classList.add('post-image');
+      article.appendChild(imageElement);
   }
+} else if (typeof post.media === 'object' && post.media !== null && 'url' in post.media) {
+  const postMedia: Media = post.media as Media;
+  const imageElement = document.createElement('img');
+  imageElement.src = postMedia.url;
+  imageElement.alt = postMedia.alt || post.title;
+  imageElement.classList.add('post-image');
+  article.appendChild(imageElement);
+}
   
   const contentWrapper = document.createElement('div');
   contentWrapper.classList.add('post-content');
@@ -28,9 +38,35 @@ export function PostCard(post: PostDetails): HTMLElement {
   title.textContent = post.title;
 
   const body = document.createElement('p');
-  body.textContent = post.body.substring(0, 150) + '...';
+  body.textContent = post.body ? post.body.substring(0, 150) + '...' : '[No content]';
 
   contentWrapper.append(title, body);
+
+  const metadataArea = document.createElement('div');
+  metadataArea.classList.add('post-metadata');
+
+    if (post.author && post.author.name) {
+    const authorSpan = document.createElement('span');
+    authorSpan.textContent = `By: ${post.author.name}`;
+    metadataArea.appendChild(authorSpan);
+  }
+
+  const dateOptions: Intl.DateTimeFormatOptions = {year: 'numeric', month: 'short', day: 'numeric'};
+  let dateText = '';
+
+    if (post.updated && post.updated !==post.created) {
+      dateText = `Updated: ${new Date(post.updated).toLocaleDateString(undefined, dateOptions)}`;
+    } else if (post.created) {
+      dateText = `Posted: ${new Date(post.updated).toLocaleDateString(undefined, dateOptions)}`;
+    }
+
+    if (dateText) {
+      const dateSpan = document.createElement('span');
+      dateSpan.textContent = dateText;
+      metadataArea.appendChild(dateSpan);
+    }
+
+    contentWrapper.prepend(metadataArea);
 
   const interactionArea = document.createElement('div');
   interactionArea.classList.add('post-interaction');
@@ -42,70 +78,13 @@ export function PostCard(post: PostDetails): HTMLElement {
 
   const metadata = document.createElement('span');
   metadata.innerHTML = `
-   Comments: <strong>${post._count?.comments || 0}<strong> | 
-   Reactions: <strong>${post._count?.reactions || 0}<strong>`;
+  Comments: <strong>${post._count?.comments || 0}</strong>
+  Reactions: <strong>${post._count?.reactions || 0}</strong>
+  `;
 
-   const timestampArea = document.createElement('div');
-   timestampArea.classList.add('post-timestamps');
+  interactionArea.append(readMoreLink, metadata);
 
-   if (post.created) {
-    const createdDate = new Date(post.created).toLocaleDateString(undefined, {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    });
-    const createdSpan = document.createElement('span');
-    createdSpan.textContent = `Posted: ${createdDate}`;
-    timestampArea.appendChild(createdSpan);
-   }
-
-   if (post.updated && post.updated !== post.created) {
-    const updatedDate = new Date(post.updated).toLocaleDateString(undefined, {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    });
-    const updatedSpan = document.createElement('span');
-    updatedSpan.textContent = `Posted: ${updatedDate}`;
-    timestampArea.appendChild(updatedSpan);
-   }
-
-     const metadataArea = document.createElement('div');
-     metadataArea.classList.add('post-metadata');
-
-     if (post.author && post.author.name) {
-      const authorSpan = document.createElement('span');
-      authorSpan.textContent = `By: ${post.author.name}`;
-      metadataArea.appendChild(authorSpan);
-    }
-
-    let dateInfo = '';
-    if (post.created) {
-      const createdDate = new Date(post.created).toLocaleDateString(undefined, {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      });
-      dateInfo =`on ${createdDate}`;
-    }
-
-    let updatedInfo = '';
-    if (post.updated && post.updated !== post.created) {
-      const updatedDate = new Date(post.updated).toLocaleDateString(undefined, {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      });
-      dateInfo =`on ${updatedDate}`;
-    }
-
-    const dateSpan = document.createElement('span');
-    dateSpan.textContent = dateInfo + updatedInfo;
-    metadataArea.appendChild(dateSpan);
-
-   interactionArea.append(readMoreLink, metadata);
-   contentWrapper.prepend(timestampArea);
-   article.append(contentWrapper, interactionArea);
+  article.append(contentWrapper, interactionArea);
 
   return article;
 }
