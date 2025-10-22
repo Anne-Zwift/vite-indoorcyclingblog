@@ -21,7 +21,7 @@ async function apiClient<T> (
   options: ApiOptions = {},
 ): Promise<ApiResponse<T> | null> {
   
-  const { body, ...customOptions } = options;
+  const { body, signal, ...customOptions } = options;
 
   const accessToken = getAccessToken();
   const apiKey = localStorage.getItem(STORAGE_KEY_API_KEY);
@@ -45,6 +45,7 @@ async function apiClient<T> (
       ...headers,
       ...customOptions.headers,
     } as HeadersInit,
+    signal: signal,
   };
 
   if (body) {
@@ -72,12 +73,12 @@ async function apiClient<T> (
 }
 
 //Export helper methods
-export const get = <T>(endpoint: string): Promise<ApiResponse<T> | null> => apiClient<T>(endpoint);
-export const del = <T>(endpoint: string): Promise<ApiResponse<T> | null> => apiClient<T>(endpoint, { method: 'DELETE' });
+export const get = <T>(endpoint: string, signal?: AbortSignal): Promise<ApiResponse<T> | null> => apiClient<T>(endpoint, { signal });
+export const del = <T>(endpoint: string, signal?: AbortSignal): Promise<ApiResponse<T> | null> => apiClient<T>(endpoint, { method: 'DELETE', signal });
 
-export const post = <T, D = unknown>(endpoint: string, body?: D): Promise<ApiResponse<T> | null> => apiClient<T>(endpoint, { method: 'POST', body });
+export const post = <T, D = unknown>(endpoint: string, body?: D, signal?: AbortSignal): Promise<ApiResponse<T> | null> => apiClient<T>(endpoint, { method: 'POST', body, signal });
 
-export const put = <T, D = unknown>(endpoint: string, body?: D): Promise<ApiResponse<T> | null> => apiClient<T>(endpoint, { method: 'PUT', body });
+export const put = <T, D = unknown>(endpoint: string, body?: D, signal?: AbortSignal): Promise<ApiResponse<T> | null> => apiClient<T>(endpoint, { method: 'PUT', body, signal });
 
 
 //integrates with Task 1E (Integrate Fetching on Post Feed).
@@ -87,10 +88,10 @@ export const put = <T, D = unknown>(endpoint: string, body?: D): Promise<ApiResp
  * @returns {Promise<PostDetails[]>} A promise that resolves with an array of unwrapped PostDetails objects.
  * @throws {Error} Generates any API or network errors from the base client.
  */
-export const getPosts = async (): Promise<PostDetails[]> => {
+export const getPosts = async (signal?: AbortSignal): Promise<PostDetails[]> => {
   const endpoint = 'social/posts?_author=true&_comments=true&_reactions=true';
 
-  const response = await get<PostDetails[]>(endpoint);// error handling
+  const response = await get<PostDetails[]>(endpoint, signal);// error handling
 
   return response?.data || [];
 };

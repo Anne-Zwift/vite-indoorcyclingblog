@@ -27,11 +27,18 @@ export function PostFeed(): HTMLDivElement {
   postsContainer.id = 'posts-container';
   postsContainer.innerHTML = '<p>The posts are loading...</p>';
 
+  const abortController = new AbortController();
+  const signal = abortController.signal;
+
+  pageContainer.addEventListener('DOMNodeRemovedFromDocument', () => {
+    abortController.abort();
+  });
+
  pageContainer.append(title, subtitle, actionButton, postsContainer);
 
  //1E logic
 
- getPosts()
+ getPosts(signal)
   .then(posts => {
     postsContainer.innerHTML = '';
 
@@ -49,10 +56,15 @@ export function PostFeed(): HTMLDivElement {
   })
 
   .catch(error => {
+    if (error.name === 'AbortError') {
+      console.log('Fetch aborted: PostFeed component unmounted.');
+      return;
+    }
     console.error("Failed to fetch posts:", error);
+    const errorMessage = error.message || 'Check your network or API status.';
     postsContainer.innerHTML = `
     <p class="error-message">❌ Error loading the feed.</p>
-    <p>Details: ${error.message}</p>
+    <p>Details: ${errorMessage}</p>
     `;
   });
 
