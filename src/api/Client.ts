@@ -180,6 +180,18 @@ export const getPostsByProfile = async (name: string): Promise<PostDetails[]> =>
   return response?.data || [];
 };
 
+export const getPostDetails = async (id: string, signal?: AbortSignal): Promise<PostDetails> => {
+  const endpoint = `social/posts/${id}?_author=true&_comments=true&_reactions=true`;
+  
+  const response = await get<PostDetails>(endpoint, signal);
+
+  if (!response || !response.data) {
+    throw new Error(`Post with ID ${id} not found or failed to load.`);
+  }
+
+  return response.data;
+};
+
 //Placeholder for later
 
 /**
