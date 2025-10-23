@@ -3,6 +3,7 @@ import type { Media } from "./Media";
 import type { Profile } from "./Profile";
 import type { ReactionItem } from "./ReactionItem";
 import type { CommentItem } from "./CommentItem";
+import type { ApiResponse } from "./Api";
 
 
 /**
@@ -64,4 +65,8 @@ export interface PostDetails {
   };
 }
 
+
+export interface SinglePostResponse extends ApiResponse<PostDetails> {}
+
+export interface PostListResponse extends ApiResponse<PostDetails[]> {}
 

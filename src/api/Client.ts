@@ -4,7 +4,7 @@
 import { BASE_URL, STORAGE_KEY_API_KEY } from "../utils/constants";
 import { getAccessToken } from "../utils/authUtils";
 import type { ApiResponse, ApiOptions  } from "../types/Api";
-import type { PostDetails } from "../types/Post";
+import type { PostDetails, PostRequest, SinglePostResponse } from "../types/Post";
 import type { Profile } from "../types/Profile";
 
 /**
@@ -198,15 +198,15 @@ export const getPostDetails = async (id: string, signal?: AbortSignal): Promise<
  * @returns {Promise<PostDetails>} The newly created post.
  */
 
-export const createPost = async (postData: {title: string; body?: string; media?: any[]}): Promise<PostDetails> => {
+export const createPost = async (postData: PostRequest): Promise<SinglePostResponse> => {
   const endpoint = 'social/posts';
 
-  const response = await post<PostDetails, typeof postData>(endpoint, postData);
+  const response = await post<PostDetails, PostRequest>(endpoint, postData);
 
-  if (!response || !response.data) {
-    throw new Error("Failed to create post.");
+  if (!response) {
+    throw new Error("Failed to create post. Received no content.");
   }
-  return response.data;
+  return response as SinglePostResponse;
 };
 
 //Placeholder for later
