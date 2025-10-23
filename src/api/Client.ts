@@ -192,6 +192,23 @@ export const getPostDetails = async (id: string, signal?: AbortSignal): Promise<
   return response.data;
 };
 
+/**
+ * Creates a new social media post.
+ * @param {object} postData - The data for the new post (title, body, media).
+ * @returns {Promise<PostDetails>} The newly created post.
+ */
+
+export const createPost = async (postData: {title: string; body?: string; media?: any[]}): Promise<PostDetails> => {
+  const endpoint = 'social/posts';
+
+  const response = await post<PostDetails, typeof postData>(endpoint, postData);
+
+  if (!response || !response.data) {
+    throw new Error("Failed to create post.");
+  }
+  return response.data;
+};
+
 //Placeholder for later
 
 /**
