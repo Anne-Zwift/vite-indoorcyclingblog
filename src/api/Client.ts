@@ -7,15 +7,8 @@ import type { ApiResponse, ApiOptions  } from "../types/Api";
 import type { PostDetails, PostRequest, SinglePostResponse } from "../types/Post";
 import type { Profile } from "../types/Profile";
 import type { LoginResponse } from "../types/Login";
+import type { ApiKeyResponse } from "../types/ApiKey";
 
-
-
-export interface ApiKeyResponse {
-  data: {
-    name: string;
-    key: string; //X-Noroff-API-KEY value
-  }
-}
 
 export const createApiKey = async (): Promise<string> => {
   const response = await post<ApiKeyResponse['data']>(NOROFF_API_KEY_ENDPOINT, {});
