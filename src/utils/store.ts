@@ -1,16 +1,15 @@
-import type { Profile } from "../types/Profile";
+import type { UserProfileData } from "../types/Profile";
 import { getAccessToken, clearAccessToken, setAccessToken, saveProfile, clearProfile } from "./authUtils";
-//router import
 
 const hasToken = !!getAccessToken();
 
 export const state = { 
   isLoggedIn: hasToken, 
-  userProfile: null as Profile | null, 
+  userProfile: null as UserProfileData | null, 
   router: null as any,//for the router
 }
 
-export function login(token: string, profile: Profile): void {
+export function login(token: string, profile: UserProfileData): void {
   if (!token || !profile || !profile.email) {
     console.error("Login failed: Invalid token or profile data received.");
     return;
