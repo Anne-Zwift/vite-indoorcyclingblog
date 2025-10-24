@@ -1,6 +1,12 @@
+import type { UserProfileData } from "./Profile";
+
 export interface LoginFormValues {
-  username: string;
+  email: string;
   password: string;
   rememberMe?: boolean;
 }
 
+export interface LoginResponse {
+  accessToken: string;
+  profile: UserProfileData;
+}
