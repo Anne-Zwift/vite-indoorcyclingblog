@@ -1,6 +1,9 @@
 import { login as loginApi } from '../api/Client';
-import { login } from '../utils/store';
+import { login } from '../utils/store'; // should save the data
 import { navigate } from '../utils/router';
+//import type { UserProfileData } from '../types/Profile';
+//import { setApiKey } from '../utils/authUtils';
+
 
 
 /**
@@ -26,8 +29,8 @@ export function LoginPage(): HTMLDivElement {
 
   loginForm.innerHTML = `
   <div class="form-group">
-   <label for="username">Email/Username:</label>
-   <input type="text" id="username" name="username" required>
+   <label for="email">Email:</label>
+   <input type="email" id="email" name="email" required>
   </div>
   <div class="form-group">
    <label for="password">Password:</label>
@@ -42,7 +45,7 @@ export function LoginPage(): HTMLDivElement {
     messageArea.style.color = 'red';
 
     const formData = new FormData(loginForm);
-    const email = formData.get('username') as string;
+    const email = formData.get('email') as string;
     const password = formData.get('password') as string;
 
     if (!email || !password) {
@@ -51,14 +54,20 @@ export function LoginPage(): HTMLDivElement {
     }
 
     try {
-      const result = await loginApi(email, password);
+      const result = await loginApi(email, password);// result: {accessToken, profile}
 
-      login(result.accessToken, result.profile);
+      const { accessToken, profile: profileData } = result;
+
+      if (!accessToken || !profileData) {
+       throw new Error("Login failed. Missing token or profile data in API response.");
+      }
+
+      login(result.accessToken, result.profile);//responsible for saving the data
 
       messageArea.textContent = 'Login successful! Redirecting to feed...';
       messageArea.style.color = 'green';
 
-      console.log('Login successful. Profile:', result.profile);
+      console.log('Login successful. Profile:', result);
 
       setTimeout(() => {
         navigate('/');
