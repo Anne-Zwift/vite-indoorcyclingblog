@@ -1,11 +1,31 @@
 /**
  * Central API wrapper
  */
-import { BASE_URL, STORAGE_KEY_API_KEY } from "../utils/constants";
-import { getAccessToken } from "../utils/authUtils";
+import { BASE_URL, NOROFF_API_KEY_ENDPOINT } from "../utils/constants";
+import { getAccessToken, getApiKey, setAccessToken, setApiKey } from "../utils/authUtils";
 import type { ApiResponse, ApiOptions  } from "../types/Api";
 import type { PostDetails, PostRequest, SinglePostResponse } from "../types/Post";
 import type { Profile } from "../types/Profile";
+import type { LoginResponse } from "../types/Login";
+
+
+
+export interface ApiKeyResponse {
+  data: {
+    name: string;
+    key: string; //X-Noroff-API-KEY value
+  }
+}
+
+export const createApiKey = async (): Promise<string> => {
+  const response = await post<ApiKeyResponse['data']>(NOROFF_API_KEY_ENDPOINT, {});
+
+  if (!response || !response.data || !response.data.key) {
+    throw new Error("Failed to create API Key.");
+  }
+
+  return response.data.key;
+};
 
 /**
  * Generic API client function that handles the core logic of making an API call.
@@ -24,14 +44,14 @@ async function apiClient<T> (
   const { body, signal, ...customOptions } = options;
 
   const accessToken = getAccessToken();
-  const apiKey = localStorage.getItem(STORAGE_KEY_API_KEY);
+  const apiKey = getApiKey();
 
   const headers: HeadersInit = {
     'Content-Type': 'application/json',
   };
 
   if (apiKey) {
-    headers['X-Noroff-API-KEY'] = apiKey;
+    headers['X-Noroff-API-Key'] = apiKey;
   }
 
   if (accessToken) {
@@ -56,7 +76,13 @@ async function apiClient<T> (
     const response = await fetch(BASE_URL + '/' + endpoint, config);
 
     if (!response.ok) {
-      const errorData = await response.json();
+    let errorData: any;
+
+      try {
+        errorData = await response.json();
+      } catch (e) {
+        throw new Error(`HTTP error! Status: ${response.status} ${response.statusText || ''}`);
+      }
       throw new Error(errorData.errors?.[0]?.message || `HTTP error! Status: ${response.status}`);
   };
 
@@ -96,10 +122,6 @@ export const getPosts = async (signal?: AbortSignal): Promise<PostDetails[]> => 
   return response?.data || [];
 };
 
-export interface LoginResponse {
-  accessToken: string;
-  profile: Profile;
-}
 
 /**
  * Sends credentials to the login endpoint.
@@ -110,19 +132,42 @@ export interface LoginResponse {
 
 export const login = async (email: string, password: string): Promise<LoginResponse> => {
   const endpoint = 'auth/login';
+  const body = { email, password };
 
-  const body = {
-    email,
-    password,
-  };
-
-  const response = await post<LoginResponse>(endpoint, body);
+  console.log('Sending credentials:', { email, password });
+    
+  const response = await post<Profile>(endpoint, body);
+  console.log('Received response:', response);
 
   if (!response || !response.data) {
-    throw new Error("Login failed: Invalid credentials.");
+    throw new Error("Login failed: Profile or token missing in successful API response.");
   }
-  return response.data;
-}
+
+  const { accessToken, ...profileData } = response.data as Profile;
+
+  if (!accessToken) {
+    throw new Error("Login failed: Missing accessToken in API response.");
+  }
+  
+  setAccessToken(accessToken);
+
+  try {
+   const apiKey = await createApiKey();
+   setApiKey(apiKey);
+  } catch (e) {
+    console.warn("Could not generate API Key. Subsequent API calls will fail.");
+  }
+ 
+
+  const finalLoginResponse: LoginResponse = {
+    accessToken: accessToken,
+    profile: profileData,
+  };
+
+  return finalLoginResponse;
+  
+
+};
 
 /**
  * Sends credentials to the register endpoint.
@@ -141,13 +186,25 @@ export const register = async (name: string, email: string, password: string): P
     password,
   };
 
-  const response = await post<LoginResponse>(endpoint, body);
+  const response = await post<Profile>(endpoint, body);
 
   if (!response || !response.data) {
     throw new Error("Registration failed: Invalid credentials.");
   }
-  return response.data;
-}
+
+  const { accessToken, ...profileData } = response.data as Profile;
+
+  if (!accessToken) {
+    throw new Error("Registration failed: Missing accessToken in API response.");
+  }
+
+  const finalLoginResponse: LoginResponse = {
+    accessToken: accessToken,
+    profile: profileData,
+  };
+
+  return finalLoginResponse;
+};
 
 /**
  * Fetches a user's detailed profile by their unique name.
