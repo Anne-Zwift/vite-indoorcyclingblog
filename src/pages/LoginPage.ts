@@ -16,7 +16,7 @@ export function LoginPage(): HTMLDivElement {
   pageContainer.className = 'login-page-container';
   
   const title = document.createElement('h2');
-  title.textContent = 'User Login';
+  title.textContent = 'Welcome to Indoor Cycling!';
 
   const messageArea = document.createElement('div');
   messageArea.id = 'loginMessage';
@@ -29,11 +29,11 @@ export function LoginPage(): HTMLDivElement {
 
   loginForm.innerHTML = `
   <div class="form-group">
-   <label for="email">Email:</label>
-   <input type="email" id="email" name="email" required>
+   <label for="email">Email</label>
+   <input type="email" id="mail" name="email" required>
   </div>
   <div class="form-group">
-   <label for="password">Password:</label>
+   <label for="password">Password</label>
    <input type="password" id="password" name="password" required>
   </div>
    <button type="submit" id="loginSubmitButton">Log In</button>

@@ -12,16 +12,16 @@ export function PostFeed(): HTMLDivElement {
   pageContainer.id = 'post-feed-page';
   //form components
   const title = document.createElement('h1');
-  title.textContent = 'Social Feed';
+  title.textContent = 'Indoor Off Season Activities';
 
   const subtitle = document.createElement('p');
-  subtitle.textContent = 'View the latest posts from our community.';
+  subtitle.textContent = 'Get inspired for indoor Cycling. View the latest posts from our community.';
 
   //reactivity will be added to the btn, hidden/shown based on login status.
   const actionButton = document.createElement('button');
   actionButton.id = 'create-post-button';
   actionButton.textContent = 'Create New Post';
-  actionButton.style.display = state.isLoggedIn ? 'block' : 'none';
+  actionButton.style.display = state.isLoggedIn ? '' : 'none';//for now removed the 'block'
 
   const postsContainer = document.createElement('div');
   postsContainer.id = 'posts-container';
