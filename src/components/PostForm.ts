@@ -49,7 +49,7 @@ function displayStatus(element: HTMLElement, message: string, isError: boolean =
   }
 }
 
-export function PostForm(): HTMLElement {
+export function PostForm(): HTMLDivElement {
   const formContainer = document.createElement('div');
   formContainer.id = 'create-post-form-container';
 
@@ -95,6 +95,7 @@ export function PostForm(): HTMLElement {
 
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
+    console.log('Form submission handler started.')
 
     statusMessage.style.display = 'none';
 

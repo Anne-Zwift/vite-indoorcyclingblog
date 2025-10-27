@@ -1,6 +1,7 @@
 import { getPosts } from "../api/Client";
 import { PostCard } from "../components/PostCard";
 import { state } from "../utils/store";
+import { navigate } from "../utils/router";
 
 /**
  * Renders the main Post Feed page structure.
@@ -22,6 +23,10 @@ export function PostFeed(): HTMLDivElement {
   actionButton.id = 'create-post-button';
   actionButton.textContent = 'Create New Post';
   actionButton.style.display = state.isLoggedIn ? '' : 'none';//for now removed the 'block'
+
+  actionButton.addEventListener('click', () => {
+    navigate('/create');
+  });
 
   const postsContainer = document.createElement('div');
   postsContainer.id = 'posts-container';
