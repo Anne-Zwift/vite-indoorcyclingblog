@@ -259,6 +259,26 @@ export const createPost = async (postData: PostRequest): Promise<SinglePostRespo
   return response as SinglePostResponse;
 };
 
+/**
+ * Updates an existing social media post by ID.
+ * Requires Authentication and Authorization (user must own the post).
+ * @param {string} id - The ID of the post to update.
+ * @param {PostRequest} postData - The data for the updated post (title, body, media).
+ * @returns {Promise<PostDetails>} The updated post object.
+ */
+
+export const updatePost = async (id: string, postData: PostRequest): Promise<SinglePostResponse> => {
+  const endpoint = `social/posts/${id}`;
+
+  const response = await post<PostDetails, PostRequest>(endpoint, postData);
+
+  if (!response) {
+    throw new Error(`Failed to update post ${id}. Received no content.`);
+  }
+  return response as SinglePostResponse;
+};
+
+
 //Placeholder for later
 
 /**

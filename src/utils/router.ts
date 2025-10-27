@@ -4,7 +4,7 @@ import { PostFeed } from '../pages/PostFeed.ts';
 import { PostPage } from '../pages/PostPage.ts';
 import { ProfilePage } from '../pages/ProfilePage.ts';
 import { RegisterPage } from '../pages/RegisterPage.ts';
-import { PostForm } from '../components/PostForm.ts';
+import { PostCreatePage } from '../pages/PostCreatePage.ts';
 
 export interface Route {
   component: (param?: string) => HTMLDivElement;
@@ -17,7 +17,7 @@ export const routes: { [Key: string]: Route } = {
   '/register': { component: RegisterPage, protected: false },
   '/post/:id': { component: PostPage, protected: false },
   '/profile': { component: ProfilePage, protected: true },
-  '/create': { component: PostForm, protected: true}
+  '/create': { component: PostCreatePage, protected: true}
 } as const;
 
 export const navigate = (path: string) => {
