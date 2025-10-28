@@ -142,6 +142,55 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+/*PostCard.ts*/
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-box {
+  background-color: #978e8e;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  max-width: 90%;
+  color: var(--color-text);
+}
+
+.modal-button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 8px 16px;
+  margin-top: 20px;
+  font-size: var(--font-size-small);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.25s;
+}
+
+.modal-button-confirm {
+  background-color: var(--color-text-warning);
+  color: var(--color-text-button);
+}
+
+.modal-button-cancel {
+  background-color: #ccc;
+  color: var(--color-text);
+}
+
+.post-actions-wrapper {
+  display: flex;
+  gap: 8px;
+}
+
 /*PostForm.ts*/
 .status-message {
   padding: 10px;
@@ -163,6 +212,7 @@ button:focus-visible {
 /*Post Feed Container*/
 
 .post-card {
+  position: relative;
   max-width: 100%;
   text-align: inherit;
   margin: 10px;
