@@ -270,7 +270,7 @@ export const createPost = async (postData: PostRequest): Promise<SinglePostRespo
 export const updatePost = async (id: string, postData: PostRequest): Promise<SinglePostResponse> => {
   const endpoint = `social/posts/${id}`;
 
-  const response = await post<PostDetails, PostRequest>(endpoint, postData);
+  const response = await put<PostDetails, PostRequest>(endpoint, postData);
 
   if (!response) {
     throw new Error(`Failed to update post ${id}. Received no content.`);

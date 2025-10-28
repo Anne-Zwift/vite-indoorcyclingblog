@@ -4,24 +4,27 @@
  */
 import type { PostDetails } from "../types/Post";
 import type { Media } from "../types/Media";
+import { state } from "../utils/store";
+import { navigate } from "../utils/router";
 
 
 
 export function PostCard(post: PostDetails): HTMLElement {
   const article = document.createElement('article');
-  article.classList.add('post-card');
-  article.dataset.postId = post.id.toString();
+  article.classList.add('post-card', 'bg-white', 'shadow-md', 'rounded-lg', 'p-4', 'mb-4');
+  article.dataset.postId = String(post.id);
+
+  const mediaContainer = document.createElement('div');
+  mediaContainer.classList.add('post-media-container', 'mb-3');
+
+  let mediaUrl: string | undefined;
+  let mediaAlt: string | undefined;
   
   if (Array.isArray (post.media) && post.media.length > 0) {
     const postMedia: Media = post.media[0];
+    mediaUrl = postMedia.url;
+    mediaAlt = postMedia.alt;
 
-    if (postMedia.url) {
-      const imageElement = document.createElement('img');
-      imageElement.src = postMedia.url;
-      imageElement.alt = postMedia.alt || post.title;
-      imageElement.classList.add('post-image');
-      article.appendChild(imageElement);
-  }
 } else if (typeof post.media === 'object' && post.media !== null && 'url' in post.media) {
   const postMedia: Media = post.media as Media;
   const imageElement = document.createElement('img');
@@ -29,6 +32,21 @@ export function PostCard(post: PostDetails): HTMLElement {
   imageElement.alt = postMedia.alt || post.title;
   imageElement.classList.add('post-image');
   article.appendChild(imageElement);
+}
+
+const isAuthor = state.userProfile && post.author && post.author.name === state.userProfile?.name;
+
+if (isAuthor) {
+  const editButton = document.createElement('button');
+  editButton.textContent = 'Edit';
+  editButton.classList.add('edit-post-button', 'bg-black-600', 'hover:bg-orange-400', 'text-white', 'py-1', 'px-3', 'rounded', 'absolute', 'top-4', 'right-4', 'z-10');
+
+  editButton.addEventListener('click', (event) => {
+    event.preventDefault();
+    navigate(`/post/edit/${post.id}`); //change path, not sure yet maybe add / before
+  });
+
+  article.appendChild(editButton);
 }
   
   const contentWrapper = document.createElement('div');
