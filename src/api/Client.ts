@@ -278,6 +278,23 @@ export const updatePost = async (id: string, postData: PostRequest): Promise<Sin
   return response as SinglePostResponse;
 };
 
+/**
+ * Deletes a social media post by ID.
+ * Requires Authentication and Authorization (user must own the post).
+ * @param {string} id - The ID of the post to delete.
+ * @returns {Promise<void>} Resolves on 204 No Content success.
+ */
+
+export const deletePost = async (id: string): Promise<void> => {
+  const endpoint = `social/posts/${id}`;
+
+  const response = await del(endpoint);
+
+  if (response === null) {
+   return;
+  }
+};
+
 
 //Placeholder for later
 
