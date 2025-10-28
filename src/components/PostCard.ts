@@ -6,6 +6,8 @@ import type { PostDetails } from "../types/Post";
 import type { Media } from "../types/Media";
 import { state } from "../utils/store";
 import { navigate } from "../utils/router";
+import { deletePost } from "../api/Client";
+import { showConfirmationModal } from "../utils/confirmationModal";
 
 
 
@@ -27,9 +29,14 @@ export function PostCard(post: PostDetails): HTMLElement {
 
 } else if (typeof post.media === 'object' && post.media !== null && 'url' in post.media) {
   const postMedia: Media = post.media as Media;
+  mediaUrl = postMedia.url;
+  mediaAlt = postMedia.alt;
+}
+
+if (mediaUrl) {
   const imageElement = document.createElement('img');
-  imageElement.src = postMedia.url;
-  imageElement.alt = postMedia.alt || post.title;
+  imageElement.src = mediaUrl;
+  imageElement.alt = mediaAlt || post.title;
   imageElement.classList.add('post-image');
   article.appendChild(imageElement);
 }
@@ -37,16 +44,44 @@ export function PostCard(post: PostDetails): HTMLElement {
 const isAuthor = state.userProfile && post.author && post.author.name === state.userProfile?.name;
 
 if (isAuthor) {
+
+  const buttonWrapper = document.createElement('div');
+  buttonWrapper.classList.add('post-actions-wrapper', 'absolute', 'top-4', 'right-4', 'z-10', 'flex', 'space-x-2');
+
   const editButton = document.createElement('button');
   editButton.textContent = 'Edit';
-  editButton.classList.add('edit-post-button', 'bg-black-600', 'hover:bg-orange-400', 'text-white', 'py-1', 'px-3', 'rounded', 'absolute', 'top-4', 'right-4', 'z-10');
+  editButton.classList.add('edit-post-button', 'bg-black-600', 'hover:bg-orange-400', 'text-white', 'py-1', 'px-3', 'rounded');
 
   editButton.addEventListener('click', (event) => {
     event.preventDefault();
-    navigate(`/post/edit/${post.id}`); //change path, not sure yet maybe add / before
+    navigate(`/post/edit/${post.id}`); 
+  });
+
+  const deleteButton = document.createElement('button');
+  deleteButton.textContent = 'Delete';
+  deleteButton.classList.add('delete-post-button', 'bg-red-600', 'hover:bg-red-400', 'text-white', 'py-1', 'px-3', 'rounded');
+
+  deleteButton.addEventListener('click', async (event) => {
+    event.preventDefault();
+  
+    const confirmed = await showConfirmationModal('Are you sure you want to delete the post?');
+    if (!confirmed) return;
+  
+
+    try {
+      await deletePost(String(post.id));
+      article.remove();
+      //some warning but not alert, it's outdated. Maybe a simple confirmation appended temporarily?
+      navigate('/'); //option article.remove();
+    } catch (error) {
+      console.error('Failed to delete post:', error);
+      //some user-facing error feedback
+    }
   });
 
   article.appendChild(editButton);
+  article.appendChild(deleteButton);
+  article.appendChild(buttonWrapper);
 }
   
   const contentWrapper = document.createElement('div');
