@@ -295,6 +295,40 @@ export const deletePost = async (id: string): Promise<void> => {
   }
 };
 
+/**
+ * Adds reactions to an existing social media post by ID.
+ * @param {string} id - The ID of the post.
+ * @param {string} symbol - The reaction symbol (e.g., '🎉', '🤩').
+ * @returns {Promise<void>} Resolves on success (API returns 200 or 204).
+ */
+
+export const addReaction = async (id: string, symbol: string): Promise<void> => {
+  const endpoint = `social/posts/${id}/react/${symbol}`;
+
+  const response = await put(endpoint, null);
+
+  if (!response) {
+    throw new Error(`Failed to add reaction ${symbol} to post ${id}.`);
+  }
+
+};
+
+/**
+ * Removes reactions from an existing social media by ID.
+ * @param {string} id - The ID of the post.
+ * @param {string} symbol - The reaction symbol to remove.
+ * @returns {Promise<void>} Resolves on 204 No Content status success.
+ */
+
+export const removeReaction = async (id: string, symbol: string): Promise<void> => {
+  const endpoint = `social/posts/${id}/react/${symbol}`;
+
+  const response = await del(endpoint);
+
+  if (response !== null) {
+   throw new Error(`Failed to remove reaction ${symbol} from post ${id}`);
+  }
+};
 
 //Placeholder for later
 
