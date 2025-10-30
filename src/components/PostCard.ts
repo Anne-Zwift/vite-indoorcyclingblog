@@ -13,7 +13,7 @@ import { showTempMessage } from "../utils/message";
 
 
 
-export function PostCard(post: PostDetails): HTMLElement {
+export function PostCard(post: PostDetails, isDetailView: boolean = false): HTMLElement {
   const article = document.createElement('article');
   article.classList.add('post-card', 'bg-white', 'shadow-md', 'rounded-lg', 'p-4', 'mb-4');
   article.dataset.postId = String(post.id);
@@ -146,7 +146,7 @@ reactButton.addEventListener('click', async (event) => {
   title.textContent = post.title;
 
   const body = document.createElement('p');
-  body.textContent = post.body ? post.body.substring(0, 150) + '...' : '[No content]';
+  body.textContent = isDetailView ? post.body || post.body.substring(0, 150) + '...' : '[No content]';
 
   contentWrapper.append(title, body);
 
@@ -179,10 +179,12 @@ reactButton.addEventListener('click', async (event) => {
   const interactionArea = document.createElement('div');
   interactionArea.classList.add('post-interaction');
 
+  if (!isDetailView) {
   const readMoreLink = document.createElement('a');
   readMoreLink.href = `/#/post/${post.id}`;
   readMoreLink.textContent = 'Read More';
   readMoreLink.classList.add('read-more-link');
+  }
 
   const metadata = document.createElement('span');
   metadata.innerHTML = `
@@ -190,7 +192,7 @@ reactButton.addEventListener('click', async (event) => {
   Reactions: <strong>${post._count?.reactions || 0}</strong>
   `;
 
-  interactionArea.append(readMoreLink, metadata, reactButton);
+  interactionArea.append(metadata, reactButton);
 
   article.append(contentWrapper, interactionArea);
 
