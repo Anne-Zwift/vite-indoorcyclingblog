@@ -39,23 +39,28 @@ async function apiClient<T> (
   const accessToken = getAccessToken();
   const apiKey = getApiKey();
 
-  const headers: HeadersInit = {
+  /*const headers: HeadersInit = {
     'Content-Type': 'application/json',
-  };
+  };*/
+  const finalHeaders: Record<string, string> = {};
+
+  if (body) {
+    finalHeaders['Content-Type'] = 'application/json';
+  }
 
   if (apiKey) {
-    headers['X-Noroff-API-Key'] = apiKey;
+    finalHeaders['X-Noroff-API-Key'] = apiKey;
   }
 
   if (accessToken) {
-    headers['Authorization'] = `Bearer ${accessToken}`;
+    finalHeaders['Authorization'] = `Bearer ${accessToken}`;
   }
 
   const config: RequestInit = {
     method: customOptions.method || (body ? 'POST' : 'GET'),
     ...customOptions,
     headers: {
-      ...headers,
+      ...finalHeaders,
       ...customOptions.headers,
     } as HeadersInit,
     signal: signal,
@@ -67,6 +72,11 @@ async function apiClient<T> (
 
   try {
     const response = await fetch(BASE_URL + '/' + endpoint, config);
+    console.log('sending API request:', {
+      url: BASE_URL + '/' + endpoint,
+      method: config.method,
+      headers: config.headers
+    });
 
     if (!response.ok) {
     let errorData: any;
