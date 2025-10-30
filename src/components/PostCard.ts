@@ -8,6 +8,8 @@ import { state } from "../utils/store";
 import { navigate } from "../utils/router";
 import { deletePost } from "../api/Client";
 import { showConfirmationModal } from "../utils/confirmationModal";
+import { addReaction, removeReaction } from "../api/Client";
+import { showTempMessage } from "../utils/message";
 
 
 
@@ -45,9 +47,6 @@ const isAuthor = state.userProfile && post.author && post.author.name === state.
 
 if (isAuthor) {
 
-  const buttonWrapper = document.createElement('div');
-  buttonWrapper.classList.add('post-actions-wrapper', 'absolute', 'top-4', 'right-4', 'z-10', 'flex', 'space-x-2');
-
   const editButton = document.createElement('button');
   editButton.textContent = 'Edit';
   editButton.classList.add('edit-post-button', 'bg-black-600', 'hover:bg-orange-400', 'text-white', 'py-1', 'px-3', 'rounded');
@@ -71,19 +70,75 @@ if (isAuthor) {
     try {
       await deletePost(String(post.id));
       article.remove();
-      //some warning but not alert, it's outdated. Maybe a simple confirmation appended temporarily?
+      showTempMessage(document.body, `Post deleted successfully.`, false);
       navigate('/'); //option article.remove();
     } catch (error) {
       console.error('Failed to delete post:', error);
       //some user-facing error feedback
+      showTempMessage(article, 'Failed to delete post. Please try again.', true);
     }
   });
 
-  article.appendChild(editButton);
-  article.appendChild(deleteButton);
+  const buttonWrapper = document.createElement('div');
+  buttonWrapper.classList.add('post-actions-wrapper', 'absolute', 'top-4', 'right-4', 'z-10', 'flex', 'space-x-2');
+
+
+  buttonWrapper.appendChild(editButton);
+  buttonWrapper.appendChild(deleteButton);
+
   article.appendChild(buttonWrapper);
 }
-  
+
+const reactionSymbol = '👍';
+
+const hasUserReacted = post.reactions?.some((r) => r.symbol === reactionSymbol && r.user?.name === state.userProfile?.name) || false;
+
+const reactButton = document.createElement('button');
+
+if (hasUserReacted) {
+  reactButton.textContent = `${reactionSymbol} Liked`;
+  reactButton.classList.add('react-button', 'bg-green-600', 'hover:bg-green-700', 'text-white', 'py-1', 'px-3', 'rounded', 'mr-2');
+} else {
+  reactButton.textContent = `${reactionSymbol} React`;
+  reactButton.classList.add('react-button', 'bg-blue-600', 'hover:bg-blue-700', 'text-white', 'py-1', 'px-3', 'rounded', 'mr-2');
+}
+
+
+reactButton.addEventListener('click', async (event) => {
+  event.preventDefault();
+
+  if (!state.isLoggedIn) {
+      showTempMessage(article, 'You must be logged in to react to a post.', true);
+      return;
+  }
+
+  reactButton.disabled = true;
+
+  try {
+ 
+    if (hasUserReacted) {
+    await removeReaction(String(post.id), reactionSymbol);
+
+    } else {
+      await addReaction(String(post.id), reactionSymbol);
+    }
+
+    reactButton.disabled = false;
+    showTempMessage(article, 'Reaction updated! Refreshing...', false);
+
+    setTimeout(() => {
+      navigate(window.location.hash);
+    }, 500);
+
+  } catch (error) {
+    console.error('Failed to toggle reaction:', error);
+    
+    showTempMessage(article, 'Failed to update reaction. Please try again.', true);
+
+    reactButton.disabled = false;
+  }
+});
+
   const contentWrapper = document.createElement('div');
   contentWrapper.classList.add('post-content');
 
@@ -135,7 +190,7 @@ if (isAuthor) {
   Reactions: <strong>${post._count?.reactions || 0}</strong>
   `;
 
-  interactionArea.append(readMoreLink, metadata);
+  interactionArea.append(readMoreLink, metadata, reactButton);
 
   article.append(contentWrapper, interactionArea);
 
