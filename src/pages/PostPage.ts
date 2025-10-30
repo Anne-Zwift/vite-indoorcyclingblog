@@ -33,12 +33,17 @@ pageContainer.appendChild(postContentWrapper);
   .then(post => {
     postContentWrapper.innerHTML = '';
 
-    const detailElement = PostCard(post);
+    const detailElement = PostCard(post, true);
     postContentWrapper.appendChild(detailElement);
 
     const dynamicTitle = document.createElement('h1');
     dynamicTitle.textContent = `Post by ${post.author.name}`;
     pageContainer.prepend(dynamicTitle);
+
+    const commentsSection = document.createElement('section');
+    commentsSection.classList.add('comments-section', 'mt-8');
+    commentsSection.innerHTML = '<h3>Comments:</h3>';
+    postContentWrapper.appendChild(commentsSection);
   })
   .catch (error => {
     if (error.name === 'AbortError') {
