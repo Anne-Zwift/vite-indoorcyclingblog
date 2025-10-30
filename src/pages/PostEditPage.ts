@@ -2,6 +2,7 @@ import { PostForm } from "../components/PostForm";
 import { getPostDetails, updatePost } from "../api/Client";
 import { navigate } from "../utils/router";
 import type { PostRequest } from "../types/Post";
+import { showTempMessage } from "../utils/message";
 
 /**
  * Renders the PostForm component pre-filled with existing post data for editing.
@@ -10,7 +11,7 @@ import type { PostRequest } from "../types/Post";
 
 export function PostEditPage(id?: string): HTMLDivElement {
   const pageContainer = document.createElement('div');
-  pageContainer.classList.add('p6');
+  pageContainer.classList.add('p-6');
   pageContainer.innerHTML = '<h2>Loading Post for Edit...</h2>';
 
   if (!id) {
@@ -21,10 +22,12 @@ export function PostEditPage(id?: string): HTMLDivElement {
   const handleUpdate = async (postData: PostRequest) => {
     try {
       await updatePost(id, postData);
+      showTempMessage(document.body, 'Post updated successfully', false);
       navigate('/');
     } catch (error) {
-      throw error;
-      
+      console.error('Failed to update post:', error);
+      showTempMessage(document.body, 'Failed to save changes. Please check the console.', true);
+      throw error;  
     }
   };
 
