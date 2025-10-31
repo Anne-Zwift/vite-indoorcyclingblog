@@ -340,6 +340,23 @@ export const removeReaction = async (id: string, symbol: string): Promise<void> 
   }
 };
 
+/**
+ * Adds a comment to a specific post.
+ * @param {string} id - The ID of the post to comment on.
+ * @param {string} body - The comment content.
+ * @returns {Promise<void>} Resolves on success.
+ */
+
+export const postComment = async (id: string, body: string): Promise<void> => {
+  const endpoint = `social/posts/${id}/comment`;
+
+  const response = await post(endpoint, { body });
+
+  if (!response) {
+    throw new Error(`Failed to post comment on post ${id}.`);
+  }
+};
+
 //Placeholder for later
 
 /**
