@@ -1,267 +1,203 @@
 :root {
-  --font-family-h1: "system-ui";
-  --font-family-text: "Roboto", sans-serif;
-  
+  /* Font families */
+  --font-family-main: 'Roboto', sans-serif;
+  --font-family-h1: system-ui;
+  --font-family-p: 'Inter', sans-serif;
+  --font-family-span: monospace;
+
+  /* Line heights */
   --line-height: 1.5;
   --line-height-small: 1.1;
+
+  /* Font weights */
   --font-weight-text: 400;
   --font-weight-text-bold: 500;
   --font-weight-text-bolder: 600;
 
+  /* Font sizes */
   --font-size-small: 16px;
   --font-size-base: 20px;
   --font-size-large: 24px;
   --font-size-x-large: 32px;
 
-  --color-primary: #f45607;
-  --color-secondary: rgb(235, 78, 10);
-  --background-color: #ecf0f1;
+  /* Colors */
+  --color-primary: #fff;
+  --color-secondary: #4F5D75;
+  --background-color: #BFC0C0;
+  --color-bg-button: #2D3142;
+  --color-hover-button: #EF8354;
   --color-text-button: #fff;
-  --color-text: #000;
-  --color-text-go: #2fea12;
+  --color-h1-text: #EF8354;
+  --color-p-text: #000;
+  --color-text-ready: #2fea12;
   --color-text-warning: #e10e0e;
-
-
-
-  /*color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;*/
+  /* Import fonts like Roboto and Inter */
+  /* Set theme switcher, dark theme/Light theme */
 }
 
-/*Common styles*/
-body {
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  text-decoration: none;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-  justify-self: center;
-  text-align: center;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+#content-area {
+ width: 100%;
+ max-width: 90%;
+ margin: 0 auto;
+ padding: 1rem;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+}
+
+body {
   display: flex;
+  justify-content: center;
+  align-items: center;
   min-height: 100vh;
-  background: linear-gradient(#23243edb);
+  text-align: center;
+  flex-direction: column;
+  background-color: var(--background-color);
 }
 
-a {
-  font-weight: 600;
-  color: #ffa264;
-  text-decoration: inherit;
+#posts-container {
+  width: 100%;
+  background-color: var(--color-primary);
   padding: 20px;
+  margin-top: 20px;
+  border: 1px solid #000;
+  border-radius: 8px;
 }
 
-a:hover {
-  color: #a6f40b;
+.main-navigation a {
+  font-family: var(--font-family-main);
+  font-size: var(--font-size-small);
+  color: var(--color-primary);
+  gap: 40px;
+}
+
+.main-navigation a:hover {
+  font-size: larger;
+  color: var(--color-secondary);
+}
+
+img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 100%;
+  padding: 10px;
+  height: auto;
+  border-radius: 18px;
+}
+
+#h1 {
+  font-family: var(--font-family-h1);
+  font-size: var(--font-size-x-large);
+  font-weight: var(--font-weight-text-bold);
+  color: var(--color-h1-text);
 }
 
 h1 {
-  font-family: var(--font-family-text);
   color: var(--color-secondary);
   font-size: var(--font-size-x-large);
-  line-height: 1.1;
-  font-weight: var(--font-weight-text-bolder);
-}
-
-h2 {
-  font-family: var(--font-family-h1);
-  color: var(--color-primary);
+  margin-top: 40px;
 }
 
 h3 {
-  max-width: 600px;
+  font-family: var(--font-family-h1);
+  font-size: var(--font-size-large);
 }
 
 p {
-  color: var(--color-text-button);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  padding-left: 20px;
-  padding-right: 20px;
-  
-}
-
-.post-interaction {
-  font-family: monospace;
-  max-width: 400px;
-  margin: 0;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  text-align: left;
-  word-spacing: 4px;
-  background-color: #f9f1ec;
-  border-radius: 8px;
-}
-
-#loginForm {
-  display: inline-block;
-  width: 300px;
-  height: 400px;
-  background-color: var(--color-secondary);
-  border-radius: 4%;
-  margin-top: 40px;
-}
-
-label {
-  display: block;
-  font-family: var(--font-family-text);
+  font-family: var(--font-family-p);
   font-size: var(--font-size-base);
-  color: var(--color-text-button);
-  margin: 40px 0px 10px 0px;
-}
-
-input {
-  width: 250px;
-  height: 22px;
-  margin-top: 10px;
-  border-radius: 4px;
-  border: 1px solid transparent;
+  color: var(--color-p-text);
+  border-radius: 8px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 100%;
 }
 
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  margin-top: 40px;
-  padding: 10px 20px;
-  font-size: var(--font-size-small);
-  font-weight: 600;
-  font-family: var(--font-family-text);
-  color: #fff;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-
-button:hover {
-  background-color: var(--color-secondary);
-  border-color: var(--color-text-button);
-}
-
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-/*PostCard.ts*/
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.7);
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.modal-box {
-  background-color: #978e8e;
-  padding: 25px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  max-width: 90%;
-  color: var(--color-text);
-}
-
-.modal-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 8px 16px;
-  margin-top: 20px;
-  font-size: var(--font-size-small);
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.25s;
-}
-
-.modal-button-confirm {
-  background-color: var(--color-text-warning);
+  font-family: var(--font-family-span);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-text-bold);
+  background-color: var(--color-bg-button);
   color: var(--color-text-button);
+  border: none;
+  border-radius: 6px;
+  outline: none;
+  margin-top: 20px;
+  padding: 10px 20px;
+  cursor: pointer;
 }
 
-.modal-button-cancel {
-  background-color: #ccc;
-  color: var(--color-text);
+Button:hover {
+  background-color: var(--color-hover-button);
+  font-weight: var(--font-weight-text-bolder);
+  font-size: larger;
 }
 
-.post-actions-wrapper {
-  display: flex;
-  gap: 8px;
+.react-button {
+  padding: 5px 10px;
+  margin: 3px 0;
 }
 
-/*PostForm.ts*/
-.status-message {
-  padding: 10px;
-  margin: 10px 0;
-  border-radius: 4px;
-  display: block;
+.post-metadata {
+  align-self: flex-start;
+  text-align: left;
+  width: 100%;
+  font-family: var(--font-family-p);
+  font-size: var(--font-size-small);
+  color: var(--color-secondary);
+  padding-left: 10px;
+  margin-bottom: 40px;
 }
 
-.status-success {
-  color: var(--color-text-go);
-  border: 1px solid #d6e9c6;
-}
-
-.status-error {
-  color: var(--color-text-warning);
-  border: 1px solid #ebccd1;
-}
-
-/*Post Feed Container*/
-
-.post-card {
-  position: relative;
-  max-width: 100%;
-  text-align: inherit;
-  margin: 10px;
-}
-
-.post-image {
-  max-width: 350px;
+.post-interaction {
+  font-family: var(--font-family-span);
+  color: var(--color-text-button);
+  background-color: var(--color-secondary);
+  max-width: 600px;
+  border-radius: 8px;
+  border-color: 4px solid #fff;
   margin-top: 40px;
-  margin-bottom: 20px;
-  border-radius: 24px;
-  border: 1px solid transparent;
+  margin-left: 10px;
+  margin-right: 10px;
+  padding: 10px;
 }
 
 @media (min-width: 768px) {
-  .post-image {
-  max-width: 600px;
+
+#content-area {
+  max-width: 550px;
+}
+
+#posts-container {
+  width: 600px;
+}
+
+.post-metadata {
+  padding-left: 30px;
+}
+
+.post-interaction {
+  width: 500px;
+  background-color: var(--color-primary);
+  color: var(--color-p-text);
   margin-top: 40px;
-  margin-bottom: 20px;
-  border-radius: 24px;
-  border: 1px solid transparent;
-}
-
-.post-content {
-  max-width: 400px;
-  text-align: left;
-  color: #ecf0f1;
-}
-
-/*.post-interaction {
-  font-family: monospace;
-  margin: 0;
-  padding: 10px;
-  text-align: left;
-  word-spacing: 4px;
-  background-color: #f9f1ec;
-  border-radius: 8px;
-}*/
+  padding: 0;
 }
 
 
-/*@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-}*/
+}
