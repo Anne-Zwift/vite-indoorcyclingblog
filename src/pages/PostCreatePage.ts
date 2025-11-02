@@ -1,3 +1,4 @@
+import { createPost } from "../api/Client";
 import { PostForm } from "../components/PostForm";
 
 /**
