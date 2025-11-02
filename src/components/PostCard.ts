@@ -15,11 +15,13 @@ import { showTempMessage } from "../utils/message";
 
 export function PostCard(post: PostDetails, isDetailView: boolean = false): HTMLElement {
   const article = document.createElement('article');
-  article.classList.add('post-card', 'bg-white', 'shadow-md', 'rounded-lg', 'p-4', 'mb-4');
+  article.classList.add('post-card');
   article.dataset.postId = String(post.id);
 
   const mediaContainer = document.createElement('div');
-  mediaContainer.classList.add('post-media-container', 'mb-3');
+  mediaContainer.classList.add('post-media-container');
+
+  let buttonWrapper: HTMLDivElement | undefined;
 
   let mediaUrl: string | undefined;
   let mediaAlt: string | undefined;
@@ -49,7 +51,7 @@ if (isAuthor) {
 
   const editButton = document.createElement('button');
   editButton.textContent = 'Edit';
-  editButton.classList.add('edit-post-button', 'bg-black-600', 'hover:bg-orange-400', 'text-white', 'py-1', 'px-3', 'rounded');
+  editButton.classList.add('edit-post-button');
 
   editButton.addEventListener('click', (event) => {
     event.preventDefault();
@@ -58,7 +60,7 @@ if (isAuthor) {
 
   const deleteButton = document.createElement('button');
   deleteButton.textContent = 'Delete';
-  deleteButton.classList.add('delete-post-button', 'bg-red-600', 'hover:bg-red-400', 'text-white', 'py-1', 'px-3', 'rounded');
+  deleteButton.classList.add('delete-post-button');
 
   deleteButton.addEventListener('click', async (event) => {
     event.preventDefault();
@@ -79,14 +81,13 @@ if (isAuthor) {
     }
   });
 
-  const buttonWrapper = document.createElement('div');
-  buttonWrapper.classList.add('post-actions-wrapper', 'absolute', 'top-4', 'right-4', 'z-10', 'flex', 'space-x-2');
+  buttonWrapper = document.createElement('div');
+  buttonWrapper.classList.add('post-actions-wrapper');
 
 
   buttonWrapper.appendChild(editButton);
   buttonWrapper.appendChild(deleteButton);
 
-  article.appendChild(buttonWrapper);
 }
 
 const reactionSymbol = '👍';
@@ -97,10 +98,10 @@ const reactButton = document.createElement('button');
 
 if (hasUserReacted) {
   reactButton.textContent = `${reactionSymbol} Liked`;
-  reactButton.classList.add('react-button', 'bg-green-600', 'hover:bg-green-700', 'text-white', 'py-1', 'px-3', 'rounded', 'mr-2');
+  reactButton.classList.add('react-button');
 } else {
   reactButton.textContent = `${reactionSymbol} React`;
-  reactButton.classList.add('react-button', 'bg-blue-600', 'hover:bg-blue-700', 'text-white', 'py-1', 'px-3', 'rounded', 'mr-2');
+  reactButton.classList.add('react-button');
 }
 
 
@@ -146,17 +147,28 @@ reactButton.addEventListener('click', async (event) => {
   title.textContent = post.title;
 
   const body = document.createElement('p');
-  body.textContent = isDetailView ? post.body || post.body.substring(0, 150) + '...' : '[No content]';
+  if (isDetailView) {
+    body.textContent = post.body || '[No content]';
+  } else {
+    body.textContent = post.body ? post.body.substring(0, 150) + '...' : '[No content]';
+  }
 
   contentWrapper.append(title, body);
 
   const metadataArea = document.createElement('div');
   metadataArea.classList.add('post-metadata');
 
+  const postInfoWrapper = document.createElement('div');
+  postInfoWrapper.classList.add('post-info-wrapper');
+
+  if (buttonWrapper) {
+    metadataArea.appendChild(buttonWrapper);
+  }
+
     if (post.author && post.author.name) {
     const authorSpan = document.createElement('span');
     authorSpan.textContent = `By: ${post.author.name}`;
-    metadataArea.appendChild(authorSpan);
+    postInfoWrapper.appendChild(authorSpan);
   }
 
   const dateOptions: Intl.DateTimeFormatOptions = {year: 'numeric', month: 'short', day: 'numeric'};
@@ -171,8 +183,10 @@ reactButton.addEventListener('click', async (event) => {
     if (dateText) {
       const dateSpan = document.createElement('span');
       dateSpan.textContent = dateText;
-      metadataArea.appendChild(dateSpan);
+      postInfoWrapper.appendChild(dateSpan);
     }
+
+    metadataArea.appendChild(postInfoWrapper);
 
     contentWrapper.prepend(metadataArea);
 
