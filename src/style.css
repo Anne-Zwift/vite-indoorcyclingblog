@@ -228,6 +228,41 @@ Button:hover {
   color: var(--color-primary);
 }
 
+/* Login page */
+
+.login-page-container {
+  background-color: var(--color-secondary);
+  color: var(--color-primary);
+  padding: 40px;
+  border-radius: 4px;
+}
+
+.login-page-container,
+h2 {
+  color: var(--color-primary);
+}
+
+.form-group {
+  margin-top: 40px;
+  max-width: 300px;
+}
+
+.form-group,
+p {
+  font-size: var(--font-size-base);
+}
+
+label {
+  padding: 20px;
+}
+
+input {
+  padding: 10px 25px;
+  margin-top: 10px;
+  border-radius: 4px;
+  border: none;
+}
+
 @media (min-width: 768px) {
 
 h3 {
