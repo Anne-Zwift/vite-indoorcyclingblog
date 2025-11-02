@@ -184,23 +184,14 @@ Button:hover {
   margin: 3px;
 }
 
-.post-actions-wrapper {
-  display: grid;
-  max-width: fit-content;
-  gap: 0.5rem;
+.post-metadata {
   border: 1px solid #000;
 }
 
-.post-metadata {
-  align-self: flex-start;
-  text-align: left;
-  width: 100%;
+.post-info-wrapper {
   font-family: var(--font-family-p);
+  font-style: var(--color-secondary);
   font-size: var(--font-size-small);
-  color: var(--color-secondary);
-  padding-left: 10px;
-  margin-bottom: 40px;
-  border: 1px solid #000;
 }
 
 .post-interaction {
@@ -256,7 +247,17 @@ p {
 }
 
 .post-metadata {
+  margin-top: 4px;
+  padding-bottom: 10px;
   padding-left: 30px;
+}
+
+.post-actions-wrapper {
+  text-align: end;
+}
+
+.post-info-wrapper {
+  margin-top: -40px;
 }
 
 .post-interaction {
