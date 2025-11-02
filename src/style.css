@@ -56,6 +56,7 @@ html {
  display: flex;
  flex-direction: column;
  align-items: center;
+border: 1px solid #000;
 }
 
 body {
@@ -77,11 +78,12 @@ body {
   border-radius: 8px;
 }
 
-.main-navigation a {
+.main-navigation, a {
+  display: inline-flex;
   font-family: var(--font-family-main);
-  font-size: var(--font-size-small);
+  font-size: var(--font-size-base);
   color: var(--color-primary);
-  gap: 40px;
+  gap: 10px;
 }
 
 .main-navigation a:hover {
@@ -97,6 +99,7 @@ img {
   padding: 10px;
   height: auto;
   border-radius: 18px;
+  border: 1px solid #000;
 }
 
 #h1 {
@@ -104,28 +107,44 @@ img {
   font-size: var(--font-size-x-large);
   font-weight: var(--font-weight-text-bold);
   color: var(--color-h1-text);
+  border: 1px solid #000;
 }
 
 h1 {
   color: var(--color-secondary);
   font-size: var(--font-size-x-large);
   margin-top: 40px;
+  border: 1px solid #000;
+}
+
+h2 {
+  font-family: var(--font-family-p);
+  font-size: var(--font-size-base);
+  color: var(--color-p-text);
+  margin-top: 20px;
+  padding: 4px;
+  border: 1px solid #000;
 }
 
 h3 {
   font-family: var(--font-family-h1);
   font-size: var(--font-size-large);
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding: 4px;
+  border: 1px solid #000;
 }
 
 p {
+  display: block;
+  height: auto;
   font-family: var(--font-family-p);
   font-size: var(--font-size-base);
   color: var(--color-p-text);
-  border-radius: 8px;
-  display: block;
+  padding: 5px;
   margin-left: auto;
   margin-right: auto;
-  max-width: 100%;
+  border: 1px solid #000;
 }
 
 button {
@@ -149,8 +168,27 @@ Button:hover {
 }
 
 .react-button {
-  padding: 5px 10px;
-  margin: 3px 0;
+  width: 40%;
+  padding: 5px;
+  margin-top: 10px;
+  align-items: center;
+}
+
+.edit-post-button {
+  padding: 8px 25px;
+  margin: 3px;
+}
+
+.delete-post-button {
+  padding: 8px 25px;
+  margin: 3px;
+}
+
+.post-actions-wrapper {
+  display: grid;
+  max-width: fit-content;
+  gap: 0.5rem;
+  border: 1px solid #000;
 }
 
 .post-metadata {
@@ -162,22 +200,52 @@ Button:hover {
   color: var(--color-secondary);
   padding-left: 10px;
   margin-bottom: 40px;
+  border: 1px solid #000;
 }
 
 .post-interaction {
   font-family: var(--font-family-span);
   color: var(--color-text-button);
   background-color: var(--color-secondary);
-  max-width: 600px;
-  border-radius: 8px;
-  border-color: 4px solid #fff;
   margin-top: 40px;
-  margin-left: 10px;
-  margin-right: 10px;
+  margin-bottom: 40px;
   padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #000;
+}
+
+/* PostForm.ts */
+
+.status-message {
+  display: block;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: var(--font-size-small);
+  font-family: var(--font-family-p);
+  margin-top: 20px;
+  text-align: center;
+  transition: opacity 0.3s ease;
+}
+
+.status-success {
+  background-color: var(--color-text-ready);
+  color: var(--color-primary);
+}
+
+.status-error {
+  background-color: var(--color-text-warning);
+  color: var(--color-primary);
 }
 
 @media (min-width: 768px) {
+
+h3 {
+  text-align: start;
+}
+
+p {
+  text-align: start;
+}
 
 #content-area {
   max-width: 550px;
@@ -192,12 +260,20 @@ Button:hover {
 }
 
 .post-interaction {
-  width: 500px;
   background-color: var(--color-primary);
   color: var(--color-p-text);
   margin-top: 40px;
-  padding: 0;
+  border-radius: 0;
 }
+
+.post-interaction,
+span {
+  width: 100%;
+  display: inline-flex;
+  text-align: left;
+  gap: 20px;
+}
+
 
 
 }

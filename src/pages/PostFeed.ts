@@ -15,7 +15,7 @@ export function PostFeed(): HTMLDivElement {
   const title = document.createElement('h1');
   title.textContent = 'Indoor Off Season Activities';
 
-  const subtitle = document.createElement('p');
+  const subtitle = document.createElement('h2');
   subtitle.textContent = 'Get inspired for indoor Cycling. View the latest posts from our community.';
 
   //reactivity will be added to the btn, hidden/shown based on login status.
