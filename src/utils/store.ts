@@ -1,11 +1,18 @@
 import type { UserProfileData } from "../types/Profile";
-import { getAccessToken, clearAccessToken, setAccessToken, saveProfile, clearProfile } from "./authUtils";
+import { getAccessToken, clearAccessToken, setAccessToken, saveProfile, clearProfile, getProfile } from "./authUtils";
 
 const hasToken = !!getAccessToken();
 
+const loadUserProfile = (): UserProfileData | null => {
+  if (hasToken) {
+    return getProfile();
+  }
+  return null;
+}
+
 export const state = { 
   isLoggedIn: hasToken, 
-  userProfile: null as UserProfileData | null, 
+  userProfile: loadUserProfile(), 
   router: null as any,//for the router
 }
 
