@@ -12,9 +12,12 @@ const createNavElement = (): HTMLElement => {
   const navigation = document.createElement('nav');
   navigation.className = 'main-navigation';
 
+  const profileName = state.userProfile?.name;
+
   const allLinks = [
   { name: 'Home', path: '/', requiresLogin: false },
-  { name: 'Profile', path: '/profile', requiresLogin: true },
+  { name: 'Create Post', path: '/create', requiresLogin: true },
+  { name: 'Profile', path: profileName ? `/profile/${profileName}` : '/profile', requiresLogin: true },
   { name: 'Logout', path: '/logout', requiresLogin: true},
   { name: 'Login', path: '/login', requiresLogin: false },
   { name: 'Register', path: '/register', requiresLogin: false },
@@ -36,6 +39,10 @@ linksToShow.forEach(linkNav => {
   const link = document.createElement('a');
   link.href = `#${linkNav.path}`;
   link.textContent = linkNav.name;
+
+  if (linkNav.name === 'Create Post') {
+    link.classList.add('nav-create-button');
+  }
 
     link.addEventListener('click', (event) => {
     event.preventDefault();
