@@ -192,7 +192,7 @@ export const register = async (name: string, email: string, password: string): P
   const response = await post<Profile>(endpoint, body);
 
   if (!response || !response.data) {
-    throw new Error("Registration failed: Invalid credentials.");
+    throw new Error("Registration failed: Invalid response structure or missing data.");
   }
 
   const { accessToken, ...profileData } = response.data as Profile;
