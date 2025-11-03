@@ -44,14 +44,28 @@ export function LoginPage(): HTMLDivElement {
     messageArea.textContent = ''; //clear old messages
     messageArea.style.color = 'red';
 
+    /*new code */
+    const submitButton = loginForm.querySelector('#loginSubmitButton') as HTMLButtonElement;
+    if (submitButton) {
+      submitButton.disabled = true;
+      submitButton.textContent = 'Logging In...';
+    }
+    /*new code ends*/
+
     const formData = new FormData(loginForm);
-    const email = formData.get('email') as string;
-    const password = formData.get('password') as string;
+    const email = (formData.get('email') as string).trim();
+    const password = (formData.get('password') as string).trim();
 
     if (!email || !password) {
-      messageArea.textContent = "Please enter username/email and password.";
+      messageArea.textContent = "Please enter both email and password.";
+      if (submitButton) {
+        submitButton.disabled = false;
+        submitButton.textContent = 'Log In';
+      }
       return;
     }
+
+    let userMessage: string = '';
 
     try {
       const result = await loginApi(email, password);// result: {accessToken, profile}
@@ -66,19 +80,35 @@ export function LoginPage(): HTMLDivElement {
 
       messageArea.textContent = 'Login successful! Redirecting to feed...';
       messageArea.style.color = 'green';
+      messageArea.textContent = userMessage;
 
       console.log('Login successful. Profile:', result);
 
       setTimeout(() => {
-        navigate('/');
-      }, 1000);
+        navigate('/feed');
+      }, 4000);
 
 
     } catch (error) {
       console.error('Login error:', error);
-      messageArea.textContent = error instanceof Error ? error.message : 'An unknown error occurred during login.';
-    }
 
+      userMessage = 'An unknown error occurred during login. Please try again.';
+      
+      if (error instanceof Error) {
+        if (error.message.includes('Invalid credentials') || error.message.includes('Invalid email or password')) {
+          userMessage = 'Invalid email or password. Please try again.';
+      } else {
+        userMessage = error.message;
+      }
+    }
+    messageArea.textContent = userMessage;
+
+  } finally {
+    if (submitButton && messageArea.style.color !== 'green') {
+      submitButton.disabled = false;
+      submitButton.textContent = 'Log In';
+    }
+  }
   });
 
   pageContainer.append(title, messageArea, loginForm);
