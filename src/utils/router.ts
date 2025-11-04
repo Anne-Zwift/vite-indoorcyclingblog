@@ -40,7 +40,7 @@ const resolveRoute = () => {
   let matchedRoute: Route | undefined;
   let routeParam: string | undefined;
 
-  for (const routePath in routes) {
+  /*for (const routePath in routes) {
     const pattern = new RegExp(`^${routePath.replace(/:\w+/g, '([\\w-]+)')}$`);
     const match = hashPath.match(pattern);
 
@@ -49,7 +49,21 @@ const resolveRoute = () => {
       routeParam = match.length > 1 ? match[1] : undefined;
       break;
     }
-  }
+  }*/
+
+  const postMatch = hashPath.match(/^\/post\/([\w-]+)$/i);
+    if (postMatch) {
+      matchedRoute = routes['/post/:id'];
+      routeParam = postMatch[1];
+    }
+    else if (hashPath.match(/^\/post\/edit\/([\w-]+)$/i)) {
+      matchedRoute = routes['/post/edit/:id'];
+      routeParam = hashPath.match(/^\/post\/edit\/([\w-]+)$/i)![1];
+    }
+    else if (routes[hashPath]) {
+      matchedRoute = routes[hashPath];
+      routeParam = undefined;
+    }
 
   let currentRoute = matchedRoute;
 
