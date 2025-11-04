@@ -57,6 +57,10 @@ export function PostFeed(): HTMLDivElement {
     posts.forEach(post => {
       const postElement = PostCard(post);
       postsContainer.appendChild(postElement);
+
+      postElement.addEventListener('click', () => {
+        navigate(`/posts/${post.id}`);
+      })
     });
   })
 
