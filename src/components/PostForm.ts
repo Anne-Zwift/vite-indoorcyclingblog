@@ -58,6 +58,8 @@ export function PostForm(props: PostFormProps = {}): HTMLDivElement {
   const isEditMode = !!initialData;
   const formContainer = document.createElement('div');
   formContainer.id = isEditMode ? `edit-post-container-${initialData.id}` : 'create-post-form-container';
+  formContainer.classList.add('heading');
+  formContainer.textContent = 'Create a new post and make someone HAPPY🤩'
 
   const statusMessage = document.createElement('div');
   statusMessage.id = 'post-status-message';
