@@ -3,6 +3,7 @@ import { PostCard } from "../components/PostCard";
 import { CommentComponent } from "../components/CommentComponent";
 import { CommentForm } from "../components/CommentForm";
 import { showTempMessage } from "../utils/message";
+import { navigate } from "../utils/router";
 /**
  * Renders the individual Post page structure.
  * @param {string} postId - The unique ID of the post, passed from the router.
@@ -10,6 +11,7 @@ import { showTempMessage } from "../utils/message";
  */
 
 export function PostPage(postId: string = ''): HTMLDivElement  {
+  console.log('PostPage received ID:', postId);
   const pageContainer = document.createElement('div');
   pageContainer.id = 'post-page';
   pageContainer.classList.add('p-6', 'max-w-4xl', 'mx-auto');
@@ -39,14 +41,22 @@ pageContainer.appendChild(postContentWrapper);
   .then(post => {
     postContentWrapper.innerHTML = '';
 
+    const backButton = document.createElement('button');
+    backButton.textContent = '⬅️ Back to Feed';
+    backButton.classList.add('back-to-feed-button');
+
+    backButton.addEventListener('click', () => {
+      navigate('/');
+    })
+
     const dynamicTitle = document.createElement('h1');
     dynamicTitle.textContent = post.title;
-    dynamicTitle.classList.add('text-3xl', 'font-bold', 'mb-4', 'text-gray-800');
+    /*dynamicTitle.classList.add('text-3xl', 'font-bold', 'mb-4', 'text-gray-800');*/
 
     const detailElement = PostCard(post, true);
-    detailElement.classList.add('mb-6')
+    /*detailElement.classList.add('mb-6');*/
 
-    postContentWrapper.appendChild(detailElement);
+
 
     const commentForm = CommentForm({
       postId: postId,
@@ -79,7 +89,7 @@ pageContainer.appendChild(postContentWrapper);
       commentsSection.appendChild(noComments);
     }
 
-    postContentWrapper.append(dynamicTitle, detailElement, commentForm, commentsSection);
+    postContentWrapper.append(backButton, dynamicTitle, detailElement, commentForm, commentsSection);
 
   })
   .catch (error => {
