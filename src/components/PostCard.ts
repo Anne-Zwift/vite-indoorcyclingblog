@@ -43,6 +43,15 @@ if (mediaUrl) {
   imageElement.alt = mediaAlt || post.title;
   imageElement.classList.add('post-image');
   article.appendChild(imageElement);
+
+  if (!isDetailView) {
+    imageElement.style.cursor = 'pointer';
+    imageElement.addEventListener('click', (event) => {
+      event.stopPropagation();
+      navigate(`/post/${post.id}`);
+    });
+  }
+  article.appendChild(imageElement);
 }
 
 const isAuthor = state.userProfile && post.author && post.author.name === state.userProfile?.name;
@@ -194,10 +203,23 @@ reactButton.addEventListener('click', async (event) => {
   interactionArea.classList.add('post-interaction');
 
   if (!isDetailView) {
-  const readMoreLink = document.createElement('a');
-  readMoreLink.href = `/#/post/${post.id}`;
-  readMoreLink.textContent = 'Read More';
+
+  const readMoreLink = document.createElement('button');
+  readMoreLink.textContent = 'Read More ➡️';
   readMoreLink.classList.add('read-more-link');
+  readMoreLink.style.cursor = 'pointer';
+
+  readMoreLink.addEventListener('click', (event) => {
+    event.stopPropagation();
+    navigate(`/post/${post.id}`);
+  });
+
+  article.style.cursor = 'pinter';
+  article.addEventListener('click', () => {
+    navigate(`/post/${post.id}`);
+  });
+
+  interactionArea.appendChild(readMoreLink);
   }
 
   const metadata = document.createElement('span');
