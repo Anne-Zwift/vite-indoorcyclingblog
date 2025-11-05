@@ -1,4 +1,5 @@
 import type { Media } from "./Media";
+import type { PostDetails } from "./Post";
 
 
 export interface Profile {
@@ -10,6 +11,7 @@ export interface Profile {
   accessToken: string;
   followers?: UserProfileData[];
   following?: UserProfileData[];
+  posts?: PostDetails[];
   _count: {
     posts: number;
     followers: number;
