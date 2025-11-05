@@ -113,7 +113,6 @@ if (isAuthor) {
 
     if (isProfileAvailable && currentUserName !== authorName) {
       const isFollowing = state.userProfile?.following?.some((f: UserProfileData) => f.name === authorName) || false;
-      //const isFollowing = true;
 
       followButton = document.createElement('button');
       followButton.classList.add('follow-toggle-button');
@@ -145,7 +144,6 @@ if (isAuthor) {
             updateButtonState(false);
             showTempMessage(article, `Unfollowed ${authorName}`, false);
 
-            //new
             updateFollowingStatus(authorName, false);
 
             if (post.author?.followers) {
@@ -156,7 +154,7 @@ if (isAuthor) {
             updateButtonState(true);
             showTempMessage(article, `Now following ${authorName}`, false);
 
-            //new
+
             const minimalFollowedProfile: UserProfileData = {
             ...MINIMAL_PROFILE_STUB, name: authorName, email: post.author.name || '', 
           };
