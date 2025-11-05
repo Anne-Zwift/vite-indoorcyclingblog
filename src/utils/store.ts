@@ -1,5 +1,6 @@
 import type { UserProfileData } from "../types/Profile";
 import { getAccessToken, clearAccessToken, setAccessToken, saveProfile, clearProfile, getProfile } from "./authUtils";
+import { MINIMAL_PROFILE_STUB } from "./profileDefaults";
 
 const hasToken = !!getAccessToken();
 
@@ -63,3 +64,36 @@ export function subscribe(callback: () => void): void {
   subscribers.push(callback);
 }
 
+/**
+ * Updates the userProfile's 'following' array after a successful follow/unfollow API call.
+ * @param {string} profileName - The name of the profile that was followed/unfollowed.
+ * @param {boolean} isFollowing - True if the action was 'follow', false if 'unfollow'.
+ * @param {UserProfileData} [profileData] - Optional profile data for the user being followed.
+ */
+
+export function updateFollowingStatus(profileName: string, isFollowing: boolean, profileData?: UserProfileData): void {
+  if (!state.userProfile) {
+    console.error('Cannot update following status: user is not logged in.');
+    return;
+  }
+
+  if (!state.userProfile.following) {
+    state.userProfile.following = [];
+  }
+
+  if (isFollowing) {
+    if (!state.userProfile.following.some(f => f.name === profileName)) {
+
+      const minimalProfile: UserProfileData = {
+        ...MINIMAL_PROFILE_STUB, name: profileName,
+      };
+
+      const newFollow: UserProfileData = profileData || minimalProfile;
+      state.userProfile.following.push(newFollow);
+    }
+  } else {
+    state.userProfile.following = state.userProfile.following.filter(f => f.name !== profileName);
+  }
+
+  subscribers.forEach(callback => callback());
+}
