@@ -1,6 +1,7 @@
 import { getProfile } from "../api/Client";
 import { state } from "../utils/store";
 import type { Profile } from "../types/Profile";
+import { PostCard } from "../components/PostCard";
 
 const renderLoading = (): HTMLDivElement => {
   const loading = document.createElement('div');
@@ -26,6 +27,11 @@ const renderProfile = (profile: Profile): HTMLDivElement => {
   avatar.alt = profile.avatar?.alt || `${profile.name}'s avatar`;
   avatar.className = 'profile-avatar';
 
+  const banner = document.createElement('img');
+  banner.src = profile.banner?.url || 'placeholder-banner.png';
+  banner.alt = profile.banner?.alt || `${profile.name}'s banner`;
+  banner.className = 'profile-banner';
+
   const name = document.createElement('h2');
   name.textContent = profile.name;
 
@@ -39,8 +45,32 @@ const renderProfile = (profile: Profile): HTMLDivElement => {
   postsCount.textContent = `Total Posts: ${profile._count?.posts || 0}`;
 
   //more profile fields can be added later
-
+  profileContainer.prepend(banner);
   profileContainer.append(avatar, name, email, followCount, postsCount);
+
+//new
+  const postsHeader = document.createElement('h3');
+  postsHeader.textContent = `Posts by ${profile.name}`;
+  postsHeader.className = 'profile-posts-header';
+  profileContainer.appendChild(postsHeader);
+
+  const postsListContainer = document.createElement('div');
+  postsListContainer.className = 'profile-posts-list';
+
+  if (profile.posts && profile.posts.length > 0) {
+    profile.posts.forEach(post => {
+      const postElement = PostCard(post, false);
+      postsListContainer.appendChild(postElement);
+    });
+  } else {
+    const noPosts = document.createElement('p');
+    noPosts.textContent = 'This user has not created any posts yet.';
+    noPosts.className = 'no-posts-message';
+    postsListContainer.appendChild(noPosts);
+  }
+
+  profileContainer.appendChild(postsListContainer);
+
   return profileContainer;
 };
 
