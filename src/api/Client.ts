@@ -226,7 +226,7 @@ export const register = async (name: string, email: string, password: string): P
  */
 
 export const getProfile = async (name: string): Promise<Profile> => {
-  const endpoint = `social/profiles/${name}?_posts=true&_followers=true&_following=true`;
+  const endpoint = `social/profiles/${name}?_posts=true&_followers=true&_following=true&_author=true`;
   
   const response = await get<Profile>(endpoint);
 
