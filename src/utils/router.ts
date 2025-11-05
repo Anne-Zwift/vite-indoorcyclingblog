@@ -1,4 +1,4 @@
-import { state } from './store.ts'
+import { state, subscribe } from './store.ts'
 import { LoginPage } from '../pages/LoginPage.ts';
 import { PostFeed } from '../pages/PostFeed.ts';
 import { PostPage } from '../pages/PostPage.ts';
@@ -86,7 +86,7 @@ export const initRouter = (rootElement: HTMLDivElement): routerInstance => {
   contentElement = rootElement;
 
   window.addEventListener('hashchange', resolveRoute);
-
+  subscribe(resolveRoute);
   resolveRoute();
 
   return {
