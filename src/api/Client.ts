@@ -10,6 +10,7 @@ import type { LoginResponse } from "../types/Login";
 import type { ApiKeyResponse } from "../types/ApiKey";
 
 
+
 export const createApiKey = async (): Promise<string> => {
   const response = await post<ApiKeyResponse['data']>(NOROFF_API_KEY_ENDPOINT, {});
 
@@ -118,7 +119,7 @@ export const put = <T, D = unknown>(endpoint: string, body?: D, signal?: AbortSi
  * @throws {Error} Generates any API or network errors from the base client.
  */
 export const getPosts = async (signal?: AbortSignal): Promise<PostDetails[]> => {
-  const endpoint = 'social/posts?_author=true&_comments=true&_reactions=true';
+  const endpoint = 'social/posts?_author=true&_comments=true&_reactions=true&_profile=true&_followers=true&_following=true&cache_buster=v1';
 
   const response = await get<PostDetails[]>(endpoint, signal);// error handling
 
@@ -160,11 +161,20 @@ export const login = async (email: string, password: string): Promise<LoginRespo
   } catch (e) {
     console.warn("Could not generate API Key. Subsequent API calls will fail.");
   }
- 
+  
+    let fullProfileData = profileData;
 
-  const finalLoginResponse: LoginResponse = {
+    try {
+      const fetchedProfile = await getProfile(profileData.name);
+
+      fullProfileData = fetchedProfile;
+    } catch (error) {
+      console.warn('Could not fetch full profile data after login. Proceeding with basic login data.', error);
+    }
+
+    const finalLoginResponse: LoginResponse = {
     accessToken: accessToken,
-    profile: profileData,
+    profile: fullProfileData,
   };
 
   return finalLoginResponse;
@@ -241,7 +251,7 @@ export const getPostsByProfile = async (name: string): Promise<PostDetails[]> =>
 };
 
 export const getPostDetails = async (id: string, signal?: AbortSignal): Promise<PostDetails> => {
-  const endpoint = `social/posts/${id}?_author=true&_comments=true&_reactions=true`;
+  const endpoint = `social/posts/${id}?_author=true&_comments=true&_reactions=true&_profile=true&_followers=true&_following=true`;
   
   const response = await get<PostDetails>(endpoint, signal);
 
@@ -355,6 +365,26 @@ export const postComment = async (id: string, body: string): Promise<void> => {
   if (!response) {
     throw new Error(`Failed to post comment on post ${id}.`);
   }
+};
+
+/**
+ * Follows a user by their profile name.
+ * @param {string} name - The username of the profile to follow.
+ * @returns {Promise<any>}
+ */
+export const followProfile = async (name: string): Promise<any> => {
+  const endpoint = `social/profiles/${name}/follow`;
+  return apiClient(endpoint, { method: 'PUT'});
+};
+
+/**
+ * Unfollows a user by their profile name.
+ * @param {string} name - The username of the profile to unfollow.
+ * @returns {Promise<any>}
+ */
+export const unfollowProfile = async (name: string): Promise<any> => {
+  const endpoint = `social/profiles/${name}/unfollow`;
+  return apiClient(endpoint, { method: 'PUT'});
 };
 
 //Placeholder for later
