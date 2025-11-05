@@ -14,7 +14,7 @@ export function PostPage(postId: string = ''): HTMLDivElement  {
   console.log('PostPage received ID:', postId);
   const pageContainer = document.createElement('div');
   pageContainer.id = 'post-page';
-  pageContainer.classList.add('p-6', 'max-w-4xl', 'mx-auto');
+  pageContainer.classList.add('post-page-container');
 
   const postContentWrapper = document.createElement('div');
   postContentWrapper.id = 'post-detail-container';
@@ -51,7 +51,7 @@ pageContainer.appendChild(postContentWrapper);
 
     const dynamicTitle = document.createElement('h1');
     dynamicTitle.textContent = post.title;
-    /*dynamicTitle.classList.add('text-3xl', 'font-bold', 'mb-4', 'text-gray-800');*/
+    /*dynamicTitle.classList.add('post-detail-title');*/
 
     const detailElement = PostCard(post, true);
     /*detailElement.classList.add('mb-6');*/
@@ -66,14 +66,14 @@ pageContainer.appendChild(postContentWrapper);
       }
     });
 
-    commentForm.classList.add('mb-8', 'border-t', 'pt-4');
+    commentForm.classList.add('post-comment-form-wrapper');
 
     const commentsSection = document.createElement('section');
     commentsSection.classList.add('comments-section');
 
     const commentsHeader = document.createElement('h3');
     commentsHeader.textContent = `Comments (£${post._count.comments})`;
-    commentsHeader.classList.add('text-2xl', 'font-semibold', 'mb-4', 'border-b', 'pb-2');
+    commentsHeader.classList.add('comments-header');
     commentsSection.appendChild(commentsHeader);
 
     if (post.comments && post.comments.length > 0) {
@@ -85,7 +85,7 @@ pageContainer.appendChild(postContentWrapper);
     } else {
       const noComments = document.createElement('p');
       noComments.textContent = 'No comment yet. Be the first to reply!';
-      noComments.classList.add('italic', 'text-gray-500');
+      noComments.classList.add('no-comments-message');
       commentsSection.appendChild(noComments);
     }
 
@@ -104,8 +104,8 @@ pageContainer.appendChild(postContentWrapper);
     : `❌ Error loading post. Details: ${error.message || 'check network connections.'}`;
 
     postContentWrapper.innerHTML = `
-    <h1 class="text-4xl text-red-600">Post Loading Failed</h1>
-    <p class="text-xl">${errorMessage}</p>
+    <h1 class="error-heading">Post Loading Failed</h1>
+    <p class="error-text">${errorMessage}</p>
     `;
   });
 };
