@@ -48,7 +48,7 @@ const renderProfile = (profile: Profile): HTMLDivElement => {
   profileContainer.prepend(banner);
   profileContainer.append(avatar, name, email, followCount, postsCount);
 
-//new
+
   const postsHeader = document.createElement('h3');
   postsHeader.textContent = `Posts by ${profile.name}`;
   postsHeader.className = 'profile-posts-header';
