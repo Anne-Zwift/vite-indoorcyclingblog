@@ -156,7 +156,7 @@ if (isAuthor) {
 
 
             const minimalFollowedProfile: UserProfileData = {
-            ...MINIMAL_PROFILE_STUB, name: authorName, email: post.author.name || '', 
+            ...MINIMAL_PROFILE_STUB, name: authorName, email: post.author.email || MINIMAL_PROFILE_STUB.email, 
           };
 
           updateFollowingStatus(authorName, true, minimalFollowedProfile);
@@ -263,7 +263,8 @@ reactButton.addEventListener('click', async (event) => {
       postInfoWrapper.appendChild(authorFollowWrapper);
     } else {
       const authorSpan = document.createElement('span');
-      authorSpan.textContent = `By: ${post.author.name}`;
+      const authorNameDisplay = post.author?.name || 'Unknown Author';
+      authorSpan.textContent = `By: ${authorNameDisplay}`;
       postInfoWrapper.appendChild(authorSpan);
     }
 
