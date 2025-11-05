@@ -4,12 +4,14 @@
  */
 import type { PostDetails } from "../types/Post";
 import type { Media } from "../types/Media";
-import { state } from "../utils/store";
+import { state, updateFollowingStatus } from "../utils/store";
 import { navigate } from "../utils/router";
-import { deletePost } from "../api/Client";
+import { deletePost, followProfile, unfollowProfile } from "../api/Client";
 import { showConfirmationModal } from "../utils/confirmationModal";
 import { addReaction, removeReaction } from "../api/Client";
 import { showTempMessage } from "../utils/message";
+import type { UserProfileData } from "../types/Profile";
+import { MINIMAL_PROFILE_STUB } from "../utils/profileDefaults";
 
 
 
@@ -42,6 +44,7 @@ if (mediaUrl) {
   imageElement.src = mediaUrl;
   imageElement.alt = mediaAlt || post.title;
   imageElement.classList.add('post-image');
+
   article.appendChild(imageElement);
 
   if (!isDetailView) {
@@ -51,7 +54,7 @@ if (mediaUrl) {
       navigate(`/post/${post.id}`);
     });
   }
-  article.appendChild(imageElement);
+
 }
 
 const isAuthor = state.userProfile && post.author && post.author.name === state.userProfile?.name;
@@ -88,6 +91,7 @@ if (isAuthor) {
       //some user-facing error feedback
       showTempMessage(article, 'Failed to delete post. Please try again.', true);
     }
+
   });
 
   buttonWrapper = document.createElement('div');
@@ -98,6 +102,89 @@ if (isAuthor) {
   buttonWrapper.appendChild(deleteButton);
 
 }
+
+    const authorName = post.author?.name;
+    const currentUserName = state.userProfile?.name;
+    const isProfileAvailable = currentUserName && authorName;
+
+    let followButton: HTMLButtonElement | undefined;
+    let authorFollowWrapper: HTMLDivElement | undefined;
+    
+
+    if (isProfileAvailable && currentUserName !== authorName) {
+      const isFollowing = state.userProfile?.following?.some((f: UserProfileData) => f.name === authorName) || false;
+      //const isFollowing = true;
+
+      followButton = document.createElement('button');
+      followButton.classList.add('follow-toggle-button');
+
+      const updateButtonState = (following: boolean) => {
+        followButton!.textContent = following ? 'Unfollow' : 'Follow';
+        followButton!.classList.toggle('following', following);
+      };
+
+      updateButtonState(isFollowing);
+
+      followButton.addEventListener('click', async (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+
+        if (!state.isLoggedIn) {
+          showTempMessage(article, 'You must be logged in to follow users.', true);
+          return;
+        }
+
+        followButton!.disabled = true;
+
+        const currentlyFollowing = followButton!.textContent === 'Unfollow';
+        const currentUserProfileData: UserProfileData | undefined = state.userProfile as UserProfileData;
+
+        try {
+          if (currentlyFollowing) {
+            await unfollowProfile(authorName);
+            updateButtonState(false);
+            showTempMessage(article, `Unfollowed ${authorName}`, false);
+
+            //new
+            updateFollowingStatus(authorName, false);
+
+            if (post.author?.followers) {
+              post.author.followers = post.author.followers.filter(f => f.name !== currentUserName);
+            }
+          } else {
+            await followProfile(authorName);
+            updateButtonState(true);
+            showTempMessage(article, `Now following ${authorName}`, false);
+
+            //new
+            const minimalFollowedProfile: UserProfileData = {
+            ...MINIMAL_PROFILE_STUB, name: authorName, email: post.author.name || '', 
+          };
+
+          updateFollowingStatus(authorName, true, minimalFollowedProfile);
+
+            if (post.author?.followers && currentUserProfileData) {
+              post.author.followers.push(currentUserProfileData);
+            }
+          }
+        } catch (error) {
+          console.error('Failed to toggle follow status:', error);
+          showTempMessage(article, 'Failed to update follow status. Please try again.', true);
+          updateButtonState(currentlyFollowing);
+        } finally {
+          followButton!.disabled = false;
+        }
+      });
+
+      authorFollowWrapper = document.createElement('div');
+      authorFollowWrapper.classList.add('author-follow-wrapper');
+
+      const authorSpan = document.createElement('span');
+      authorSpan.textContent = `By: ${post.author.name}`;
+      authorFollowWrapper.append(authorSpan, followButton);
+
+    }
+
 
 const reactionSymbol = '👍';
 
@@ -174,11 +261,13 @@ reactButton.addEventListener('click', async (event) => {
     metadataArea.appendChild(buttonWrapper);
   }
 
-    if (post.author && post.author.name) {
-    const authorSpan = document.createElement('span');
-    authorSpan.textContent = `By: ${post.author.name}`;
-    postInfoWrapper.appendChild(authorSpan);
-  }
+    if (authorFollowWrapper) {
+      postInfoWrapper.appendChild(authorFollowWrapper);
+    } else {
+      const authorSpan = document.createElement('span');
+      authorSpan.textContent = `By: ${post.author.name}`;
+      postInfoWrapper.appendChild(authorSpan);
+    }
 
   const dateOptions: Intl.DateTimeFormatOptions = {year: 'numeric', month: 'short', day: 'numeric'};
   let dateText = '';
