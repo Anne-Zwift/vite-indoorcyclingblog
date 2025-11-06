@@ -1,6 +1,6 @@
 // Import Media, Profile, ReactionItem and CommentItem from respective files
 import type { Media } from "./Media";
-import type { Profile } from "./Profile";
+import type { UserProfileData } from "./Profile";
 import type { PostReaction } from "./ReactionItem";
 import type { CommentItem } from "./CommentItem";
 import type { ApiResponse } from "./Api";
@@ -57,7 +57,7 @@ export interface PostDetails {
   media: Media | null;
   created: string;
   updated: string;
-  author: Profile;
+  author: UserProfileData;
   reactions: PostReaction[];
   comments: CommentItem[];
   _count: {
