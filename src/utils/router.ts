@@ -16,10 +16,11 @@ export const routes: { [Key: string]: Route } = {
   '/': { component: PostFeed, protected: true },
   '/login': { component: LoginPage, protected: false },
   '/register': { component: RegisterPage, protected: false },
+  '/post/edit/:id': { component: PostEditPage, protected: true },
   '/post/:id': { component: PostPage, protected: false },
   '/profile': { component: ProfilePage, protected: true },
   '/create': { component: PostCreatePage, protected: true},
-  '/post/edit/:id': { component: PostEditPage, protected: true }
+
 
 } as const;
 
