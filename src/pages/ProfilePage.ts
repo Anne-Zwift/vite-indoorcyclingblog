@@ -2,6 +2,7 @@ import { getProfile } from "../api/Client";
 import { state } from "../utils/store";
 import type { Profile } from "../types/Profile";
 import { PostCard } from "../components/PostCard";
+import { createMinimalAuthorFromProfile } from "../utils/profileDefaults";
 
 const renderLoading = (): HTMLDivElement => {
   const loading = document.createElement('div');
@@ -58,7 +59,19 @@ const renderProfile = (profile: Profile): HTMLDivElement => {
   postsListContainer.className = 'profile-posts-list';
 
   if (profile.posts && profile.posts.length > 0) {
-    profile.posts.forEach(post => {
+    const injectedAuthor = createMinimalAuthorFromProfile(profile);
+
+    const postToRender = profile.posts.map(post => {
+      if (!post.author || !post.author.name) {
+      return {
+        ...post,
+        author: injectedAuthor,
+      };
+    }
+    return post;
+    });
+
+    postToRender.forEach(post => {
       const postElement = PostCard(post, false);
       postsListContainer.appendChild(postElement);
     });
