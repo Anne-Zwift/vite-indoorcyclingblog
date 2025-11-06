@@ -59,7 +59,7 @@ export function PostFeed(): HTMLDivElement {
       postsContainer.appendChild(postElement);
 
       postElement.addEventListener('click', () => {
-        navigate(`/posts/${post.id}`);
+        navigate(`/post/${post.id}`);
       })
     });
   })
