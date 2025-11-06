@@ -72,7 +72,7 @@ pageContainer.appendChild(postContentWrapper);
     commentsSection.classList.add('comments-section');
 
     const commentsHeader = document.createElement('h3');
-    commentsHeader.textContent = `Comments (£${post._count.comments})`;
+    commentsHeader.textContent = `Comments (#${post._count.comments})`;
     commentsHeader.classList.add('comments-header');
     commentsSection.appendChild(commentsHeader);
 
