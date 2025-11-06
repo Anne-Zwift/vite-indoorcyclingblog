@@ -178,7 +178,8 @@ if (isAuthor) {
       authorFollowWrapper.classList.add('author-follow-wrapper');
 
       const authorSpan = document.createElement('span');
-      authorSpan.textContent = `By: ${post.author.name}`;
+      const authorName = post.author?.name || 'Unknown Author';
+      authorSpan.textContent = `By: ${authorName}`;
       authorFollowWrapper.append(authorSpan, followButton);
 
     }
