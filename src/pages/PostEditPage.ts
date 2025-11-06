@@ -23,7 +23,7 @@ export function PostEditPage(id?: string): HTMLDivElement {
     try {
       await updatePost(id, postData);
       showTempMessage(document.body, 'Post updated successfully', false);
-      navigate('/');
+      navigate(`/post/${id}`);
     } catch (error) {
       console.error('Failed to update post:', error);
       showTempMessage(document.body, 'Failed to save changes. Please check the console.', true);
