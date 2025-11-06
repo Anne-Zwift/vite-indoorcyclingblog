@@ -12,27 +12,27 @@ const createNavElement = (): HTMLElement => {
   const navigation = document.createElement('nav');
   navigation.className = 'main-navigation';
 
-  const profileName = state.userProfile?.name;
+  //const profileName = state.userProfile?.name;
 
   const allLinks = [
-  { name: 'Home', path: '/', requiresLogin: false },
+  { name: 'Home', path: '/', requiresLogin: true },
   { name: 'Create Post', path: '/create', requiresLogin: true },
-  { name: 'Profile', path: profileName ? `/profile/${profileName}` : '/profile', requiresLogin: true },
-  { name: 'Logout', path: '/logout', requiresLogin: true},
+  { name: 'Profile', path: '/profile', requiresLogin: true },
+  { name: 'Logout', path: '/logout', requiresLogin: true },
+
   { name: 'Login', path: '/login', requiresLogin: false },
   { name: 'Register', path: '/register', requiresLogin: false },
 ];
 
 const linksToShow = allLinks.filter(link => {
-  if (link.path === '/') {
-    return true;
+
+  if (state.isLoggedIn) {
+    return link.requiresLogin === true;
+  
   }
 
-  if (link.requiresLogin) {
-    return state.isLoggedIn;
-  }
+  return link.requiresLogin === false;
 
-  return !state.isLoggedIn;
 });
 
 linksToShow.forEach(linkNav => {
