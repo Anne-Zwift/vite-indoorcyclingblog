@@ -86,7 +86,7 @@ export function LoginPage(): HTMLDivElement {
 
       setTimeout(() => {
         navigate('/feed');
-      }, 4000);
+      }, 1500);
 
 
     } catch (error) {
