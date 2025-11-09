@@ -178,8 +178,8 @@ if (isAuthor) {
       authorFollowWrapper.classList.add('author-follow-wrapper');
 
       const authorSpan = document.createElement('span');
-      const authorName = post.author?.name || 'Unknown Author';
-      authorSpan.textContent = `By: ${authorName}`;
+      const authorNameDisplay = post.author?.name || 'Unknown Author';
+      authorSpan.textContent = `By: ${authorNameDisplay}`;
       authorFollowWrapper.append(authorSpan, followButton);
 
     }
@@ -220,11 +220,11 @@ reactButton.addEventListener('click', async (event) => {
     }
 
     reactButton.disabled = false;
-    showTempMessage(article, 'Reaction updated! Refreshing...', false);
+    showTempMessage(article, 'Reaction updated!', false);
 
-    setTimeout(() => {
+    /*setTimeout(() => {
       navigate(window.location.hash);
-    }, 500);
+    }, 500);*/
 
   } catch (error) {
     console.error('Failed to toggle reaction:', error);
