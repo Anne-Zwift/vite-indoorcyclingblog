@@ -8,10 +8,11 @@ import { state, updateFollowingStatus } from "../utils/store";
 import { navigate } from "../utils/router";
 import { deletePost, followProfile, unfollowProfile } from "../api/Client";
 import { showConfirmationModal } from "../utils/confirmationModal";
-import { addReaction, removeReaction } from "../api/Client";
+import { addReaction } from "../api/Client";
 import { showTempMessage } from "../utils/message";
 import type { UserProfileData } from "../types/Profile";
 import { MINIMAL_PROFILE_STUB } from "../utils/profileDefaults";
+import type { PostReaction } from "../types/ReactionItem";
 
 
 
@@ -108,7 +109,7 @@ if (isAuthor) {
     const isProfileAvailable = currentUserName && authorName;
 
     let followButton: HTMLButtonElement | undefined;
-    let authorFollowWrapper: HTMLDivElement | undefined;
+    let authorFollowWrapper: HTMLDivElement | null = null;
     
 
     if (isProfileAvailable && currentUserName !== authorName) {
@@ -202,6 +203,7 @@ if (hasUserReacted) {
 
 reactButton.addEventListener('click', async (event) => {
   event.preventDefault();
+  event.stopPropagation();
 
   if (!state.isLoggedIn) {
       showTempMessage(article, 'You must be logged in to react to a post.', true);
@@ -210,21 +212,55 @@ reactButton.addEventListener('click', async (event) => {
 
   reactButton.disabled = true;
 
+  const isCurrentlyReacted = post.reactions?.some((r) => r.symbol === reactionSymbol && r.user?.name == state.userProfile?.name) || false;
+
+
+
   try {
  
-    if (hasUserReacted) {
-    await removeReaction(String(post.id), reactionSymbol);
+    if (isCurrentlyReacted) {
+    await addReaction(String(post.id), reactionSymbol);
+
+    if (post.reactions) {
+      post.reactions = post.reactions.filter(r => r.symbol !== reactionSymbol || r.user?.name !== state.userProfile?.name);
+    }
+
+    if (post._count && post._count.reactions > 0) {
+      post._count.reactions--;
+    }
+
+    reactButton.textContent = `${reactionSymbol} React`;
+    showTempMessage(article, 'Reaction removed!', false);
 
     } else {
       await addReaction(String(post.id), reactionSymbol);
+
+      const newReaction = { symbol: reactionSymbol, 
+        user: { name: state.userProfile?.name, email: state.userProfile?.email} 
+      } as unknown as PostReaction;
+    
+
+    if (post.reactions) {
+      post.reactions.push(newReaction);
+    } else {
+      post.reactions = [newReaction];
     }
 
-    reactButton.disabled = false;
-    showTempMessage(article, 'Reaction updated!', false);
+    if (post._count) {
+      post._count.reactions = (post._count.reactions || 0) + 1;
+    }
 
-    /*setTimeout(() => {
-      navigate(window.location.hash);
-    }, 500);*/
+    reactButton.textContent = `${reactionSymbol} Liked`;
+    showTempMessage(article, 'Reaction added!', false);
+  }
+
+    metadata.innerHTML = `
+    Comments: <strong>${post._count?.comments || 0}</strong>
+    Reactions: <strong>${post._count?.reactions || 0}</strong>
+    `;
+
+    reactButton.disabled = false;
+
 
   } catch (error) {
     console.error('Failed to toggle reaction:', error);

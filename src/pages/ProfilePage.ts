@@ -1,4 +1,4 @@
-import { getProfile } from "../api/Client";
+import { getPostsByProfile, getProfile } from "../api/Client";
 import { state } from "../utils/store";
 import type { Profile } from "../types/Profile";
 import { PostCard } from "../components/PostCard";
@@ -115,6 +115,10 @@ export function ProfilePage(): HTMLDivElement {
 
     try {
       const profileData = await getProfile(profileName);
+
+      const profilePosts = await getPostsByProfile(profileName);
+
+      profileData.posts = profilePosts;
 
       const profileElement = renderProfile(profileData);
       pageContainer.replaceChild(profileElement, contentArea);
