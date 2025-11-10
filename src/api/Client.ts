@@ -225,8 +225,10 @@ export const register = async (name: string, email: string, password: string): P
  * @returns {Promise<Profile>} A promise that resolves with the unwrapped Profile object.
  */
 
-export const getProfile = async (name: string): Promise<Profile> => {
-  const endpoint = `social/profiles/${name}?_posts=true&_followers=true&_following=true&_author=true`;
+export const getProfile = async (name: string, extraParams: string = ''): Promise<Profile> => {
+  const baseParams = '_posts=true&_followers=true&_following=true&_author=true';
+  const finalParams = extraParams ? `${baseParams}&${extraParams}` : baseParams;
+  const endpoint = `social/profiles/${name}?${finalParams}`;
   
   const response = await get<Profile>(endpoint);
 
@@ -333,22 +335,7 @@ export const addReaction = async (id: string, symbol: string): Promise<void> => 
 
 };
 
-/**
- * Removes reactions from an existing social media by ID.
- * @param {string} id - The ID of the post.
- * @param {string} symbol - The reaction symbol to remove.
- * @returns {Promise<void>} Resolves on 204 No Content status success.
- */
 
-export const removeReaction = async (id: string, symbol: string): Promise<void> => {
-  const endpoint = `social/posts/${id}/react/${symbol}`;
-
-  const response = await del(endpoint);
-
-  if (response !== null) {
-   throw new Error(`Failed to remove reaction ${symbol} from post ${id}`);
-  }
-};
 
 /**
  * Adds a comment to a specific post.
