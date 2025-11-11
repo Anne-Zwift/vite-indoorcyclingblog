@@ -11,8 +11,8 @@ if (!contentArea || !navContainer) {
   throw new Error('Application failed to initialize.');
 }
 
-function initializeApp(): void {
-  const routerInstance = initRouter(contentArea as HTMLDivElement);
+async function initializeApp(): Promise<void> {
+  const routerInstance = await initRouter(contentArea as HTMLDivElement);
 
   state.router = routerInstance;
   console.log(routerInstance);
