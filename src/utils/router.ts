@@ -6,9 +6,10 @@ import { ProfilePage } from '../pages/ProfilePage.ts';
 import { RegisterPage } from '../pages/RegisterPage.ts';
 import { PostCreatePage } from '../pages/PostCreatePage.ts';
 import { PostEditPage } from '../pages/PostEditPage.ts';
+import { ProfileView } from '../components/ProfileView.ts';
 
 export interface Route {
-  component: (param?: string) => HTMLDivElement;
+  component: (param?: string) => HTMLDivElement | Promise<HTMLElement>;
   protected: boolean;
 }
 
@@ -20,6 +21,7 @@ export const routes: { [Key: string]: Route } = {
   '/post/:id': { component: PostPage, protected: false },
   '/profile': { component: ProfilePage, protected: true },
   '/create': { component: PostCreatePage, protected: true},
+  '/profile/:name': { component: ProfileView, protected: true},
 
 
 } as const;
@@ -35,7 +37,7 @@ export interface routerInstance {
   navigate: (path: string) => void;
 }
 
-const resolveRoute = () => {
+const resolveRoute = async () => {
   const hashPath = '/' + window.location.hash.slice(1).toLocaleLowerCase() || '/';
   
   let matchedRoute: Route | undefined;
@@ -49,6 +51,10 @@ const resolveRoute = () => {
     else if (hashPath.match(/^\/post\/edit\/([\w-]+)$/i)) {
       matchedRoute = routes['/post/edit/:id'];
       routeParam = hashPath.match(/^\/post\/edit\/([\w-]+)$/i)![1];
+    }
+    else if (hashPath.match(/^\/profile\/([\w-]+)$/i)) {
+      matchedRoute = routes['/profile/:name'];
+      routeParam = hashPath.match(/^\/profile\/([\w-]+)$/i)![1];
     }
     else if (routes[hashPath]) {
       matchedRoute = routes[hashPath];
@@ -68,16 +74,18 @@ const resolveRoute = () => {
 
   if (currentRoute && contentElement) {
     contentElement.innerHTML = '';
-    contentElement.appendChild(currentRoute.component(routeParam));
+    const renderComponent = await currentRoute.component(routeParam);
+
+    contentElement.appendChild(renderComponent);
   }
 };
 
-export const initRouter = (rootElement: HTMLDivElement): routerInstance => {
+export const initRouter = async (rootElement: HTMLDivElement): Promise<routerInstance> => {
   contentElement = rootElement;
 
   window.addEventListener('hashchange', resolveRoute);
   subscribe(resolveRoute);
-  resolveRoute();
+  await resolveRoute();
 
   return {
     navigate: navigate,
