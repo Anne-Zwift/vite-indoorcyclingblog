@@ -374,8 +374,6 @@ export const unfollowProfile = async (name: string): Promise<any> => {
   return apiClient(endpoint, { method: 'PUT'});
 };
 
-//Placeholder for later
-
 /**
  * Search for profiles by query string.
  * @param {string} query - The search term (e.g., a name or email part).
