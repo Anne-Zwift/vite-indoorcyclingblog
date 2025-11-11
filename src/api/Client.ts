@@ -382,7 +382,7 @@ export const unfollowProfile = async (name: string): Promise<any> => {
  * @returns {Promise<Profile[]>} A promise that resolves with an array of matching Profile objects.
  */
 
-/*export const getSearchProfiles = async (query: string): Promise<Profile[]> => {
+export const getSearchProfiles = async (query: string): Promise<Profile[]> => {
   const endpoint = `/social/profiles/search?q=${encodeURIComponent(query)}`;
 
   const response = await get<Profile[]>(endpoint);
@@ -395,4 +395,4 @@ const endpoint = `/social/posts/search?q=${encodeURIComponent(query)}&_author=tr
 const response = await get<PostDetails[]>(endpoint);
 return response?.data || [];
 };
-*/
+
