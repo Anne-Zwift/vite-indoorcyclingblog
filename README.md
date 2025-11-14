@@ -29,7 +29,9 @@ Note: **No front-end frameworks** like React, Vue or Angular are used in this pr
 The application utilizes a **Two-Tier (Client-API)** architecture, connecting directly to the external Noroff API, which functions as the backend. The API Base URL is defined in `src/utils/constants.ts`.
 
 
-<img width="439" height="170" alt="image" src="https://github.com/user-attachments/assets/3a50e262-c7a9-4f97-8a10-043241172906" />
+<img width="449" height="412" alt="image" src="https://github.com/user-attachments/assets/118660d8-07b3-4f33-999d-843cd134b24c" />
+
+
 
 ### Component Breakdown:
 #### Browser(Client): 
@@ -77,10 +79,10 @@ To use the application, you must **Register** or **Log in**. The application con
 
 ### Features
 Once logged in, you can:
-*View the main feed or a specialized **Following Feed**.
-*Search for **Profiles and Posts**,
-*Follow and Unfollow users,
-*Create, Edit, and Delete your own posts.
+* View the main feed or a specialized **Following Feed**.
+* Search for **Profiles and Posts**,
+* Follow and Unfollow users,
+* Create, Edit, and Delete your own posts.
 
 ## ⬇️ Installation
 #### Getting Started
