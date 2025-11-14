@@ -1,9 +1,10 @@
-import { getProfile } from "../api/Client";
+import { getPostsByProfile, getProfile } from "../api/Client";
 import { PostCard } from "./PostCard";
 import type { PostDetails } from "../types/Post";
 import type { Profile } from "../types/Profile";
+import { createMinimalAuthorFromProfile } from "../utils/profileDefaults";
 
-export const ProfileView = async (profileName?: string): Promise<HTMLElement> => {
+export const ProfileView = async (profileName?: string | undefined): Promise<HTMLElement> => {
   const profileViewContainer = document.createElement('div');
   profileViewContainer.id = 'profile-view';
 
@@ -16,7 +17,11 @@ export const ProfileView = async (profileName?: string): Promise<HTMLElement> =>
   }
 
   try {
-    const profileData = await getProfile(profileName);
+    const profileData = await getProfile(profileName, '_posts=false');
+
+    const profilePosts = await getPostsByProfile(profileName);
+
+    profileData.posts = profilePosts;
 
     const header = renderProfileHeader(profileData);
     profileViewContainer.appendChild(header);
@@ -24,12 +29,42 @@ export const ProfileView = async (profileName?: string): Promise<HTMLElement> =>
     const postList = document.createElement('section');
     postList.classList.add('profile-posts');
 
-    const posts: PostDetails[] = profileData.posts || [];
+    let posts: PostDetails[] = profileData.posts || [];
+
 
     if (posts.length > 0) {
-      posts.forEach(post => {
-        postList.appendChild(PostCard(post, false));
+      
+      /*posts = posts.map(post => {
+      if (!post._count || typeof post._count.reactions !== 'number') {
+        const reactionCount = post.reactions ? post.reactions.length : 0;
+
+        post._count = { 
+          comments: post._count?.comments || 0, 
+          reactions: reactionCount
+        };
+      } 
+      return post;
+
+    }); */
+      
+      
+      const injectedAuthor = createMinimalAuthorFromProfile(profileData);
+
+      posts = posts.map(post => {
+        if (!post.author || !post.author.name) {
+          return {
+            ...post,
+            author: injectedAuthor,
+          };
+        }
+        return post;
       });
+    
+      posts.forEach(post => {
+      postList.appendChild(PostCard(post, false));
+    });
+
+
     } else {
       const noPosts = document.createElement('p');
       noPosts.textContent = `${profileName} hasn't posted anything yet.`;

@@ -113,14 +113,19 @@ export const put = <T, D = unknown>(endpoint: string, body?: D, signal?: AbortSi
 
 //integrates with Task 1E (Integrate Fetching on Post Feed).
 /**
- * Fetches the list of all available social media posts.
+ * Fetches the list of all available social media posts, optionally filtered by tag.
  * This function automatically includes query parameters to fetch the author, comments, and reactions.
+ * @param {string} [tag] - Optional tag to filter posts by.
+ * @param {AbortSignal} [signal] - Optional signal to abort the fetch request.
  * @returns {Promise<PostDetails[]>} A promise that resolves with an array of unwrapped PostDetails objects.
  * @throws {Error} Generates any API or network errors from the base client.
  */
-export const getPosts = async (signal?: AbortSignal): Promise<PostDetails[]> => {
-  const endpoint = 'social/posts?_author=true&_comments=true&_reactions=true&_profile=true&_followers=true&_following=true&cache_buster=v1';
+export const getPosts = async (tag?: string, signal?: AbortSignal): Promise<PostDetails[]> => {
+  let endpoint = 'social/posts?_author=true&_comments=true&_reactions=true&_profile=true&_followers=true&_following=true&cache_buster=v1';
 
+  if (tag) {
+    endpoint += `&_tag=${encodeURIComponent(tag)}`;
+  }
   const response = await get<PostDetails[]>(endpoint, signal);// error handling
 
   return response?.data || [];
@@ -226,9 +231,9 @@ export const register = async (name: string, email: string, password: string): P
  */
 
 export const getProfile = async (name: string, extraParams: string = ''): Promise<Profile> => {
-  const baseParams = '_posts=true&_followers=true&_following=true&_author=true';
+  const baseParams = '_posts=true&_followers=true&_following=true&_author=true&_comments=true&_reactions=true';
   const finalParams = extraParams ? `${baseParams}&${extraParams}` : baseParams;
-  const endpoint = `social/profiles/${name}?${finalParams}`;
+  const endpoint = `social/profiles/${encodeURIComponent(name)}?${finalParams}`;
   
   const response = await get<Profile>(endpoint);
 
@@ -245,11 +250,22 @@ export const getProfile = async (name: string, extraParams: string = ''): Promis
  */
 
 export const getPostsByProfile = async (name: string): Promise<PostDetails[]> => {
-  const endpoint = `social/profiles/${name}/posts?_author=true&_comments=true&_reactions=true`;
-  
-  const response = await get<PostDetails[]>(endpoint);
+  const embeddedParams = '_author=true&_comments=true&_reactions=true&_profile=true&_followers=true&_following=true';
+  const endpoint = `social/profiles/${encodeURIComponent(name)}/posts?${embeddedParams}`;
 
-  return response?.data || [];
+  try {
+    const response = await get<PostDetails[]>(endpoint);
+    return response?.data || [];
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+
+    if (errorMessage.includes('404 Not Found') || errorMessage.includes('400 Bad Request')) {
+      console.warn(`Profile posts endpoint treated as 0 results for ${name}. Error: ${errorMessage}`);
+      return [];
+    }
+    throw error;
+  }
+    
 };
 
 export const getPostDetails = async (id: string, signal?: AbortSignal): Promise<PostDetails> => {
@@ -263,6 +279,22 @@ export const getPostDetails = async (id: string, signal?: AbortSignal): Promise<
 
   return response.data;
 };
+
+/**
+ * Retrieves all posts from profiles that the authenticated user is following.
+ * This function includes the same query parameters as getPosts for author, comments, and reactions.
+ * @param {AbortSignal} [signal] - Optional signal to abort the fetch request.
+ * @returns {Promise<PostDetails[]>} A promise that resolves with an array of unwrapped PostDetails objects.
+ * @throws {Error} Generates any API or network errors from the base client.
+ */
+
+export const getPostsFromFollowing = async (signal?: AbortSignal): Promise<PostDetails[]> => {
+  const endpoint = 'social/posts/following?_author=true&_comments=true&_reactions=true&_profile=true&_followers=true&_following=true&cache_buster=v1';
+
+  const response = await get<PostDetails[]>(endpoint, signal);
+
+  return response?.data || [];
+}
 
 /**
  * Creates a new social media post.
@@ -381,7 +413,7 @@ export const unfollowProfile = async (name: string): Promise<any> => {
  */
 
 export const getSearchProfiles = async (query: string): Promise<Profile[]> => {
-  const endpoint = `/social/profiles/search?q=${encodeURIComponent(query)}`;
+  const endpoint = `social/profiles/search?q=${encodeURIComponent(query)}`;
 
   const response = await get<Profile[]>(endpoint);
 
@@ -389,7 +421,7 @@ export const getSearchProfiles = async (query: string): Promise<Profile[]> => {
 };
 
 export const getSearchPosts = async (query: string): Promise<PostDetails[]> => {
-const endpoint = `/social/posts/search?q=${encodeURIComponent(query)}&_author=true`;
+const endpoint = `social/posts/search?q=${encodeURIComponent(query)}&_author=true&_comments=true&_reactions=true`;
 const response = await get<PostDetails[]>(endpoint);
 return response?.data || [];
 };

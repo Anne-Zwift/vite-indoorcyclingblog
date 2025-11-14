@@ -7,6 +7,7 @@ import { RegisterPage } from '../pages/RegisterPage.ts';
 import { PostCreatePage } from '../pages/PostCreatePage.ts';
 import { PostEditPage } from '../pages/PostEditPage.ts';
 import { ProfileView } from '../components/ProfileView.ts';
+import { SearchPage } from '../pages/SearchPage.ts';
 
 export interface Route {
   component: (param?: string) => HTMLDivElement | Promise<HTMLElement>;
@@ -15,6 +16,9 @@ export interface Route {
 
 export const routes: { [Key: string]: Route } = {
   '/': { component: PostFeed, protected: true },
+  '/tag/:name': { component: PostFeed, protected: true },
+  '/following': { component: PostFeed, protected: true },
+  '/search': { component: SearchPage, protected: true },
   '/login': { component: LoginPage, protected: false },
   '/register': { component: RegisterPage, protected: false },
   '/post/edit/:id': { component: PostEditPage, protected: true },
@@ -38,7 +42,7 @@ export interface routerInstance {
 }
 
 const resolveRoute = async () => {
-  const hashPath = '/' + window.location.hash.slice(1).toLocaleLowerCase() || '/';
+  const hashPath = '/' + window.location.hash.slice(1) || '/';
   
   let matchedRoute: Route | undefined;
   let routeParam: string | undefined;
@@ -55,6 +59,10 @@ const resolveRoute = async () => {
     else if (hashPath.match(/^\/profile\/([\w-]+)$/i)) {
       matchedRoute = routes['/profile/:name'];
       routeParam = hashPath.match(/^\/profile\/([\w-]+)$/i)![1];
+    }
+    else if (hashPath.match(/^\/tag\/([\w-]+)$/i)) {
+      matchedRoute = routes['/tag/:name'];
+      routeParam = hashPath.match(/^\/tag\/([\w-]+)$/i)![1];
     }
     else if (routes[hashPath]) {
       matchedRoute = routes[hashPath];

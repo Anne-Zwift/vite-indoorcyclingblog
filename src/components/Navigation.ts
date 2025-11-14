@@ -16,6 +16,7 @@ const createNavElement = (): HTMLElement => {
 
   const allLinks = [
   { name: 'Home', path: '/', requiresLogin: true },
+  { name: 'Search', path: '/search', requiresLogin: true },
   { name: 'Create Post', path: '/create', requiresLogin: true },
   { name: 'Profile', path: '/profile', requiresLogin: true },
   { name: 'Logout', path: '/logout', requiresLogin: true },

@@ -104,7 +104,7 @@ if (isAuthor) {
 
 }
 
-    const authorName = post.author?.name;
+    const authorName = post.author?.name || 'Unknown Author';
     const currentUserName = state.userProfile?.name;
     const isProfileAvailable = currentUserName && authorName;
 
@@ -284,7 +284,31 @@ reactButton.addEventListener('click', async (event) => {
     body.textContent = post.body ? post.body.substring(0, 150) + '...' : '[No content]';
   }
 
-  contentWrapper.append(title, body);
+  const tagsWrapper = document.createElement('div');
+  tagsWrapper.classList.add('post-tags');
+
+  if (post.tags && Array.isArray(post.tags) && post.tags.length > 0) {
+    const validTags = post.tags.filter(tag => tag && typeof tag === 'string' && tag.trim()).slice(0, 5);
+
+    validTags.forEach(tag => {
+      const tagLink = document.createElement('a');
+      const formattedTag = tag.trim().toLocaleLowerCase().replace(/ /g, '-');
+
+      tagLink.textContent = `#${tag.trim()}`;
+      tagLink.href = `/#tag/${formattedTag}`;
+      tagLink.classList.add('tag-link');
+
+      tagLink.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        navigate(`/tag/${formattedTag}`);
+      });
+
+      tagsWrapper.appendChild(tagLink);
+    });
+  }
+
+  contentWrapper.append(title, body, tagsWrapper);
 
   const metadataArea = document.createElement('div');
   metadataArea.classList.add('post-metadata');
