@@ -2,6 +2,7 @@ import { getPosts, getPostsFromFollowing } from "../api/Client";
 import { PostCard } from "../components/PostCard";
 import { state } from "../utils/store";
 import { navigate } from "../utils/router";
+import { createP } from "../utils/domUtils";
 
 
 /**
@@ -53,7 +54,9 @@ export async function PostFeed(tag?: string): Promise<HTMLDivElement> {
 
   const postsContainer = document.createElement('div');
   postsContainer.id = 'posts-container';
-  postsContainer.innerHTML = '<p>The posts are loading...</p>';
+  const loadingMessage = document.createElement('p');
+  loadingMessage.textContent = 'The posts are loading...';
+  postsContainer.appendChild(loadingMessage);
 
   const abortController = new AbortController();
   const signal = abortController.signal;
@@ -84,11 +87,15 @@ export async function PostFeed(tag?: string): Promise<HTMLDivElement> {
   postsContainer.innerHTML = '';
 
   if (posts.length === 0) {
-    postsContainer.innerHTML = isFollowingFeed
-    ? `<p>You are not following any users or they have not posted yet.</p>`
-    : (tag
-      ? `<p>No posts found tagged with #${tag}.</p>`
-      : `<p>No posts found. Be the first to post!</p>`);
+    const emptyMessage = document.createElement('p');
+    if (isFollowingFeed) {
+      emptyMessage.textContent = 'You are not following any users or they have not posted yet.';
+    } else if (tag) {
+      emptyMessage.textContent = `No posts found tagged with #${tag}.`;
+    } else {
+      emptyMessage.textContent = 'No posts found. Be the first to post!';
+  }
+
     return pageContainer;
   }
  
@@ -112,25 +119,24 @@ export async function PostFeed(tag?: string): Promise<HTMLDivElement> {
     if (error && typeof error === 'object' && 'name' in error && 'message' in error) {
       const err = error as Error;
 
+      postsContainer.textContent = '';
+
       if (err.name === 'AbortError') {
         console.log('Fetch aborted: PostFeed component unmounted.');
         return pageContainer;
       }
 
-      const feedType = isFollowingFeed ? 'Following' : (tag ?'Tag Filter' : 'All');
+    const feedType = isFollowingFeed ? 'Following' : (tag ?'Tag Filter' : 'All');
     
     console.error(`Failed to fetch ${feedType} posts:`, err);
     const errorMessage = err.message || 'Check your network or API status.';
 
-    postsContainer.innerHTML = `
-    <p class="error-message">❌ Error loading the ${feedType} feed.</p>
-    <p>Details: ${errorMessage}</p>
-    `;
+    postsContainer.appendChild(createP(`❌ Error loading the ${feedType} feed.`, 'error-message'));
+    postsContainer.appendChild(createP(`Details: ${errorMessage}`));
+
   } else {
     console.error('An unknown error occurred while fetching posts:', error);
-    postsContainer.innerHTML = `
-    <p class='error-message'>❌ An unexpected error occurred.</p>
-    `;
+    postsContainer.appendChild(createP('❌ An unexpected error occurred.', 'error-message'));
   }
 }
 

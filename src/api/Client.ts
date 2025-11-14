@@ -143,10 +143,10 @@ export const login = async (email: string, password: string): Promise<LoginRespo
   const endpoint = 'auth/login';
   const body = { email, password };
 
-  console.log('Sending credentials:', { email, password });
+  //console.log('Sending credentials:', { email, password });
     
   const response = await post<Profile>(endpoint, body);
-  console.log('Received response:', response);
+  //console.log('Received response:', response);
 
   if (!response || !response.data) {
     throw new Error("Login failed: Profile or token missing in successful API response.");
@@ -164,7 +164,7 @@ export const login = async (email: string, password: string): Promise<LoginRespo
    const apiKey = await createApiKey();
    setApiKey(apiKey);
   } catch (e) {
-    console.warn("Could not generate API Key. Subsequent API calls will fail.");
+    console.error("Could not generate API Key. Subsequent API calls will fail.");
   }
   
     let fullProfileData = profileData;
