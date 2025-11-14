@@ -4,19 +4,33 @@ import { STORAGE_KEY_API_KEY } from "./constants";
 import { STORAGE_KEY_ACCESS_TOKEN } from "./constants";
 
 
-
+/**
+ * Saves the Noroff API Key to localStorage
+ * @param {string} key - The unique API key returned after login.
+ */
 export function setApiKey(key: string): void {
   localStorage.setItem(STORAGE_KEY_API_KEY, key);
 }
 
+/**
+ * Retrieves the stored JWT access token from localStorage.
+ * @returns { string | null } The token string, or null if the user is not logged in.
+ */
 export function getAccessToken(): string | null {
   return localStorage.getItem(STORAGE_KEY_ACCESS_TOKEN);
 }
 
+/**
+ * Saves the JWT access token to localStorage.
+ * @param {string} token - The access token provided upon successful login or registration.
+ */
 export function setAccessToken(token: string): void {
   localStorage.setItem(STORAGE_KEY_ACCESS_TOKEN, token);
 }
 
+/**
+ * Clears the stored access token from localStorage, effectively logging the user out.
+ */
 export function clearAccessToken(): void {
   localStorage.removeItem(STORAGE_KEY_ACCESS_TOKEN);
 }
@@ -32,7 +46,7 @@ export function getApiKey(): string | null {
 
 /**
  * Saves the user's profile object to localStorage as JSON string.
- * @param {UserProfileData} UserProfileData - The user's profile object from the API response.
+ * @param {UserProfileData} profile - The user's profile object from the API response.
  */
 
 export function saveProfile(profile: UserProfileData): void {
