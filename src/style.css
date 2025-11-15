@@ -356,6 +356,21 @@ textarea {
   color: #fff;
 }
 
+/* Search Page*/
+
+.search-input {
+  background-color: #4f5d7598;
+}
+
+::placeholder {
+  color: var(--color-p-text);
+  padding: 5px 20px;
+}
+
+.search-button {
+  width: 140px;
+}
+
 @media (min-width: 768px) {
 
 img {
