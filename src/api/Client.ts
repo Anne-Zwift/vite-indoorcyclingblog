@@ -120,8 +120,9 @@ export const put = <T, D = unknown>(endpoint: string, body?: D, signal?: AbortSi
  * @returns {Promise<PostDetails[]>} A promise that resolves with an array of unwrapped PostDetails objects.
  * @throws {Error} Generates any API or network errors from the base client.
  */
-export const getPosts = async (tag?: string, signal?: AbortSignal): Promise<PostDetails[]> => {
-  let endpoint = 'social/posts?_author=true&_comments=true&_reactions=true&_profile=true&_followers=true&_following=true&cache_buster=v1';
+export const getPosts = async (tag?: string, signal?: AbortSignal, limit: number = 20, page: number = 0): Promise<PostDetails[]> => {
+  const cacheBuster = new Date().getTime();
+  let endpoint = `social/posts?_author=true&_comments=true&_reactions=true&_profile=true&_followers=true&_following=true&limit=${limit}&page=${page}&cb=${cacheBuster}`;
 
   if (tag) {
     endpoint += `&_tag=${encodeURIComponent(tag)}`;
@@ -288,8 +289,9 @@ export const getPostDetails = async (id: string, signal?: AbortSignal): Promise<
  * @throws {Error} Generates any API or network errors from the base client.
  */
 
-export const getPostsFromFollowing = async (signal?: AbortSignal): Promise<PostDetails[]> => {
-  const endpoint = 'social/posts/following?_author=true&_comments=true&_reactions=true&_profile=true&_followers=true&_following=true&cache_buster=v1';
+export const getPostsFromFollowing = async (signal?: AbortSignal, limit: number = 20, page: number = 0): Promise<PostDetails[]> => {
+  const cacheBuster = new Date().getTime();
+  const endpoint = `social/posts/following?_author=true&_comments=true&_reactions=true&_profile=true&_followers=true&_following=true&limit=${limit}&page=${page}&cb=${cacheBuster}`;
 
   const response = await get<PostDetails[]>(endpoint, signal);
 

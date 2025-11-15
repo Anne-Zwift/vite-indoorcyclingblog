@@ -3,6 +3,9 @@ import { PostCard } from "../components/PostCard";
 import { state } from "../utils/store";
 import { navigate } from "../utils/router";
 import { createP } from "../utils/domUtils";
+import { setupInfiniteScrollObserver } from "../utils/lazyLoadUtils";
+
+const POSTS_PER_PAGE = 20;
 
 
 /**
@@ -13,9 +16,13 @@ import { createP } from "../utils/domUtils";
 
 export async function PostFeed(tag?: string): Promise<HTMLDivElement> {
 
+  let currentPageIndex = 0;
+  let isLoading = false;
+  let hasMore = true;
+  let currentObserver: IntersectionObserver | null = null;
+
   const currentHash = window.location.hash.slice(1).toLocaleLowerCase();
   const isFollowingFeed = currentHash === '/following' && state.isLoggedIn;
-
 
   const pageContainer = document.createElement('div');
   pageContainer.id = 'post-feed-page';
@@ -54,15 +61,24 @@ export async function PostFeed(tag?: string): Promise<HTMLDivElement> {
 
   const postsContainer = document.createElement('div');
   postsContainer.id = 'posts-container';
+
+  const sentinel = document.createElement('div');
+  sentinel.id = 'infinite-scroll-sentinel';
+
+
   const loadingMessage = document.createElement('p');
   loadingMessage.textContent = 'The posts are loading...';
-  postsContainer.appendChild(loadingMessage);
+  loadingMessage.id = 'lazy-loading-status';
 
   const abortController = new AbortController();
   const signal = abortController.signal;
 
   pageContainer.addEventListener('DOMNodeRemovedFromDocument', () => {
     abortController.abort();
+
+    if (currentObserver) {
+      currentObserver.disconnect();
+    }
   });
 
  pageContainer.append(title, subtitle);
@@ -71,22 +87,37 @@ export async function PostFeed(tag?: string): Promise<HTMLDivElement> {
   pageContainer.append(toggleButton);
  }
 
- pageContainer.append(actionButton, postsContainer);
+ pageContainer.append(actionButton, postsContainer, sentinel, loadingMessage);
+
+ const fetchAndRenderPosts = async (isInitialLoad: boolean = false) => {
+
+  if (isLoading || (!hasMore && !isInitialLoad)) return;
+  
+  isLoading = true;
+  loadingMessage.textContent = isInitialLoad ? 'The posts are loading...' : 'Loading more posts...';
+
 
  //1E logic
+const pageNumber = currentPageIndex + 1;
 
  try {
+
   let posts;
 
   if (isFollowingFeed) {
-    posts = await getPostsFromFollowing(signal);
+    posts = await getPostsFromFollowing(signal, POSTS_PER_PAGE, pageNumber);
   } else {
-    posts = await getPosts(tag, signal);
+    posts = await getPosts(tag, signal, POSTS_PER_PAGE, pageNumber);
   }
 
-  postsContainer.innerHTML = '';
+  if (isInitialLoad) {
+    postsContainer.innerHTML = '';
+  }
 
-  if (posts.length === 0) {
+  if (posts.length === 0 && currentPageIndex === 0) {
+      
+    //postsContainer.innerHTML = '';
+
     const emptyMessage = document.createElement('p');
     if (isFollowingFeed) {
       emptyMessage.textContent = 'You are not following any users or they have not posted yet.';
@@ -95,12 +126,17 @@ export async function PostFeed(tag?: string): Promise<HTMLDivElement> {
     } else {
       emptyMessage.textContent = 'No posts found. Be the first to post!';
   }
-
-    return pageContainer;
+    postsContainer.appendChild(emptyMessage);
+    loadingMessage.style.display = 'none';
+    hasMore = false;
+    return;
   }
- 
 
-    //loop and render
+  if (posts.length < POSTS_PER_PAGE) {
+    hasMore = false;
+  }
+
+     //loop and render
 
     posts.forEach(post => {
       const postElement = PostCard(post);
@@ -115,15 +151,33 @@ export async function PostFeed(tag?: string): Promise<HTMLDivElement> {
     });
   });
 
+  currentPageIndex++;
+  isLoading = false;
+
+  if (hasMore) {
+    currentObserver = setupInfiniteScrollObserver(fetchAndRenderPosts, sentinel);
+  } else {
+    loadingMessage.textContent = 'All posts loaded.';
+    loadingMessage.style.display = '';
+  }
+
 } catch (error) {
     if (error && typeof error === 'object' && 'name' in error && 'message' in error) {
       const err = error as Error;
 
+    
       postsContainer.textContent = '';
+
+      isLoading = false;
 
       if (err.name === 'AbortError') {
         console.log('Fetch aborted: PostFeed component unmounted.');
-        return pageContainer;
+        return;
+      }
+
+      if (currentObserver) {
+        currentObserver.disconnect();
+        currentObserver = null;
       }
 
     const feedType = isFollowingFeed ? 'Following' : (tag ?'Tag Filter' : 'All');
@@ -137,9 +191,18 @@ export async function PostFeed(tag?: string): Promise<HTMLDivElement> {
   } else {
     console.error('An unknown error occurred while fetching posts:', error);
     postsContainer.appendChild(createP('❌ An unexpected error occurred.', 'error-message'));
+
+    isLoading = false;
   }
-}
+};
+
+};
+
+  await fetchAndRenderPosts(true);
 
   return pageContainer;
+
 }
+
+
 
