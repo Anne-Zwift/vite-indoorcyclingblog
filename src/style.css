@@ -398,6 +398,18 @@ h2 {
   margin: 0 auto;
 }
 
+.edit-profile-button {
+  display: block;
+  max-width: 260px;
+  margin: 20px auto;
+}
+
+.edit-banner-button {
+  display: block;
+  max-width: 260px;
+  margin: 20px auto;
+}
+
 }
 
 @media (min-width: 1024px) {
