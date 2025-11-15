@@ -1,4 +1,4 @@
-import { getPostsByProfile, getProfile } from "../api/Client";
+import { getPostsByProfile, getProfile, updateProfile } from "../api/Client";
 import { state } from "../utils/store";
 import type { Profile } from "../types/Profile";
 import { PostCard } from "../components/PostCard";
@@ -46,14 +46,133 @@ const renderProfile = (profile: Profile): HTMLDivElement => {
   postsCount.textContent = `Total Posts: ${profile._count?.posts || 0}`;
 
   //more profile fields can be added later
+  //profileContainer.prepend(banner);
+  //profileContainer.append(avatar, name, email, followCount, postsCount);
+
+//new
+  const isCurrentUser = profile.name === state.userProfile?.name;
+
+  if (isCurrentUser) {
+
+    const editButton = document.createElement('button');
+    editButton.textContent = '✏️ Update Profile Image';
+    editButton.className = 'edit-profile-button';
+
+    const updateForm = document.createElement('form');
+    updateForm.className = 'update-avatar-form';
+    updateForm.style.display = 'none';
+
+    const avatarInput = document.createElement('input');
+    avatarInput.type = 'url';
+    avatarInput.placeholder = 'New Avatar URL';
+    avatarInput.id = 'new-avatar-url';
+    avatarInput.value = profile.avatar?.url || '';
+
+    const saveButton = document.createElement('button');
+    saveButton.type = 'submit';
+    saveButton.textContent = 'Save Avatar';
+
+    const statusMessage = document.createElement('p');
+    statusMessage.className = 'update-status-message';
+    statusMessage.style.display = 'none';
+
+    updateForm.append(avatarInput, saveButton, statusMessage);
+
+    editButton.addEventListener('click', () => {
+      updateForm.style.display = updateForm.style.display === 'none' ? 'block' : 'none';
+    });
+
+    //banner new
+    const editBannerButton = document.createElement('button');
+    editBannerButton.textContent = '🖼️ Update Banner Image';
+    editBannerButton.className = 'edit-banner-button';
+
+    const updateBannerForm = document.createElement('form');
+    updateBannerForm.className = 'update-banner-form';
+    updateBannerForm.style.display = 'none';
+
+    const bannerInput = document.createElement('input');
+    bannerInput.type = 'url';
+    bannerInput.placeholder = 'New Banner URL';
+    bannerInput.id = 'new-banner-url';
+    bannerInput.value = profile.banner?.url || '';
+
+    const saveBannerButton = document.createElement('button');
+    saveBannerButton.type = 'submit';
+    saveBannerButton.textContent = 'Save Banner';
+
+    const bannerStatusMessage = document.createElement('p');
+    bannerStatusMessage.className = 'update-status-message';
+    bannerStatusMessage.style.display = 'none';
+
+    updateBannerForm.append(bannerInput, saveBannerButton, bannerStatusMessage);
+
+    editBannerButton.addEventListener('click', () => {
+      updateBannerForm.style.display = updateBannerForm.style.display === 'none' ? 'block' : 'none';
+
+  
+    });
+    
+    //banner end
+    
+    //profileContainer.prepend(banner);
+    //profileContainer.append(editButton, updateForm, avatar, name, email, followCount, postsCount);
+
+    updateForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      if (!state.userProfile?.name) return;
+
+      statusMessage.style.display = 'block';
+      statusMessage.textContent = 'updating...';
+
+      try {
+        const updatedProfile = await updateProfile(state.userProfile.name, {
+          avatar: { url: avatarInput.value, alt: `${state.userProfile.name}'s avatar`}
+        });
+        avatar.src = updatedProfile.avatar?.url || 'placeholder-avatar.png';
+        statusMessage.textContent = 'Success! Image updated';
+
+        state.userProfile = { ...state.userProfile, ...updatedProfile };
+      } catch (error) {
+        console.error('Update failed:', error);
+        statusMessage.textContent = `Error: ${error instanceof Error ? error.message : 'Unknown error'}`;
+      }
+    });
+
+    updateBannerForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      if (!state.userProfile?.name) return;
+
+      bannerStatusMessage.style.display = 'block';
+      bannerStatusMessage.textContent = 'updating...';
+
+      try {
+        const updatedProfile = await updateProfile(state.userProfile.name, {
+          banner: { url: bannerInput.value, alt: `${state.userProfile.name}'s banner`}
+        });
+        banner.src = updatedProfile.banner?.url || 'placeholder-banner.png';
+        bannerStatusMessage.textContent = 'Success! Banner updated';
+
+        state.userProfile = { ...state.userProfile, ...updatedProfile };
+      } catch (error) {
+        console.error('Update failed:', error);
+        bannerStatusMessage.textContent = `Error: ${error instanceof Error ? error.message : 'Unknown error'}`;
+      }
+    });
+
+    profileContainer.append(editButton, updateForm);
+    profileContainer.append(editBannerButton, updateBannerForm);
+  }
+//ends new
   profileContainer.prepend(banner);
   profileContainer.append(avatar, name, email, followCount, postsCount);
-
 
   const postsHeader = document.createElement('h3');
   postsHeader.textContent = `Posts by ${profile.name}`;
   postsHeader.className = 'profile-posts-header';
-  profileContainer.appendChild(postsHeader);
+  //profileContainer.appendChild(postsHeader);
 
   const postsListContainer = document.createElement('div');
   postsListContainer.className = 'profile-posts-list';
@@ -82,7 +201,10 @@ const renderProfile = (profile: Profile): HTMLDivElement => {
     postsListContainer.appendChild(noPosts);
   }
 
+  profileContainer.appendChild(postsHeader);
   profileContainer.appendChild(postsListContainer);
+
+
 
   return profileContainer;
 };

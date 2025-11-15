@@ -269,6 +269,25 @@ export const getPostsByProfile = async (name: string): Promise<PostDetails[]> =>
     
 };
 
+/**
+ * Updates an authenticated user's profile information (avatar an/or banner).
+ * Requires Authentication and Authorization (user must own the profile).
+ * @param {string} name - The username of the profile to update.
+ * @param {object} profileData - Data fields to update (e.g., avatar, banner).
+ * @returns {Promise<Profile>} The updated Profile object.
+ */
+
+export const updateProfile = async (name: string, profileData: { avatar?: { url: string, alt: string }, banner?: { url: string, alt: string } }): Promise<Profile> => {
+  const endpoint = `social/profiles/${encodeURIComponent(name)}`;
+
+  const response = await put<Profile, typeof profileData>(endpoint, profileData);
+
+  if (!response || !response.data) {
+    throw new Error(`Failed to update profile ${name}.`);
+  }
+  return response.data;
+}
+
 export const getPostDetails = async (id: string, signal?: AbortSignal): Promise<PostDetails> => {
   const endpoint = `social/posts/${id}?_author=true&_comments=true&_reactions=true&_profile=true&_followers=true&_following=true`;
   
