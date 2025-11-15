@@ -45,11 +45,7 @@ const renderProfile = (profile: Profile): HTMLDivElement => {
   const postsCount = document.createElement('p');
   postsCount.textContent = `Total Posts: ${profile._count?.posts || 0}`;
 
-  //more profile fields can be added later
-  //profileContainer.prepend(banner);
-  //profileContainer.append(avatar, name, email, followCount, postsCount);
 
-//new
   const isCurrentUser = profile.name === state.userProfile?.name;
 
   if (isCurrentUser) {
@@ -82,7 +78,7 @@ const renderProfile = (profile: Profile): HTMLDivElement => {
       updateForm.style.display = updateForm.style.display === 'none' ? 'block' : 'none';
     });
 
-    //banner new
+
     const editBannerButton = document.createElement('button');
     editBannerButton.textContent = '🖼️ Update Banner Image';
     editBannerButton.className = 'edit-banner-button';
@@ -113,10 +109,6 @@ const renderProfile = (profile: Profile): HTMLDivElement => {
   
     });
     
-    //banner end
-    
-    //profileContainer.prepend(banner);
-    //profileContainer.append(editButton, updateForm, avatar, name, email, followCount, postsCount);
 
     updateForm.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -165,14 +157,14 @@ const renderProfile = (profile: Profile): HTMLDivElement => {
     profileContainer.append(editButton, updateForm);
     profileContainer.append(editBannerButton, updateBannerForm);
   }
-//ends new
+
   profileContainer.prepend(banner);
   profileContainer.append(avatar, name, email, followCount, postsCount);
 
   const postsHeader = document.createElement('h3');
   postsHeader.textContent = `Posts by ${profile.name}`;
   postsHeader.className = 'profile-posts-header';
-  //profileContainer.appendChild(postsHeader);
+
 
   const postsListContainer = document.createElement('div');
   postsListContainer.className = 'profile-posts-list';

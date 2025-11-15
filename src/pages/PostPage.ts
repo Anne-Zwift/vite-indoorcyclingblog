@@ -25,8 +25,8 @@ export function PostPage(postId: string = ''): HTMLDivElement  {
    return pageContainer;
 }
 
-postContentWrapper.innerHTML = '<h1 class="text-xl">Loading Post Details...</h1><p>Fetching post data...</p> ';
-pageContainer.appendChild(postContentWrapper);
+  postContentWrapper.innerHTML = '<h1 class="text-xl">Loading Post Details...</h1><p>Fetching post data...</p> ';
+  pageContainer.appendChild(postContentWrapper);
 
   const abortController = new AbortController();
 
@@ -51,10 +51,8 @@ pageContainer.appendChild(postContentWrapper);
 
     const dynamicTitle = document.createElement('h1');
     dynamicTitle.textContent = post.title;
-    /*dynamicTitle.classList.add('post-detail-title');*/
 
     const detailElement = PostCard(post, true);
-    /*detailElement.classList.add('mb-6');*/
 
 
 

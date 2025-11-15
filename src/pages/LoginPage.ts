@@ -1,9 +1,6 @@
 import { login as loginApi } from '../api/Client';
-import { login } from '../utils/store'; // should save the data
+import { login } from '../utils/store';
 import { navigate } from '../utils/router';
-//import type { UserProfileData } from '../types/Profile';
-//import { setApiKey } from '../utils/authUtils';
-
 
 
 /**
@@ -40,17 +37,17 @@ export function LoginPage(): HTMLDivElement {
   `;
 
   loginForm.addEventListener('submit', async (event: Event) => {
-    event.preventDefault(); //stop page reload
-    messageArea.textContent = ''; //clear old messages
+    event.preventDefault();
+    messageArea.textContent = '';
     messageArea.style.color = 'red';
 
-    /*new code */
+
     const submitButton = loginForm.querySelector('#loginSubmitButton') as HTMLButtonElement;
     if (submitButton) {
       submitButton.disabled = true;
       submitButton.textContent = 'Logging In...';
     }
-    /*new code ends*/
+  
 
     const formData = new FormData(loginForm);
     const email = (formData.get('email') as string).trim();
@@ -68,7 +65,7 @@ export function LoginPage(): HTMLDivElement {
     let userMessage: string = '';
 
     try {
-      const result = await loginApi(email, password);// result: {accessToken, profile}
+      const result = await loginApi(email, password);
 
       const { accessToken, profile: profileData } = result;
 
@@ -76,7 +73,7 @@ export function LoginPage(): HTMLDivElement {
        throw new Error("Login failed. Missing token or profile data in API response.");
       }
 
-      login(result.accessToken, result.profile);//responsible for saving the data
+      login(result.accessToken, result.profile);
 
       messageArea.textContent = 'Login successful! Redirecting to feed...';
       messageArea.style.color = 'green';

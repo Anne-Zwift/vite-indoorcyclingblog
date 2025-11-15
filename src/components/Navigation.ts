@@ -12,7 +12,6 @@ const createNavElement = (): HTMLElement => {
   const navigation = document.createElement('nav');
   navigation.className = 'main-navigation';
 
-  //const profileName = state.userProfile?.name;
 
   const allLinks = [
   { name: 'Home', path: '/', requiresLogin: true },

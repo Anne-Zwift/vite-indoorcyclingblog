@@ -34,19 +34,7 @@ export const ProfileView = async (profileName?: string | undefined): Promise<HTM
 
     if (posts.length > 0) {
       
-      /*posts = posts.map(post => {
-      if (!post._count || typeof post._count.reactions !== 'number') {
-        const reactionCount = post.reactions ? post.reactions.length : 0;
-
-        post._count = { 
-          comments: post._count?.comments || 0, 
-          reactions: reactionCount
-        };
-      } 
-      return post;
-
-    }); */
-      
+  
       
       const injectedAuthor = createMinimalAuthorFromProfile(profileData);
 

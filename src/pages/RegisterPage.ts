@@ -40,8 +40,8 @@ export function RegisterPage(): HTMLDivElement {
   `;
 
   registerForm.addEventListener('submit', async (event: Event) => {
-    event.preventDefault(); //stop page reload
-    messageArea.textContent = ''; //clear old messages
+    event.preventDefault();
+    messageArea.textContent = '';
     messageArea.style.color = 'black';
 
     const submitButton = registerForm.querySelector('#registerSubmitButton') as HTMLButtonElement;
@@ -95,7 +95,6 @@ export function RegisterPage(): HTMLDivElement {
         }
         return;
       }
-      /*new code*/
 
     let userMessage: string = '';
     let shouldRedirectToLogin: boolean = false;

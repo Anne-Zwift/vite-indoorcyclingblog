@@ -27,7 +27,6 @@ export async function PostFeed(tag?: string): Promise<HTMLDivElement> {
   const pageContainer = document.createElement('div');
   pageContainer.id = 'post-feed-page';
 
-  //form components
   const title = document.createElement('h1');
   title.textContent = tag ? `Posts Tagged: #${tag}` : (isFollowingFeed ? 'Post from People You Follow' : 'Indoor Off Season Activities');
 
@@ -49,11 +48,10 @@ export async function PostFeed(tag?: string): Promise<HTMLDivElement> {
     });
   }
 
-  //reactivity will be added to the btn, hidden/shown based on login status.
   const actionButton = document.createElement('button');
   actionButton.id = 'create-post-button';
   actionButton.textContent = 'Create New Post';
-  actionButton.style.display = state.isLoggedIn ? '' : 'none';//for now removed the 'block'
+  actionButton.style.display = state.isLoggedIn ? '' : 'none';
 
   actionButton.addEventListener('click', () => {
     navigate('/create');
@@ -97,7 +95,6 @@ export async function PostFeed(tag?: string): Promise<HTMLDivElement> {
   loadingMessage.textContent = isInitialLoad ? 'The posts are loading...' : 'Loading more posts...';
 
 
- //1E logic
 const pageNumber = currentPageIndex + 1;
 
  try {
@@ -116,7 +113,6 @@ const pageNumber = currentPageIndex + 1;
 
   if (posts.length === 0 && currentPageIndex === 0) {
       
-    //postsContainer.innerHTML = '';
 
     const emptyMessage = document.createElement('p');
     if (isFollowingFeed) {
@@ -136,7 +132,6 @@ const pageNumber = currentPageIndex + 1;
     hasMore = false;
   }
 
-     //loop and render
 
     posts.forEach(post => {
       const postElement = PostCard(post);

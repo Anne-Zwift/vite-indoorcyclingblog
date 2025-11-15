@@ -14,7 +14,7 @@ const loadUserProfile = (): UserProfileData | null => {
 export const state = { 
   isLoggedIn: hasToken, 
   userProfile: loadUserProfile(), 
-  router: null as any,//for the router
+  router: null as any,
 }
 
 export function login(token: string, profile: UserProfileData): void {

@@ -86,10 +86,10 @@ if (isAuthor) {
       await deletePost(String(post.id));
       article.remove();
       showTempMessage(document.body, `Post deleted successfully.`, false);
-      navigate('/'); //option article.remove();
+      navigate('/');
     } catch (error) {
       console.error('Failed to delete post:', error);
-      //some user-facing error feedback
+    
       showTempMessage(article, 'Failed to delete post. Please try again.', true);
     }
 

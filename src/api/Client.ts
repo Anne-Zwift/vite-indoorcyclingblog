@@ -40,9 +40,7 @@ async function apiClient<T> (
   const accessToken = getAccessToken();
   const apiKey = getApiKey();
 
-  /*const headers: HeadersInit = {
-    'Content-Type': 'application/json',
-  };*/
+
   const finalHeaders: Record<string, string> = {};
 
   if (body) {
@@ -127,7 +125,7 @@ export const getPosts = async (tag?: string, signal?: AbortSignal, limit: number
   if (tag) {
     endpoint += `&_tag=${encodeURIComponent(tag)}`;
   }
-  const response = await get<PostDetails[]>(endpoint, signal);// error handling
+  const response = await get<PostDetails[]>(endpoint, signal);
 
   return response?.data || [];
 };
@@ -144,16 +142,16 @@ export const login = async (email: string, password: string): Promise<LoginRespo
   const endpoint = 'auth/login';
   const body = { email, password };
 
-  //console.log('Sending credentials:', { email, password });
+
     
   const response = await post<Profile>(endpoint, body);
-  //console.log('Received response:', response);
+
 
   if (!response || !response.data) {
     throw new Error("Login failed: Profile or token missing in successful API response.");
   }
 
-  const { accessToken, ...profileData } = response.data as Profile;
+    const { accessToken, ...profileData } = response.data as Profile;
 
   if (!accessToken) {
     throw new Error("Login failed: Missing accessToken in API response.");
@@ -178,12 +176,12 @@ export const login = async (email: string, password: string): Promise<LoginRespo
       console.warn('Could not fetch full profile data after login. Proceeding with basic login data.', error);
     }
 
-    const finalLoginResponse: LoginResponse = {
-    accessToken: accessToken,
-    profile: fullProfileData,
+      const finalLoginResponse: LoginResponse = {
+      accessToken: accessToken,
+      profile: fullProfileData,
   };
 
-  return finalLoginResponse;
+    return finalLoginResponse;
   
 
 };
@@ -241,7 +239,7 @@ export const getProfile = async (name: string, extraParams: string = ''): Promis
   if (!response || !response.data) {
     throw new Error(`Profile ${name} not found or failed to load.`);
   }
-  return response.data;
+    return response.data;
 }
 
 /**
