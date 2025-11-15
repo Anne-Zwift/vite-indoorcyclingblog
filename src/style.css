@@ -84,7 +84,7 @@ body {
 .main-navigation, a {
   display: inline-flex;
   font-family: var(--font-family-main);
-  font-size: var(--font-size-base);
+  font-size: var(--font-size-small);
   color: var(--color-primary);
   gap: 10px;
 }
@@ -372,6 +372,10 @@ textarea {
 }
 
 @media (min-width: 768px) {
+
+.main-navigation, a {
+  font-size: var(--font-size-base);
+}
 
 img {
   max-width: 80%;
