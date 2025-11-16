@@ -352,6 +352,7 @@ input[type="email"] {
 }
 
 #create-post-form-container {
+  max-width: 800px;
   background-color: var(--background-color);
   padding: 5px;
 }
@@ -470,14 +471,18 @@ img {
   margin: 0 auto;
 }
 
+
 }
 
-@media (min-width: 1424px) {
+@media (min-width: 1440px) {
 
 img {
-  max-width: 30%;
-  margin-top: 40px;
-  margin-bottom: 20px;
+  max-width: 40%;
+  margin-top: 20px;
+}
+
+h2 {
+  background-color: var(--color-primary);
 }
 
 h3 {
