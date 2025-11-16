@@ -229,6 +229,8 @@ span {
 }
 
 .post-info-wrapper {
+  max-width: 800px;
+  margin: 0 auto;
   font-family: var(--font-family-p);
   font-style: var(--color-secondary);
   font-size: var(--font-size-small);
