@@ -58,6 +58,7 @@ html {
  align-items: center;
  background-color: var(--color-primary);
  border-radius: 8px;
+ overflow-x: hidden;
 }
 
 body {
@@ -200,14 +201,14 @@ Button:hover {
 
 .edit-post-button {
   width: 120px;
-  padding: 8px 25px;
-  margin: 10px;
+  padding: 8px 20px;
+  margin: 5px;
 }
 
 .delete-post-button {
   width: 120px;
-  padding: 8px 25px;
-  margin: 3px;
+  padding: 8px 20px;
+  margin: 5px;
 }
 
 span {
@@ -217,6 +218,13 @@ span {
   gap: 4px;
   width: 250px;
   padding: 10px;
+}
+
+.tag-link {
+  display: flex;
+  color: #000;
+  padding: 10px;
+  margin: 0 auto;
 }
 
 .post-info-wrapper {
@@ -233,6 +241,23 @@ span {
   margin-bottom: 40px;
   padding: 10px;
   border-radius: 8px;
+}
+
+.comment-textarea {
+  display: block;
+  margin: 0 auto;
+}
+
+.comment-author-link {
+  color: var(--color-secondary);
+  margin: 0 auto;
+}
+
+.comment-date {
+  display: block;
+  color: var(--color-secondary);
+  padding: 10px;
+  margin: 0 auto;
 }
 
 /* PostForm.ts */
@@ -319,32 +344,41 @@ input[type="email"] {
 }
 
 /* Create page */
-#create-post-form-container {
-  background-color: #2d314279;
+#create-post-form-container, h2 {
+  background-color: var(--color-primary);
+  color: var(--color-h1-text);
   padding: 20px;
   margin: 10px;
-  border-radius: 8px;
+}
+
+#create-post-form-container {
+  background-color: var(--background-color);
+  padding: 5px;
 }
 
 .heading {
   font-size: var(--font-size-large);
-  color: var(--color-h1-text);
+  color: var(--color-secondary);
+  background-color: var(--background-color);
+  padding: 10px;
+  border-radius: 3px;
 }
 
 input#text,
 input[type="text"] {
-  width: 100%;
-  padding: 10px;
-  margin: 5px;
+  width: 90%;
+  height: 40px;
+  padding: 5px;
+  margin: 10px;
   border-radius: 4px;
   border: none;
 }
 
 textarea {
-  width: 100%;
+  width: 90%;
   height: 100px;
-  padding: 10px;
-  margin: 5px;
+  padding: 5px;
+  margin: 10px;
   border-radius: 4px;
   border: none;
 }
@@ -369,6 +403,15 @@ textarea {
 
 .search-button {
   width: 140px;
+}
+
+.search-result-item {
+  display: block;
+  background-color: var(--background-color);
+  padding: 5px;
+  margin: 0 auto;
+  border-radius: 3px;
+  border: 1px solid var(--color-primary);
 }
 
 @media (min-width: 768px) {
