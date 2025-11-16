@@ -74,6 +74,7 @@ I'm a Front End Developer Student [@Anne-Zwift](https://github.com/Anne-Zwift/) 
 
 ### Authentication
 To use the application, you must **Register** or **Log in**. The application connects to the Noroff Social Media API.
+[Netlify Live Link](https://vite-indoorcyclingblog.netlify.app/)
 
 * **Registration/Login:** Requires a valid Noroff student email (`@stud.noroff.no`).
 
