@@ -221,9 +221,10 @@ span {
 }
 
 .tag-link {
-  display: flex;
+  display: inline-block;
   color: #000;
-  padding: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
   margin: 0 auto;
 }
 
@@ -246,6 +247,7 @@ span {
 .comment-textarea {
   display: block;
   margin: 0 auto;
+  text-align: center;
 }
 
 .comment-author-link {
