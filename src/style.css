@@ -1,3 +1,12 @@
+@import 'tailwindcss';
+
+/* @layer components {
+  .login-page-container {
+    background-color: var(--color-secondary);
+    color: var(--color-primary);
+  }
+} */
+
 :root {
   /* Font families */
   --font-family-main: 'Roboto', sans-serif;
@@ -22,12 +31,12 @@
 
   /* Colors */
   --color-primary: #fff;
-  --color-secondary: #4F5D75;
-  --background-color: #BFC0C0;
-  --color-bg-button: #2D3142;
-  --color-hover-button: #EF8354;
+  --color-secondary: #4f5d75;
+  --background-color: #bfc0c0;
+  --color-bg-button: #2d3142;
+  --color-hover-button: #ef8354;
   --color-text-button: #fff;
-  --color-h1-text: #EF8354;
+  --color-h1-text: #ef8354;
   --color-p-text: #000;
   --color-text-ready: #2fea12;
   --color-text-warning: #e10e0e;
@@ -49,16 +58,16 @@ html {
 }
 
 #content-area {
- width: 100%;
- max-width: 90%;
- margin: 20px auto;
- padding: 1rem;
- display: flex;
- flex-direction: column;
- align-items: center;
- background-color: var(--color-primary);
- border-radius: 8px;
- overflow-x: hidden;
+  width: 100%;
+  max-width: 90%;
+  margin: 20px auto;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--color-primary);
+  border-radius: 8px;
+  overflow-x: hidden;
 }
 
 body {
@@ -82,7 +91,8 @@ body {
   overflow-x: hidden;
 }
 
-.main-navigation, a {
+.main-navigation,
+a {
   display: inline-flex;
   font-family: var(--font-family-main);
   font-size: var(--font-size-small);
@@ -129,7 +139,7 @@ h1 {
   margin-bottom: 20px;
 }
 
-h2 {
+/* h2 {
   font-family: var(--font-family-p);
   font-size: var(--font-size-base);
   color: var(--color-p-text);
@@ -138,7 +148,7 @@ h2 {
   margin-bottom: 10px;
   padding: 14px;
   border-radius: 8px;
-}
+} */
 
 h3 {
   font-family: var(--font-family-h1);
@@ -289,7 +299,7 @@ span {
 
 /* Login page */
 
-.login-page-container {
+/* .login-page-container {
   background-color: var(--color-secondary);
   color: var(--color-primary);
   padding: 40px;
@@ -299,7 +309,7 @@ span {
 .login-page-container,
 h2 {
   color: var(--color-primary);
-}
+} */
 
 .form-group {
   margin-top: 40px;
@@ -324,7 +334,7 @@ input {
 
 /* Register page */
 input#email,
-input[type="email"] {
+input[type='email'] {
   width: 80%;
   padding: 10px;
   border-radius: 4px;
@@ -348,7 +358,8 @@ input[type="email"] {
 }
 
 /* Create page */
-#create-post-form-container, h2 {
+#create-post-form-container,
+h2 {
   background-color: var(--color-primary);
   color: var(--color-h1-text);
   padding: 20px;
@@ -370,7 +381,7 @@ input[type="email"] {
 }
 
 input#text,
-input[type="text"] {
+input[type='text'] {
   width: 90%;
   height: 40px;
   padding: 5px;
@@ -391,7 +402,7 @@ textarea {
 /* Follow Profiles*/
 
 .profile-header {
-  background-color: #4F5D75;
+  background-color: #4f5d75;
   color: #fff;
 }
 
@@ -420,83 +431,78 @@ textarea {
 }
 
 @media (min-width: 768px) {
+  .main-navigation,
+  a {
+    font-size: var(--font-size-base);
+  }
 
-.main-navigation, a {
-  font-size: var(--font-size-base);
-}
+  img {
+    max-width: 80%;
+  }
 
-img {
-  max-width: 80%;
-}
+  h2 {
+    background-color: var(--color-primary);
+    color: var(--color-secondary);
+  }
 
-h2 {
-  background-color: var(--color-primary);
-  color: var(--color-secondary);
-}
+  #create-post-button {
+    display: block;
+    width: 200px;
+    margin: 10px auto;
+  }
 
-#create-post-button {
-  display: block;
-  width: 200px;
-  margin: 10px auto;
-}
+  .author-follow-wrapper,
+  span {
+    width: 550px;
+    margin: 0 auto;
+  }
 
-.author-follow-wrapper, span {
-  width: 550px;
-  margin: 0 auto;
-}
+  .follow-toggle-button {
+    width: 120px;
+    margin: 0 auto;
+  }
 
-.follow-toggle-button {
-  width: 120px;
-  margin: 0 auto;
-}
+  .edit-profile-button {
+    display: block;
+    max-width: 260px;
+    margin: 20px auto;
+  }
 
-.edit-profile-button {
-  display: block;
-  max-width: 260px;
-  margin: 20px auto;
-}
-
-.edit-banner-button {
-  display: block;
-  max-width: 260px;
-  margin: 20px auto;
-}
-
+  .edit-banner-button {
+    display: block;
+    max-width: 260px;
+    margin: 20px auto;
+  }
 }
 
 @media (min-width: 1024px) {
+  img {
+    max-width: 50%;
+  }
 
-img {
-  max-width: 50%;
-}
-
-.post-interaction {
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-
+  .post-interaction {
+    max-width: 600px;
+    margin: 0 auto;
+  }
 }
 
 @media (min-width: 1440px) {
+  img {
+    max-width: 40%;
+    margin-top: 20px;
+  }
 
-img {
-  max-width: 40%;
-  margin-top: 20px;
-}
+  h2 {
+    background-color: var(--color-primary);
+  }
 
-h2 {
-  background-color: var(--color-primary);
-}
+  h3 {
+    max-width: 600px;
+    margin: 0 auto;
+  }
 
-h3 {
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.post-interaction {
-  max-width: 600px;
-  margin: 0 auto;
-}
-
+  .post-interaction {
+    max-width: 600px;
+    margin: 0 auto;
+  }
 }
