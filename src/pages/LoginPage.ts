@@ -9,30 +9,38 @@ import { navigate } from '../utils/router';
 
 export function LoginPage(): HTMLDivElement {
   const pageContainer = document.createElement('div');
-  pageContainer.className = 'bg-red-500 text-white p-10 rounded-xl';
+  pageContainer.className =
+    'min-h-[calc(100vh-4rem)] flex items-center justify-center bg-gray-50 px-4';
+
+  const card = document.createElement('div');
+  card.className = 'w-full max-w-md bg-white rounded-xl shadow-lg p-6';
 
   const title = document.createElement('h2');
   title.textContent = 'Welcome to Indoor Cycling!';
+  title.className =
+    'text-xl font-bold text-center mb-6 text-sky-600 md:text-2xl xl:text-4xl';
 
   const messageArea = document.createElement('div');
   messageArea.id = 'loginMessage';
-  messageArea.className = 'message-area';
-  messageArea.style.color = 'red';
+  /* messageArea.className = 'message-area'; */
+  /* messageArea.style.color = 'red'; */
+  messageArea.className = 'text-sm text-red-500 text-center mb-4';
 
   const loginForm = document.createElement('form');
-  loginForm.id = 'loginForm';
-  loginForm.className = 'login-form';
+  /*   loginForm.id = 'loginForm';
+  loginForm.className = 'login-form'; */
+  loginForm.className = 'space-y-4';
 
   loginForm.innerHTML = `
   <div class="form-group">
-   <label for="email">Email</label>
-   <input type="email" id="mail" name="email" required>
+   <label class="block text-sm font-medium mb-1 md:text-lg lg:text-xl" for="email">Email</label>
+   <input type="email" id="mail" name="email" required minlength="8" class="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" >
   </div>
   <div class="form-group">
-   <label for="password">Password</label>
-   <input type="password" id="password" name="password" required>
+   <label class="block text-sm font-medium mb-1 md:text-lg lg:text-xl" for="password">Password</label>
+   <input type="password" id="password" name="password" required minlength="8" class="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
   </div>
-   <button type="submit" id="loginSubmitButton">Log In</button>
+   <button type="submit" id="loginSubmitButton" class="w-full bg-blue-400 text-white py-2 rounded-md font-semibold hover:bg-blue-700 transition">Log In</button>
   `;
 
   loginForm.addEventListener('submit', async (event: Event) => {
@@ -109,7 +117,8 @@ export function LoginPage(): HTMLDivElement {
     }
   });
 
-  pageContainer.append(title, messageArea, loginForm);
+  card.append(title, messageArea, loginForm);
+  pageContainer.append(card);
 
   return pageContainer;
 }

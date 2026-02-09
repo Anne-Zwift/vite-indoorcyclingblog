@@ -6,11 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Indoor Cycling Blog</title>
   </head>
-  <body>
+  <!-- remove the bg-color in body later? -->
+  <body class="bg-(--color-primary) min-h-screen flex flex-col">
     <div id="app">
-      <h1 id="h1">Indoor Cycling Blog</h1>
-      <div id="nav-container"></div>
-      <div id="content-area"></div>
+      <h1
+        class="w-full text-center text-lg font-medium font-mono text-(--color-h1-text) mt-9 md:text-2xl"
+        id="h1"
+      >
+        Indoor Cycling Blog
+      </h1>
+      <div class="w-full text-center" id="nav-container"></div>
+      <div
+        class="flex-1 w-full max-w-5xl mx-auto px-4 m-8"
+        id="content-area"
+      ></div>
     </div>
 
     <script type="module" src="/src/main.ts"></script>

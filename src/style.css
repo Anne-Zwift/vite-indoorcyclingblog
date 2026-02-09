@@ -1,11 +1,5 @@
 @import 'tailwindcss';
 
-/* @layer components {
-  .login-page-container {
-    background-color: var(--color-secondary);
-    color: var(--color-primary);
-  }
-} */
 
 :root {
   /* Font families */
@@ -44,20 +38,21 @@
   /* Set theme switcher, dark theme/Light theme */
 }
 
+/* temporary global defaults */
 *,
 *::before,
 *::after {
   box-sizing: border-box;
-  text-decoration: none;
+  /*   text-decoration: none;
   margin: 0;
-  padding: 0;
+  padding: 0; */
 }
 
 html {
   scroll-behavior: smooth;
 }
 
-#content-area {
+/* #content-area {
   width: 100%;
   max-width: 90%;
   margin: 20px auto;
@@ -68,9 +63,9 @@ html {
   background-color: var(--color-primary);
   border-radius: 8px;
   overflow-x: hidden;
-}
+} */
 
-body {
+/* body {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -80,30 +75,30 @@ body {
   background-color: var(--background-color);
   word-break: break-word;
   overflow-wrap: break-word;
-}
+} */
 
-#posts-container {
+/* #posts-container {
   width: 100%;
   background-color: var(--color-primary);
   padding: 20px;
   margin-top: 20px;
   border-radius: 8px;
   overflow-x: hidden;
-}
+} */
 
-.main-navigation,
+/* .main-navigation,
 a {
   display: inline-flex;
   font-family: var(--font-family-main);
   font-size: var(--font-size-small);
   color: var(--color-primary);
   gap: 10px;
-}
+} */
 
-.main-navigation a:hover {
+/* .main-navigation a:hover {
   font-size: larger;
   color: var(--color-secondary);
-}
+} */
 
 img {
   display: block;
@@ -125,19 +120,19 @@ article.post-card {
   border-radius: 8px;
 }
 
-#h1 {
+/* #h1 {
   font-family: var(--font-family-h1);
   font-size: var(--font-size-x-large);
   font-weight: var(--font-weight-text-bold);
   color: var(--color-h1-text);
-}
+} */
 
-h1 {
+/* h1 {
   color: var(--color-secondary);
   font-size: var(--font-size-x-large);
   margin-top: 40px;
   margin-bottom: 20px;
-}
+} */
 
 /* h2 {
   font-family: var(--font-family-p);
@@ -150,7 +145,7 @@ h1 {
   border-radius: 8px;
 } */
 
-h3 {
+/* h3 {
   font-family: var(--font-family-h1);
   font-size: var(--font-size-large);
   margin-top: 20px;
@@ -158,9 +153,9 @@ h3 {
   border-top-style: ridge;
   border-radius: 3px;
   padding: 5px;
-}
+} */
 
-p {
+/* p {
   display: block;
   height: auto;
   font-family: var(--font-family-p);
@@ -173,27 +168,28 @@ p {
   margin-right: auto;
   word-break: break-word;
   overflow-wrap: break-word;
-}
+} */
 
+/* temporary global defaults */
 button {
   font-family: var(--font-family-span);
-  font-size: var(--font-size-base);
+  /*   font-size: var(--font-size-base);
   font-weight: var(--font-weight-text-bold);
   background-color: var(--color-bg-button);
-  color: var(--color-text-button);
-  border: none;
+  color: var(--color-text-button); */
+  border: 1px solid #0631f2;
   border-radius: 6px;
-  outline: none;
+  /*   outline: none;
   margin-top: 20px;
-  padding: 10px;
+  padding: 10px; */
   cursor: pointer;
 }
 
-Button:hover {
+/* Button:hover {
   background-color: var(--color-hover-button);
   font-weight: var(--font-weight-text-bolder);
   font-size: larger;
-}
+} */
 
 .read-more-link {
   max-width: 70%;
@@ -276,7 +272,7 @@ span {
 
 /* PostForm.ts */
 
-.status-message {
+/* .status-message {
   display: block;
   padding: 10px 20px;
   border-radius: 8px;
@@ -285,17 +281,17 @@ span {
   margin-top: 20px;
   text-align: center;
   transition: opacity 0.3s ease;
-}
+} */
 
-.status-success {
+/* .status-success {
   background-color: var(--color-text-ready);
   color: var(--color-primary);
-}
+} */
 
-.status-error {
+/* .status-error {
   background-color: var(--color-text-warning);
   color: var(--color-primary);
-}
+} */
 
 /* Login page */
 
@@ -311,7 +307,7 @@ h2 {
   color: var(--color-primary);
 } */
 
-.form-group {
+/* .form-group {
   margin-top: 40px;
   max-width: 300px;
 }
@@ -330,16 +326,16 @@ input {
   padding: 10px;
   border-radius: 4px;
   border: none;
-}
+} */
 
 /* Register page */
-input#email,
+/* input#email,
 input[type='email'] {
   width: 80%;
   padding: 10px;
   border-radius: 4px;
   border: none;
-}
+} */
 
 .register-page-container {
   background-color: var(--color-hover-button);
@@ -358,29 +354,29 @@ input[type='email'] {
 }
 
 /* Create page */
-#create-post-form-container,
+/* #create-post-form-container,
 h2 {
   background-color: var(--color-primary);
   color: var(--color-h1-text);
   padding: 20px;
   margin: 10px;
-}
+} */
 
-#create-post-form-container {
+/* #create-post-form-container {
   max-width: 800px;
   background-color: var(--background-color);
   padding: 5px;
-}
+} */
 
-.heading {
+/* .heading {
   font-size: var(--font-size-large);
   color: var(--color-secondary);
   background-color: var(--background-color);
   padding: 10px;
   border-radius: 3px;
-}
+} */
 
-input#text,
+/* input#text,
 input[type='text'] {
   width: 90%;
   height: 40px;
@@ -388,16 +384,16 @@ input[type='text'] {
   margin: 10px;
   border-radius: 4px;
   border: none;
-}
+} */
 
-textarea {
+/* textarea {
   width: 90%;
   height: 100px;
   padding: 5px;
   margin: 10px;
   border-radius: 4px;
   border: none;
-}
+} */
 
 /* Follow Profiles*/
 
@@ -440,10 +436,10 @@ textarea {
     max-width: 80%;
   }
 
-  h2 {
+  /*   h2 {
     background-color: var(--color-primary);
     color: var(--color-secondary);
-  }
+  } */
 
   #create-post-button {
     display: block;
@@ -492,9 +488,9 @@ textarea {
     margin-top: 20px;
   }
 
-  h2 {
+  /*   h2 {
     background-color: var(--color-primary);
-  }
+  } */
 
   h3 {
     max-width: 600px;
