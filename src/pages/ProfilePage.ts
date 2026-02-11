@@ -26,17 +26,12 @@ const renderProfile = (profile: Profile): HTMLDivElement => {
   const headerWrapper = document.createElement('div');
   headerWrapper.className = 'relative w-full mb-20';
 
-  /*   const headerSection = document.createElement('div');
-  headerSection.className = 'relative mb-16'; */
-
   const banner = document.createElement('img');
   banner.src = profile.banner?.url || 'placeholder-banner.png';
   banner.alt = profile.banner?.alt || `${profile.name}'s banner`;
   banner.className =
     'profile-banner w-full aspect-[16/7] object-cover rounded-xl shadow-md';
 
-  /*   const avatarContainer = document.createElement('div');
-  avatarContainer.className = 'absolute-bottom left-8'; */
 
   const avatar = document.createElement('img');
   avatar.src = profile.avatar?.url || 'placeholder-avatar.png';
@@ -48,11 +43,6 @@ const renderProfile = (profile: Profile): HTMLDivElement => {
   profileContainer.append(headerWrapper);
 
   /* Info section */
-
-  /*   const infoSection = document.createElement('div');
-  infoSection.className =
-    'px-8 flex flex-col md:flex-row md:items-end md:justify-between gap-4'; */
-
   const userDetails = document.createElement('div');
   userDetails.className = 'px-8 space-y-1 text-center md:text-left';
 
@@ -210,12 +200,8 @@ const renderProfile = (profile: Profile): HTMLDivElement => {
       updateBannerForm,
     );
     profileContainer.append(editActions);
-    /*     profileContainer.append(editButton, updateForm);
-    profileContainer.append(editBannerButton, updateBannerForm); */
-  }
 
-  /*   profileContainer.prepend(banner);
-  profileContainer.append(avatar, name, email, followersCount, postsCount); */
+  }
 
   const postsHeader = document.createElement('h3');
   postsHeader.textContent = `Posts by ${profile.name}`;
