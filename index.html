@@ -7,19 +7,19 @@
     <title>Indoor Cycling Blog</title>
   </head>
   <!-- remove the bg-color in body later? -->
-  <body class="bg-(--color-primary) min-h-screen flex flex-col">
-    <div id="app">
+  <body class="bg-(--color-primary) min-h-screen">
+    <div id="app" class="flex flex-col min-h-screen">
       <h1
-        class="w-full text-center text-lg font-medium font-mono text-(--color-h1-text) mt-9 md:text-2xl"
+        class="w-full text-center text-lg font-medium font-mono text-(--color-h1-text) mt-9 md:text-2xl shrink-0"
         id="h1"
       >
         Indoor Cycling Blog
       </h1>
-      <div class="w-full text-center" id="nav-container"></div>
-      <div
-        class="flex-1 w-full max-w-5xl mx-auto px-4 m-8"
+      <div class="w-full text-center px-4" id="nav-container"></div>
+      <main
+        class="flex-1 w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 my-8"
         id="content-area"
-      ></div>
+      ></main>
     </div>
 
     <script type="module" src="/src/main.ts"></script>
