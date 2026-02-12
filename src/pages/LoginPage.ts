@@ -10,15 +10,15 @@ import { navigate } from '../utils/router';
 export function LoginPage(): HTMLDivElement {
   const pageContainer = document.createElement('div');
   pageContainer.className =
-    'min-h-[calc(100vh-4rem)] flex items-center justify-center bg-gray-50 px-4';
+    'flex flex-col items-center justify-center py-12 w-full';
 
   const card = document.createElement('div');
-  card.className = 'w-full max-w-md bg-white rounded-xl shadow-lg p-6';
+  card.className = 'w-full max-w-md bg-white rounded-xl shadow-lg p-8 border border-gray-100';
 
   const title = document.createElement('h2');
-  title.textContent = 'Welcome to Indoor Cycling!';
+  title.textContent = 'Log in to Indoor Cycling!';
   title.className =
-    'text-xl font-bold text-center mb-6 text-sky-600 md:text-2xl xl:text-4xl';
+    'text-2xl font-bold text-center mb-2 text-sky-600 md:text-3xl xl:text-4xl';
 
   const messageArea = document.createElement('div');
   messageArea.id = 'loginMessage';
@@ -32,15 +32,15 @@ export function LoginPage(): HTMLDivElement {
   loginForm.className = 'space-y-4';
 
   loginForm.innerHTML = `
-  <div class="form-group">
-   <label class="block text-sm font-medium mb-1 md:text-lg lg:text-xl" for="email">Email</label>
-   <input type="email" id="mail" name="email" required minlength="8" class="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" >
+  <div class="form-group space-y-1">
+   <label class="block text-sm font-semibold text-gray-700 mb-1 md:text-lg lg:text-xl" for="email">Email</label>
+   <input type="email" id="email" name="email" required minlength="8" class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all outline-none" >
   </div>
   <div class="form-group">
-   <label class="block text-sm font-medium mb-1 md:text-lg lg:text-xl" for="password">Password</label>
-   <input type="password" id="password" name="password" required minlength="8" class="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+   <label class="block text-sm font-semibold text-gray-700 mb-1 md:text-lg lg:text-xl" for="password">Password</label>
+   <input type="password" id="password" name="password" required minlength="8" class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all outline-none">
   </div>
-   <button type="submit" id="loginSubmitButton" class="w-full bg-blue-400 text-white py-2 rounded-md font-semibold hover:bg-blue-700 transition">Log In</button>
+   <button type="submit" id="loginSubmitButton" class="w-full bg-sky-600 text-white py-3 rounded-lg font-bold hover:bg-sky-700 active:scale-[0.98] transition-all shadow-md mt-4">Log In</button>
   `;
 
   loginForm.addEventListener('submit', async (event: Event) => {
