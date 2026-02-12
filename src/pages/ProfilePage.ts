@@ -87,7 +87,7 @@ const renderProfile = (profile: Profile): HTMLDivElement => {
     const editButton = document.createElement('button');
     editButton.textContent = '✏️ Update Profile Image';
     editButton.className =
-      'edit-profile-button w-full max-w-xs md:w-55 flex items-center gap-2 bg-blue-500 text-white px-5 py-2.5 rounded-lg text-sm font-bold shadow-md hover:bg-blue-600 transition-all active:scale-95';
+      'edit-profile-button w-full max-w-xs md:w-55 flex items-center gap-2 bg-blue-500 text-white px-5 py-2.5 rounded-lg text-sm font-bold shadow-md hover:bg-blue-600 transition-all active:scale-95 md:w-60';
 
     const updateForm = document.createElement('form');
     updateForm.className = 'update-avatar-form';
