@@ -2,24 +2,27 @@
  * Child element that repeats every post. It represents a single post's display.
  * Holds the Post Model properties given (id, title, body, tags, image etc.) as the required inputs to build the PostCard component.
  */
-import type { PostDetails } from "../types/Post";
-import type { Media } from "../types/Media";
-import { state, updateFollowingStatus } from "../utils/store";
-import { navigate } from "../utils/router";
-import { deletePost, followProfile, unfollowProfile } from "../api/Client";
-import { showConfirmationModal } from "../utils/confirmationModal";
-import { addReaction } from "../api/Client";
-import { showTempMessage } from "../utils/message";
-import type { UserProfileData } from "../types/Profile";
-import { MINIMAL_PROFILE_STUB } from "../utils/profileDefaults";
-import type { PostReaction } from "../types/ReactionItem";
+import type { PostDetails } from '../types/Post';
+import type { Media } from '../types/Media';
+import { state, updateFollowingStatus } from '../utils/store';
+import { navigate } from '../utils/router';
+import { deletePost, followProfile, unfollowProfile } from '../api/Client';
+import { showConfirmationModal } from '../utils/confirmationModal';
+import { addReaction } from '../api/Client';
+import { showTempMessage } from '../utils/message';
+import type { UserProfileData } from '../types/Profile';
+import { MINIMAL_PROFILE_STUB } from '../utils/profileDefaults';
+import type { PostReaction } from '../types/ReactionItem';
 
-
-
-export function PostCard(post: PostDetails, isDetailView: boolean = false): HTMLElement {
+export function PostCard(
+  post: PostDetails,
+  isDetailView: boolean = false,
+): HTMLElement {
   const article = document.createElement('article');
   article.classList.add('post-card');
   article.dataset.postId = String(post.id);
+  article.className =
+    `flex flex-col items-center justify-center text-sm lg:text-base py-12 w-full px-6 rounded-md shadow-xl ${!isDetailView ? 'cursor-pointer' : ''}`;
 
   const mediaContainer = document.createElement('div');
   mediaContainer.classList.add('post-media-container');
@@ -28,269 +31,320 @@ export function PostCard(post: PostDetails, isDetailView: boolean = false): HTML
 
   let mediaUrl: string | undefined;
   let mediaAlt: string | undefined;
-  
-  if (Array.isArray (post.media) && post.media.length > 0) {
+
+  if (Array.isArray(post.media) && post.media.length > 0) {
     const postMedia: Media = post.media[0];
     mediaUrl = postMedia.url;
     mediaAlt = postMedia.alt;
-
-} else if (typeof post.media === 'object' && post.media !== null && 'url' in post.media) {
-  const postMedia: Media = post.media as Media;
-  mediaUrl = postMedia.url;
-  mediaAlt = postMedia.alt;
-}
-
-if (mediaUrl) {
-  const imageElement = document.createElement('img');
-  imageElement.src = mediaUrl;
-  imageElement.alt = mediaAlt || post.title;
-  imageElement.classList.add('post-image');
-
-  article.appendChild(imageElement);
-
-  if (!isDetailView) {
-    imageElement.style.cursor = 'pointer';
-    imageElement.addEventListener('click', (event) => {
-      event.stopPropagation();
-      navigate(`/post/${post.id}`);
-    });
+  } else if (
+    typeof post.media === 'object' &&
+    post.media !== null &&
+    'url' in post.media
+  ) {
+    const postMedia: Media = post.media as Media;
+    mediaUrl = postMedia.url;
+    mediaAlt = postMedia.alt;
   }
 
-}
+  if (mediaUrl) {
+    const imageElement = document.createElement('img');
+    imageElement.src = mediaUrl;
+    imageElement.alt = mediaAlt || post.title;
+    imageElement.classList.add('post-image');
+    imageElement.className = `w-full object-cover md:w-80 lg:w-96 rounded-lg shadow-md m-4 ${!isDetailView ? 'cursor-pointer' : ''}`;
 
-const isAuthor = state.userProfile && post.author && post.author.name === state.userProfile?.name;
+    article.appendChild(imageElement);
 
-if (isAuthor) {
-
-  const editButton = document.createElement('button');
-  editButton.textContent = 'Edit';
-  editButton.classList.add('edit-post-button');
-
-  editButton.addEventListener('click', (event) => {
-    event.preventDefault();
-    navigate(`/post/edit/${post.id}`); 
-  });
-
-  const deleteButton = document.createElement('button');
-  deleteButton.textContent = 'Delete';
-  deleteButton.classList.add('delete-post-button');
-
-  deleteButton.addEventListener('click', async (event) => {
-    event.preventDefault();
-  
-    const confirmed = await showConfirmationModal('Are you sure you want to delete the post?');
-    if (!confirmed) return;
-  
-
-    try {
-      await deletePost(String(post.id));
-      article.remove();
-      showTempMessage(document.body, `Post deleted successfully.`, false);
-      navigate('/');
-    } catch (error) {
-      console.error('Failed to delete post:', error);
-    
-      showTempMessage(article, 'Failed to delete post. Please try again.', true);
-    }
-
-  });
-
-  buttonWrapper = document.createElement('div');
-  buttonWrapper.classList.add('post-actions-wrapper');
-
-
-  buttonWrapper.appendChild(editButton);
-  buttonWrapper.appendChild(deleteButton);
-
-}
-
-    const authorName = post.author?.name || 'Unknown Author';
-    const currentUserName = state.userProfile?.name;
-    const isProfileAvailable = currentUserName && authorName;
-
-    let followButton: HTMLButtonElement | undefined;
-    let authorFollowWrapper: HTMLDivElement | null = null;
-    
-
-    if (isProfileAvailable && currentUserName !== authorName) {
-      const isFollowing = state.userProfile?.following?.some((f: UserProfileData) => f.name === authorName) || false;
-
-      followButton = document.createElement('button');
-      followButton.classList.add('follow-toggle-button');
-
-      const updateButtonState = (following: boolean) => {
-        followButton!.textContent = following ? 'Unfollow' : 'Follow';
-        followButton!.classList.toggle('following', following);
-      };
-
-      updateButtonState(isFollowing);
-
-      followButton.addEventListener('click', async (event) => {
-        event.preventDefault();
+    if (!isDetailView) {
+      imageElement.style.cursor = 'pointer';
+      imageElement.addEventListener('click', (event) => {
         event.stopPropagation();
+        navigate(`/post/${post.id}`);
+      });
+    }
+  }
 
-        if (!state.isLoggedIn) {
-          showTempMessage(article, 'You must be logged in to follow users.', true);
-          return;
-        }
+  const isAuthor =
+    state.userProfile &&
+    post.author &&
+    post.author.name === state.userProfile?.name;
 
-        followButton!.disabled = true;
-
-        const currentlyFollowing = followButton!.textContent === 'Unfollow';
-        const currentUserProfileData: UserProfileData | undefined = state.userProfile as UserProfileData;
-
-        try {
-          if (currentlyFollowing) {
-            await unfollowProfile(authorName);
-            updateButtonState(false);
-            showTempMessage(article, `Unfollowed ${authorName}`, false);
-
-            updateFollowingStatus(authorName, false);
-
-            if (post.author?.followers) {
-              post.author.followers = post.author.followers.filter(f => f.name !== currentUserName);
-            }
-          } else {
-            await followProfile(authorName);
-            updateButtonState(true);
-            showTempMessage(article, `Now following ${authorName}`, false);
+  if (isAuthor) {
+    const editButton = document.createElement('button');
+    editButton.textContent = 'Edit';
+    editButton.classList.add('edit-post-button');
+    editButton.className =
+      'bg-(--color-bg-button) hover:bg-(--color-hover-button) w-20 p-1 m-2 rounded transition-colors';
 
 
-            const minimalFollowedProfile: UserProfileData = {
-            ...MINIMAL_PROFILE_STUB, name: authorName, email: post.author.email || MINIMAL_PROFILE_STUB.email, 
+    editButton.addEventListener('click', (event) => {
+      event.preventDefault();
+      navigate(`/post/edit/${post.id}`);
+    });
+
+    const deleteButton = document.createElement('button');
+    deleteButton.textContent = 'Delete';
+    deleteButton.classList.add('delete-post-button');
+    deleteButton.className =
+      'bg-(--color-bg-button) hover:bg-(--color-hover-button) w-20 p-1 m-2 rounded transition-colors';
+
+    deleteButton.addEventListener('click', async (event) => {
+      event.preventDefault();
+
+      const confirmed = await showConfirmationModal(
+        'Are you sure you want to delete the post?',
+      );
+      if (!confirmed) return;
+
+      try {
+        await deletePost(String(post.id));
+        article.remove();
+        showTempMessage(document.body, `Post deleted successfully.`, false);
+        navigate('/');
+      } catch (error) {
+        console.error('Failed to delete post:', error);
+
+        showTempMessage(
+          article,
+          'Failed to delete post. Please try again.',
+          true,
+        );
+      }
+    });
+
+    buttonWrapper = document.createElement('div');
+    buttonWrapper.classList.add('post-actions-wrapper');
+    buttonWrapper.className = 'max-w-64 flex justify-evenly self-auto';
+
+    buttonWrapper.appendChild(editButton);
+    buttonWrapper.appendChild(deleteButton);
+  }
+
+  const authorName = post.author?.name || 'Unknown Author';
+  const currentUserName = state.userProfile?.name;
+  const isProfileAvailable = currentUserName && authorName;
+
+  let followButton: HTMLButtonElement | undefined;
+  let authorFollowWrapper: HTMLDivElement | null = null;
+
+  if (isProfileAvailable && currentUserName !== authorName) {
+    const isFollowing =
+      state.userProfile?.following?.some(
+        (f: UserProfileData) => f.name === authorName,
+      ) || false;
+
+    followButton = document.createElement('button');
+    followButton.classList.add('follow-toggle-button');
+
+    const updateButtonState = (following: boolean) => {
+      followButton!.textContent = following ? 'Unfollow' : 'Follow';
+      followButton!.classList.toggle('following', following);
+    };
+
+    updateButtonState(isFollowing);
+
+    followButton.addEventListener('click', async (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      if (!state.isLoggedIn) {
+        showTempMessage(
+          article,
+          'You must be logged in to follow users.',
+          true,
+        );
+        return;
+      }
+
+      followButton!.disabled = true;
+
+      const currentlyFollowing = followButton!.textContent === 'Unfollow';
+      const currentUserProfileData: UserProfileData | undefined =
+        state.userProfile as UserProfileData;
+
+      try {
+        if (currentlyFollowing) {
+          await unfollowProfile(authorName);
+          updateButtonState(false);
+          showTempMessage(article, `Unfollowed ${authorName}`, false);
+
+          updateFollowingStatus(authorName, false);
+
+          if (post.author?.followers) {
+            post.author.followers = post.author.followers.filter(
+              (f) => f.name !== currentUserName,
+            );
+          }
+        } else {
+          await followProfile(authorName);
+          updateButtonState(true);
+          showTempMessage(article, `Now following ${authorName}`, false);
+
+          const minimalFollowedProfile: UserProfileData = {
+            ...MINIMAL_PROFILE_STUB,
+            name: authorName,
+            email: post.author.email || MINIMAL_PROFILE_STUB.email,
           };
 
           updateFollowingStatus(authorName, true, minimalFollowedProfile);
 
-            if (post.author?.followers && currentUserProfileData) {
-              post.author.followers.push(currentUserProfileData);
-            }
+          if (post.author?.followers && currentUserProfileData) {
+            post.author.followers.push(currentUserProfileData);
           }
-        } catch (error) {
-          console.error('Failed to toggle follow status:', error);
-          showTempMessage(article, 'Failed to update follow status. Please try again.', true);
-          updateButtonState(currentlyFollowing);
-        } finally {
-          followButton!.disabled = false;
         }
-      });
+      } catch (error) {
+        console.error('Failed to toggle follow status:', error);
+        showTempMessage(
+          article,
+          'Failed to update follow status. Please try again.',
+          true,
+        );
+        updateButtonState(currentlyFollowing);
+      } finally {
+        followButton!.disabled = false;
+      }
+    });
 
-      authorFollowWrapper = document.createElement('div');
-      authorFollowWrapper.classList.add('author-follow-wrapper');
+    authorFollowWrapper = document.createElement('div');
+    authorFollowWrapper.classList.add('author-follow-wrapper');
 
-      const authorSpan = document.createElement('span');
-      const authorNameDisplay = post.author?.name || 'Unknown Author';
-      authorSpan.textContent = `By: ${authorNameDisplay}`;
-      authorFollowWrapper.append(authorSpan, followButton);
-
-    }
-
-
-const reactionSymbol = '👍';
-
-const hasUserReacted = post.reactions?.some((r) => r.symbol === reactionSymbol && r.user?.name === state.userProfile?.name) || false;
-
-const reactButton = document.createElement('button');
-
-if (hasUserReacted) {
-  reactButton.textContent = `${reactionSymbol} Liked`;
-  reactButton.classList.add('react-button');
-} else {
-  reactButton.textContent = `${reactionSymbol} React`;
-  reactButton.classList.add('react-button');
-}
-
-
-reactButton.addEventListener('click', async (event) => {
-  event.preventDefault();
-  event.stopPropagation();
-
-  if (!state.isLoggedIn) {
-      showTempMessage(article, 'You must be logged in to react to a post.', true);
-      return;
+    const authorSpan = document.createElement('span');
+    const authorNameDisplay = post.author?.name || 'Unknown Author';
+    authorSpan.textContent = `By: ${authorNameDisplay}`;
+    authorFollowWrapper.append(authorSpan, followButton);
   }
 
-  reactButton.disabled = true;
+  const reactionSymbol = '👍';
 
-  const isCurrentlyReacted = post.reactions?.some((r) => r.symbol === reactionSymbol && r.user?.name == state.userProfile?.name) || false;
+  const hasUserReacted =
+    post.reactions?.some(
+      (r) =>
+        r.symbol === reactionSymbol && r.user?.name === state.userProfile?.name,
+    ) || false;
 
+  const reactButton = document.createElement('button');
+  reactButton.className = 'w-28 p-1 text-sm bg-(--color-bg-button) hover:bg-(--color-hover-button) cursor-pointer transition-transform hover:scale-105';
 
-
-  try {
- 
-    if (isCurrentlyReacted) {
-    await addReaction(String(post.id), reactionSymbol);
-
-    if (post.reactions) {
-      post.reactions = post.reactions.filter(r => r.symbol !== reactionSymbol || r.user?.name !== state.userProfile?.name);
-    }
-
-    if (post._count && post._count.reactions > 0) {
-      post._count.reactions--;
-    }
-
-    reactButton.textContent = `${reactionSymbol} React`;
-    showTempMessage(article, 'Reaction removed!', false);
-
-    } else {
-      await addReaction(String(post.id), reactionSymbol);
-
-      const newReaction = { symbol: reactionSymbol, 
-        user: { name: state.userProfile?.name, email: state.userProfile?.email} 
-      } as unknown as PostReaction;
-    
-
-    if (post.reactions) {
-      post.reactions.push(newReaction);
-    } else {
-      post.reactions = [newReaction];
-    }
-
-    if (post._count) {
-      post._count.reactions = (post._count.reactions || 0) + 1;
-    }
-
+  if (hasUserReacted) {
     reactButton.textContent = `${reactionSymbol} Liked`;
-    showTempMessage(article, 'Reaction added!', false);
+    reactButton.classList.add('react-button');
+  } else {
+    reactButton.textContent = `${reactionSymbol} React`;
+    reactButton.classList.add('react-button');
   }
 
-    metadata.innerHTML = `
+  reactButton.addEventListener('click', async (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (!state.isLoggedIn) {
+      showTempMessage(
+        article,
+        'You must be logged in to react to a post.',
+        true,
+      );
+      return;
+    }
+
+    reactButton.disabled = true;
+
+    const isCurrentlyReacted =
+      post.reactions?.some(
+        (r) =>
+          r.symbol === reactionSymbol &&
+          r.user?.name == state.userProfile?.name,
+      ) || false;
+
+    try {
+      if (isCurrentlyReacted) {
+        await addReaction(String(post.id), reactionSymbol);
+
+        if (post.reactions) {
+          post.reactions = post.reactions.filter(
+            (r) =>
+              r.symbol !== reactionSymbol ||
+              r.user?.name !== state.userProfile?.name,
+          );
+        }
+
+        if (post._count && post._count.reactions > 0) {
+          post._count.reactions--;
+        }
+
+        reactButton.textContent = `${reactionSymbol} React`;
+        showTempMessage(article, 'Reaction removed!', false);
+      } else {
+        await addReaction(String(post.id), reactionSymbol);
+
+        const newReaction = {
+          symbol: reactionSymbol,
+          user: {
+            name: state.userProfile?.name,
+            email: state.userProfile?.email,
+          },
+        } as unknown as PostReaction;
+
+        if (post.reactions) {
+          post.reactions.push(newReaction);
+        } else {
+          post.reactions = [newReaction];
+        }
+
+        if (post._count) {
+          post._count.reactions = (post._count.reactions || 0) + 1;
+        }
+
+        reactButton.textContent = `${reactionSymbol} Liked`;
+        showTempMessage(article, 'Reaction added!', false);
+      }
+
+      metadata.innerHTML = `
     Comments: <strong>${post._count?.comments || 0}</strong>
     Reactions: <strong>${post._count?.reactions || 0}</strong>
     `;
 
-    reactButton.disabled = false;
+      reactButton.disabled = false;
+    } catch (error) {
+      console.error('Failed to toggle reaction:', error);
 
+      showTempMessage(
+        article,
+        'Failed to update reaction. Please try again.',
+        true,
+      );
 
-  } catch (error) {
-    console.error('Failed to toggle reaction:', error);
-    
-    showTempMessage(article, 'Failed to update reaction. Please try again.', true);
-
-    reactButton.disabled = false;
-  }
-});
+      reactButton.disabled = false;
+    }
+  });
 
   const contentWrapper = document.createElement('div');
   contentWrapper.classList.add('post-content');
+  contentWrapper.className =
+    'w-full md:w-1/2 flex flex-col justify-center items-center p-6 m-2 gap-6 md:font-medium bg-(--color-primary) rounded';
 
   const title = document.createElement('h3');
   title.textContent = post.title;
+  title.className = 'text-xl font-medium';
 
   const body = document.createElement('p');
+  body.className = 'bg-(--color-primary)';
   if (isDetailView) {
     body.textContent = post.body || '[No content]';
   } else {
-    body.textContent = post.body ? post.body.substring(0, 150) + '...' : '[No content]';
+    body.textContent = post.body
+      ? post.body.substring(0, 150) + '...'
+      : '[No content]';
   }
 
   const tagsWrapper = document.createElement('div');
   tagsWrapper.classList.add('post-tags');
 
   if (post.tags && Array.isArray(post.tags) && post.tags.length > 0) {
-    const validTags = post.tags.filter(tag => tag && typeof tag === 'string' && tag.trim()).slice(0, 5);
+    const validTags = post.tags
+      .filter((tag) => tag && typeof tag === 'string' && tag.trim())
+      .slice(0, 5);
 
-    validTags.forEach(tag => {
+    validTags.forEach((tag) => {
       const tagLink = document.createElement('a');
       const formattedTag = tag.trim().toLocaleLowerCase().replace(/ /g, '-');
 
@@ -312,63 +366,70 @@ reactButton.addEventListener('click', async (event) => {
 
   const metadataArea = document.createElement('div');
   metadataArea.classList.add('post-metadata');
+  metadataArea.className = '';
 
   const postInfoWrapper = document.createElement('div');
   postInfoWrapper.classList.add('post-info-wrapper');
-
+  postInfoWrapper.className = 'flex flex-col md:flex-row md:gap-4 justify-center text-xs opacity-80';
   if (buttonWrapper) {
     metadataArea.appendChild(buttonWrapper);
   }
 
-    if (authorFollowWrapper) {
-      postInfoWrapper.appendChild(authorFollowWrapper);
-    } else {
-      const authorSpan = document.createElement('span');
-      const authorNameDisplay = post.author?.name || 'Unknown Author';
-      authorSpan.textContent = `By: ${authorNameDisplay}`;
-      postInfoWrapper.appendChild(authorSpan);
-    }
+  if (authorFollowWrapper) {
+    postInfoWrapper.appendChild(authorFollowWrapper);
+  } else {
+    const authorSpan = document.createElement('span');
+    const authorNameDisplay = post.author?.name || 'Unknown Author';
+    authorSpan.textContent = `By: ${authorNameDisplay}`;
+    postInfoWrapper.appendChild(authorSpan);
+  }
 
-  const dateOptions: Intl.DateTimeFormatOptions = {year: 'numeric', month: 'short', day: 'numeric'};
+  const dateOptions: Intl.DateTimeFormatOptions = {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  };
   let dateText = '';
 
-    if (post.updated && post.updated !==post.created) {
-      dateText = `Updated: ${new Date(post.updated).toLocaleDateString(undefined, dateOptions)}`;
-    } else if (post.created) {
-      dateText = `Posted: ${new Date(post.updated).toLocaleDateString(undefined, dateOptions)}`;
-    }
+  if (post.updated && post.updated !== post.created) {
+    dateText = `Updated: ${new Date(post.updated).toLocaleDateString(undefined, dateOptions)}`;
+  } else if (post.created) {
+    dateText = `Posted: ${new Date(post.updated).toLocaleDateString(undefined, dateOptions)}`;
+  }
 
-    if (dateText) {
-      const dateSpan = document.createElement('span');
-      dateSpan.textContent = dateText;
-      postInfoWrapper.appendChild(dateSpan);
-    }
+  if (dateText) {
+    const dateSpan = document.createElement('span');
+    dateSpan.textContent = dateText;
+    postInfoWrapper.appendChild(dateSpan);
+  }
 
-    metadataArea.appendChild(postInfoWrapper);
+  metadataArea.appendChild(postInfoWrapper);
 
-    contentWrapper.prepend(metadataArea);
+  contentWrapper.prepend(metadataArea);
 
+  
+  
   const interactionArea = document.createElement('div');
   interactionArea.classList.add('post-interaction');
+  interactionArea.className = 'flex flex-col p-8 mt-6 bg-(--color-secondary) font-mono rounded-md';
 
   if (!isDetailView) {
+    const readMoreLink = document.createElement('button');
+    readMoreLink.textContent = 'Read More ➡️';
+    readMoreLink.classList.add('read-more-link');
+    readMoreLink.className = 'w-28 p-1 text-sm bg-(--color-bg-button) hover:bg-(--color-hover-button) cursor-pointer transition-transform hover:scale-105';
 
-  const readMoreLink = document.createElement('button');
-  readMoreLink.textContent = 'Read More ➡️';
-  readMoreLink.classList.add('read-more-link');
-  readMoreLink.style.cursor = 'pointer';
+    readMoreLink.addEventListener('click', (event) => {
+      event.stopPropagation();
+      navigate(`/post/${post.id}`);
+    });
 
-  readMoreLink.addEventListener('click', (event) => {
-    event.stopPropagation();
-    navigate(`/post/${post.id}`);
-  });
+    //article.style.cursor = 'pointer';
+    article.addEventListener('click', () => {
+      navigate(`/post/${post.id}`);
+    });
 
-  article.style.cursor = 'pinter';
-  article.addEventListener('click', () => {
-    navigate(`/post/${post.id}`);
-  });
-
-  interactionArea.appendChild(readMoreLink);
+    interactionArea.appendChild(readMoreLink);
   }
 
   const metadata = document.createElement('span');
@@ -383,4 +444,3 @@ reactButton.addEventListener('click', async (event) => {
 
   return article;
 }
-
