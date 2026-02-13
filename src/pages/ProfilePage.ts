@@ -32,7 +32,6 @@ const renderProfile = (profile: Profile): HTMLDivElement => {
   banner.className =
     'profile-banner w-full aspect-[16/7] object-cover rounded-xl shadow-md';
 
-
   const avatar = document.createElement('img');
   avatar.src = profile.avatar?.url || 'placeholder-avatar.png';
   avatar.alt = profile.avatar?.alt || `${profile.name}'s avatar`;
@@ -200,7 +199,6 @@ const renderProfile = (profile: Profile): HTMLDivElement => {
       updateBannerForm,
     );
     profileContainer.append(editActions);
-
   }
 
   const postsHeader = document.createElement('h3');
