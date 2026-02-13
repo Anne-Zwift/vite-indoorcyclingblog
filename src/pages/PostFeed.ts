@@ -1,12 +1,11 @@
-import { getPosts, getPostsFromFollowing } from "../api/Client";
-import { PostCard } from "../components/PostCard";
-import { state } from "../utils/store";
-import { navigate } from "../utils/router";
-import { createP } from "../utils/domUtils";
-import { setupInfiniteScrollObserver } from "../utils/lazyLoadUtils";
+import { getPosts, getPostsFromFollowing } from '../api/Client';
+import { PostCard } from '../components/PostCard';
+import { state } from '../utils/store';
+import { navigate } from '../utils/router';
+import { createP } from '../utils/domUtils';
+import { setupInfiniteScrollObserver } from '../utils/lazyLoadUtils';
 
 const POSTS_PER_PAGE = 20;
-
 
 /**
  * Renders the main Post Feed page structure, optionally filtered by a tag or feed mode.
@@ -15,7 +14,6 @@ const POSTS_PER_PAGE = 20;
  */
 
 export async function PostFeed(tag?: string): Promise<HTMLDivElement> {
-
   let currentPageIndex = 0;
   let isLoading = false;
   let hasMore = true;
@@ -28,16 +26,24 @@ export async function PostFeed(tag?: string): Promise<HTMLDivElement> {
   pageContainer.id = 'post-feed-page';
 
   const title = document.createElement('h1');
-  title.textContent = tag ? `Posts Tagged: #${tag}` : (isFollowingFeed ? 'Post from People You Follow' : 'Indoor Off Season Activities');
+  title.textContent = tag
+    ? `Posts Tagged: #${tag}`
+    : isFollowingFeed
+      ? 'Post from People You Follow'
+      : 'Indoor Off Season Activities';
 
   const subtitle = document.createElement('h2');
-  subtitle.textContent = isFollowingFeed ? 'View the latest posts from your inner circle.' : 'Get inspired for indoor Cycling. View the latest posts from our community.';
+  subtitle.textContent = isFollowingFeed
+    ? 'View the latest posts from your inner circle.'
+    : 'Get inspired for indoor Cycling. View the latest posts from our community.';
 
   const toggleButton = document.createElement('button');
   toggleButton.classList.add('feed-toggle-button');
 
   if (state.isLoggedIn && !tag) {
-    toggleButton.textContent = isFollowingFeed ? '⬅️ View All Posts' : 'View Following Feed ➡️';
+    toggleButton.textContent = isFollowingFeed
+      ? '⬅️ View All Posts'
+      : 'View Following Feed ➡️';
 
     toggleButton.addEventListener('click', () => {
       if (isFollowingFeed) {
@@ -63,7 +69,6 @@ export async function PostFeed(tag?: string): Promise<HTMLDivElement> {
   const sentinel = document.createElement('div');
   sentinel.id = 'infinite-scroll-sentinel';
 
-
   const loadingMessage = document.createElement('p');
   loadingMessage.textContent = 'The posts are loading...';
   loadingMessage.id = 'lazy-loading-status';
@@ -79,125 +84,132 @@ export async function PostFeed(tag?: string): Promise<HTMLDivElement> {
     }
   });
 
- pageContainer.append(title, subtitle);
+  pageContainer.append(title, subtitle);
 
- if (state.isLoggedIn && !tag) {
-  pageContainer.append(toggleButton);
- }
-
- pageContainer.append(actionButton, postsContainer, sentinel, loadingMessage);
-
- const fetchAndRenderPosts = async (isInitialLoad: boolean = false) => {
-
-  if (isLoading || (!hasMore && !isInitialLoad)) return;
-  
-  isLoading = true;
-  loadingMessage.textContent = isInitialLoad ? 'The posts are loading...' : 'Loading more posts...';
-
-
-const pageNumber = currentPageIndex + 1;
-
- try {
-
-  let posts;
-
-  if (isFollowingFeed) {
-    posts = await getPostsFromFollowing(signal, POSTS_PER_PAGE, pageNumber);
-  } else {
-    posts = await getPosts(tag, signal, POSTS_PER_PAGE, pageNumber);
+  if (state.isLoggedIn && !tag) {
+    pageContainer.append(toggleButton);
   }
 
-  if (isInitialLoad) {
-    postsContainer.innerHTML = '';
-  }
+  pageContainer.append(actionButton, postsContainer, sentinel, loadingMessage);
 
-  if (posts.length === 0 && currentPageIndex === 0) {
-      
+  const fetchAndRenderPosts = async (isInitialLoad: boolean = false) => {
+    if (isLoading || (!hasMore && !isInitialLoad)) return;
 
-    const emptyMessage = document.createElement('p');
-    if (isFollowingFeed) {
-      emptyMessage.textContent = 'You are not following any users or they have not posted yet.';
-    } else if (tag) {
-      emptyMessage.textContent = `No posts found tagged with #${tag}.`;
-    } else {
-      emptyMessage.textContent = 'No posts found. Be the first to post!';
-  }
-    postsContainer.appendChild(emptyMessage);
-    loadingMessage.style.display = 'none';
-    hasMore = false;
-    return;
-  }
+    isLoading = true;
+    loadingMessage.textContent = isInitialLoad
+      ? 'The posts are loading...'
+      : 'Loading more posts...';
 
-  if (posts.length < POSTS_PER_PAGE) {
-    hasMore = false;
-  }
+    const pageNumber = currentPageIndex + 1;
 
+    try {
+      let posts;
 
-    posts.forEach(post => {
-      const postElement = PostCard(post);
-      postsContainer.appendChild(postElement);
+      if (isFollowingFeed) {
+        posts = await getPostsFromFollowing(signal, POSTS_PER_PAGE, pageNumber);
+      } else {
+        posts = await getPosts(tag, signal, POSTS_PER_PAGE, pageNumber);
+      }
 
-      postElement.addEventListener('click', (e) => {
+      if (isInitialLoad) {
+        postsContainer.innerHTML = '';
+      }
 
-        if (e.target instanceof HTMLElement && e.target.closest('.tag-link')) {
-          return;
+      if (posts.length === 0 && currentPageIndex === 0) {
+        const emptyMessage = document.createElement('p');
+        if (isFollowingFeed) {
+          emptyMessage.textContent =
+            'You are not following any users or they have not posted yet.';
+        } else if (tag) {
+          emptyMessage.textContent = `No posts found tagged with #${tag}.`;
+        } else {
+          emptyMessage.textContent = 'No posts found. Be the first to post!';
         }
-        navigate(`/post/${post.id}`);
-    });
-  });
-
-  currentPageIndex++;
-  isLoading = false;
-
-  if (hasMore) {
-    currentObserver = setupInfiniteScrollObserver(fetchAndRenderPosts, sentinel);
-  } else {
-    loadingMessage.textContent = 'All posts loaded.';
-    loadingMessage.style.display = '';
-  }
-
-} catch (error) {
-    if (error && typeof error === 'object' && 'name' in error && 'message' in error) {
-      const err = error as Error;
-
-    
-      postsContainer.textContent = '';
-
-      isLoading = false;
-
-      if (err.name === 'AbortError') {
-        console.log('Fetch aborted: PostFeed component unmounted.');
+        postsContainer.appendChild(emptyMessage);
+        loadingMessage.style.display = 'none';
+        hasMore = false;
         return;
       }
 
-      if (currentObserver) {
-        currentObserver.disconnect();
-        currentObserver = null;
+      if (posts.length < POSTS_PER_PAGE) {
+        hasMore = false;
       }
 
-    const feedType = isFollowingFeed ? 'Following' : (tag ?'Tag Filter' : 'All');
-    
-    console.error(`Failed to fetch ${feedType} posts:`, err);
-    const errorMessage = err.message || 'Check your network or API status.';
+      posts.forEach((post) => {
+        const postElement = PostCard(post);
+        postsContainer.appendChild(postElement);
 
-    postsContainer.appendChild(createP(`❌ Error loading the ${feedType} feed.`, 'error-message'));
-    postsContainer.appendChild(createP(`Details: ${errorMessage}`));
+        postElement.addEventListener('click', (e) => {
+          if (
+            e.target instanceof HTMLElement &&
+            e.target.closest('.tag-link')
+          ) {
+            return;
+          }
+          navigate(`/post/${post.id}`);
+        });
+      });
 
-  } else {
-    console.error('An unknown error occurred while fetching posts:', error);
-    postsContainer.appendChild(createP('❌ An unexpected error occurred.', 'error-message'));
+      currentPageIndex++;
+      isLoading = false;
 
-    isLoading = false;
-  }
-};
+      if (hasMore) {
+        currentObserver = setupInfiniteScrollObserver(
+          fetchAndRenderPosts,
+          sentinel,
+        );
+      } else {
+        loadingMessage.textContent = 'All posts loaded.';
+        loadingMessage.style.display = '';
+      }
+    } catch (error) {
+      if (
+        error &&
+        typeof error === 'object' &&
+        'name' in error &&
+        'message' in error
+      ) {
+        const err = error as Error;
 
-};
+        postsContainer.textContent = '';
+
+        isLoading = false;
+
+        if (err.name === 'AbortError') {
+          console.log('Fetch aborted: PostFeed component unmounted.');
+          return;
+        }
+
+        if (currentObserver) {
+          currentObserver.disconnect();
+          currentObserver = null;
+        }
+
+        const feedType = isFollowingFeed
+          ? 'Following'
+          : tag
+            ? 'Tag Filter'
+            : 'All';
+
+        console.error(`Failed to fetch ${feedType} posts:`, err);
+        const errorMessage = err.message || 'Check your network or API status.';
+
+        postsContainer.appendChild(
+          createP(`❌ Error loading the ${feedType} feed.`, 'error-message'),
+        );
+        postsContainer.appendChild(createP(`Details: ${errorMessage}`));
+      } else {
+        console.error('An unknown error occurred while fetching posts:', error);
+        postsContainer.appendChild(
+          createP('❌ An unexpected error occurred.', 'error-message'),
+        );
+
+        isLoading = false;
+      }
+    }
+  };
 
   await fetchAndRenderPosts(true);
 
   return pageContainer;
-
 }
-
-
-
