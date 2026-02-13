@@ -13,7 +13,8 @@ export function LoginPage(): HTMLDivElement {
     'flex flex-col items-center justify-center py-12 w-full';
 
   const card = document.createElement('div');
-  card.className = 'w-full max-w-md bg-white rounded-xl shadow-lg p-8 border border-gray-100';
+  card.className =
+    'w-full max-w-md bg-white rounded-xl shadow-lg p-8 border border-gray-100';
 
   const title = document.createElement('h2');
   title.textContent = 'Log in to Indoor Cycling!';
