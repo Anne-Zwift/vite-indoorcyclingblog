@@ -1,9 +1,8 @@
-import { createPost, updatePost } from "../api/Client";
-import type { Media } from "../types/Media";
-import type { PostRequest, SinglePostResponse } from "../types/Post";
-import type { PostFormProps } from "../types/PostFormProps";
-import { navigate } from "../utils/router";
-
+import { createPost, updatePost } from '../api/Client';
+import type { Media } from '../types/Media';
+import type { PostRequest, SinglePostResponse } from '../types/Post';
+import type { PostFormProps } from '../types/PostFormProps';
+import { navigate } from '../utils/router';
 
 function processFormData(form: HTMLFormElement): PostRequest | null {
   const formData = new FormData(form);
@@ -27,7 +26,10 @@ function processFormData(form: HTMLFormElement): PostRequest | null {
   }
 
   if (tagsString) {
-    postData.tags = tagsString.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0);
+    postData.tags = tagsString
+      .split(',')
+      .map((tag) => tag.trim())
+      .filter((tag) => tag.length > 0);
   }
 
   if (mediaUrl && mediaUrl.trim() !== '') {
@@ -40,16 +42,25 @@ function processFormData(form: HTMLFormElement): PostRequest | null {
   return postData;
 }
 
-function displayStatus(element: HTMLElement, message: string, isError: boolean = false): void {
+function displayStatus(
+  element: HTMLElement,
+  message: string,
+  isError: boolean = false,
+): void {
   element.textContent = message;
-  element.className = 'status-message';
+  const baseClasses =
+    'p-4 mb-4 rounded-md text-sm font-medium transition-all shadow-sm ';
+  const stateClasses = isError
+    ? 'bg-red-50 text-red-700 border border-red-200'
+    : 'bg-green-50 text-green-700 border-green-200';
+  element.className = baseClasses + stateClasses;
   element.style.display = 'block';
-
+  /* 
   if (isError) {
     element.classList.add('status-error');
   } else {
     element.classList.add('status-success');
-  }
+  } */
 }
 
 export function PostForm(props: PostFormProps = {}): HTMLDivElement {
@@ -57,20 +68,32 @@ export function PostForm(props: PostFormProps = {}): HTMLDivElement {
 
   const isEditMode = !!initialData;
   const formContainer = document.createElement('div');
-  formContainer.id = isEditMode ? `edit-post-container-${initialData.id}` : 'create-post-form-container';
-  formContainer.classList.add('heading');
-  formContainer.textContent = 'Create a new post and make someone HAPPY🤩'
+  formContainer.className =
+    'flex flex-col text-center rounded-lg shadow-lg w-full p-8 mb-6 bg-white border border-slate-100';
+  formContainer.id = isEditMode
+    ? `edit-post-container-${initialData.id}`
+    : 'create-post-form-container';
+
+  const heading = document.createElement('h2');
+  heading.className = 'text-xl font-bold mb-4 text-(--color-h1-text)';
+  heading.textContent = isEditMode
+    ? `Editing "${initialData.title}" ✍️`
+    : 'Create a new post and make someone HAPPY🤩';
 
   const statusMessage = document.createElement('div');
   statusMessage.id = 'post-status-message';
   statusMessage.className = 'status-message';
-  statusMessage.style.display = 'none';
-
+  /*   statusMessage.style.display = 'none'; */
 
   const form = document.createElement('form');
-  form.id = isEditMode ? `edit-post-form-${initialData.id}` : 'create-post-form-container';
+  form.className = 'flex flex-col items-stretch gap-2 px-1 py-1 mt-4';
+  form.id = isEditMode ? `edit-post-form-${initialData.id}` : 'post-entry-form';
+
+  formContainer.append(heading, statusMessage, form);
 
   const titleInput = document.createElement('input');
+  titleInput.className =
+    'block w-full p-3 m-1 mx-auto text-base text-(--color-p-text) bg-slate-50 border border-slate-200 rounded-md focus:outline-none focus:ring-2 focus:ring-(--color-secondary) focus:ring-offset-2 transition-all duration-200';
   titleInput.type = 'text';
   titleInput.name = 'title';
   titleInput.placeholder = 'Title (Required)';
@@ -80,6 +103,8 @@ export function PostForm(props: PostFormProps = {}): HTMLDivElement {
   }
 
   const bodyTextarea = document.createElement('textarea');
+  bodyTextarea.className =
+    'block w-full p-4 mx-auto text-base text-(--color-p-text) bg-slate-50 border border-slate-200 rounded-md focus:outline-none focus:ring-2 focus:ring-(--color-secondary) transition-all duration-200 resize-y min-h-[150px] [scrollbar-gutter:stable]';
   bodyTextarea.name = 'body';
   bodyTextarea.placeholder = 'Body/Content (Optional)';
   if (isEditMode && initialData.body) {
@@ -87,6 +112,8 @@ export function PostForm(props: PostFormProps = {}): HTMLDivElement {
   }
 
   const tagsInput = document.createElement('input');
+  tagsInput.className =
+    'block w-full p-3 m-1 mx-auto text-base text-(--color-p-text) bg-slate-50 border border-slate-200 rounded-md focus:outline-none focus:ring-2 focus:ring-(--color-secondary) focus:ring-offset-2 transition-all duration-200';
   tagsInput.type = 'text';
   tagsInput.name = 'tags';
   tagsInput.placeholder = 'Tags (e.g., cycling, indoor)';
@@ -95,6 +122,8 @@ export function PostForm(props: PostFormProps = {}): HTMLDivElement {
   }
 
   const mediaUrlInput = document.createElement('input');
+  mediaUrlInput.className =
+    'block w-full min-w-0 p-3 m-1 mx-auto text-sm font-mono truncate text-(--color-p-text) bg-slate-50 border border-slate-200 rounded-md focus:outline-none focus:ring-2 focus:ring-(--color-secondary) focus:ring-offset-2 transition-all duration-200';
   mediaUrlInput.type = 'text';
   mediaUrlInput.name = 'mediaUrl';
   mediaUrlInput.placeholder = 'Media URL (Optional)';
@@ -103,6 +132,8 @@ export function PostForm(props: PostFormProps = {}): HTMLDivElement {
   }
 
   const mediaAltInput = document.createElement('input');
+  mediaAltInput.className =
+    'block w-full p-3 m-1 mx-auto text-base text-(--color-p-text) bg-slate-50 border border-slate-200 rounded-md focus:outline-none focus:ring-2 focus:ring-(--color-secondary) focus:ring-offset-2 transition-all duration-200';
   mediaAltInput.type = 'text';
   mediaAltInput.name = 'mediaAlt';
   mediaAltInput.placeholder = 'Media Alt Text (Optional)';
@@ -111,14 +142,24 @@ export function PostForm(props: PostFormProps = {}): HTMLDivElement {
   }
 
   const submitButton = document.createElement('button');
+  submitButton.className =
+    'w-32 self-end bg-(--color-bg-button) hover:bg-(--color-hover-button) rounded-lg mt-4 mb-2 p-2 font-medium transition-all hover:scale-105 border-none';
   submitButton.type = 'submit';
-  submitButton.textContent = submitText || (isEditMode ? 'Update Post' : 'Create Post');
+  submitButton.textContent =
+    submitText || (isEditMode ? 'Update Post' : 'Create Post');
 
-  form.append(titleInput, bodyTextarea, tagsInput, mediaUrlInput, mediaAltInput, submitButton);
+  form.append(
+    titleInput,
+    bodyTextarea,
+    tagsInput,
+    mediaUrlInput,
+    mediaAltInput,
+    submitButton,
+  );
 
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
-    console.log('Form submission handler started.')
+    console.log('Form submission handler started.');
 
     statusMessage.style.display = 'none';
 
@@ -137,48 +178,59 @@ export function PostForm(props: PostFormProps = {}): HTMLDivElement {
         await onSubmit(postData);
       } catch (error) {
         const action = isEditMode ? 'update' : 'create';
-        const errorMessage = (error as Error).message || 'An unknown error occurred.';
-        displayStatus(statusMessage, `Failed to ${action} post. Error: ${errorMessage}`, true);
+        const errorMessage =
+          (error as Error).message || 'An unknown error occurred.';
+        displayStatus(
+          statusMessage,
+          `Failed to ${action} post. Error: ${errorMessage}`,
+          true,
+        );
       } finally {
         submitButton.disabled = false;
-        submitButton.textContent = submitText || (isEditMode ? 'Update Post' : 'Create Post');
+        submitButton.textContent =
+          submitText || (isEditMode ? 'Update Post' : 'Create Post');
       }
       return;
     }
 
-      let responsePost: SinglePostResponse;
+    let responsePost: SinglePostResponse;
 
-      try {
-        submitButton.disabled = true;
-        submitButton.textContent = isEditMode ? 'Updating...' : 'Creating...';
+    try {
+      submitButton.disabled = true;
+      submitButton.textContent = isEditMode ? 'Updating...' : 'Creating...';
 
-        if (isEditMode && initialData.id) {
-          responsePost = await updatePost(String(initialData.id), postData);
-        } else {
-          responsePost = await createPost(postData);
-        }
-
-        const action = isEditMode ? 'updated...' : 'created...';
-        displayStatus(statusMessage, `Post ${responsePost.data.id} ${action} successfully! Title: "${responsePost.data.title}"`, false);
-
-        if (!isEditMode) {
-          (event.target as HTMLFormElement).reset();
-          navigate('/');
-        }
-
-      } catch (error) {
-        const action = isEditMode ? 'update' : 'create';
-        const errorMessage = (error as Error).message || 'An unknown error occurred.';
-
-        displayStatus(statusMessage, `Failed to ${action} post. Error: ${errorMessage}`, true);
-      } finally {
-        submitButton.disabled = false;
-        submitButton.textContent = isEditMode ? 'Update Post' : 'Create Post';
+      if (isEditMode && initialData.id) {
+        responsePost = await updatePost(String(initialData.id), postData);
+      } else {
+        responsePost = await createPost(postData);
       }
-   
-  });
 
-  formContainer.append(statusMessage, form);
+      const action = isEditMode ? 'updated...' : 'created...';
+      displayStatus(
+        statusMessage,
+        `Post ${responsePost.data.id} ${action} successfully! Title: "${responsePost.data.title}"`,
+        false,
+      );
+
+      if (!isEditMode) {
+        (event.target as HTMLFormElement).reset();
+        navigate('/');
+      }
+    } catch (error) {
+      const action = isEditMode ? 'update' : 'create';
+      const errorMessage =
+        (error as Error).message || 'An unknown error occurred.';
+
+      displayStatus(
+        statusMessage,
+        `Failed to ${action} post. Error: ${errorMessage}`,
+        true,
+      );
+    } finally {
+      submitButton.disabled = false;
+      submitButton.textContent = isEditMode ? 'Update Post' : 'Create Post';
+    }
+  });
 
   return formContainer;
 }
