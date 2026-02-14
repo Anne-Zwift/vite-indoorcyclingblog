@@ -23,9 +23,14 @@ export async function PostFeed(tag?: string): Promise<HTMLDivElement> {
   const isFollowingFeed = currentHash === '/following' && state.isLoggedIn;
 
   const pageContainer = document.createElement('div');
+  pageContainer.className = 'flex flex-col max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 my-8 justify-center items-center text-center gap-4';
   pageContainer.id = 'post-feed-page';
+  
+  const headerSection = document.createElement('div');
+  headerSection.className = 'w-full flex flex-col items-center gap-4 mb-6';
 
   const title = document.createElement('h1');
+  title.className = 'text-3xl font-bold text-(--color-secondary)';
   title.textContent = tag
     ? `Posts Tagged: #${tag}`
     : isFollowingFeed
@@ -33,11 +38,13 @@ export async function PostFeed(tag?: string): Promise<HTMLDivElement> {
       : 'Indoor Off Season Activities';
 
   const subtitle = document.createElement('h2');
+  subtitle.className = 'max-w-md text-slate-500 text-center';
   subtitle.textContent = isFollowingFeed
     ? 'View the latest posts from your inner circle.'
     : 'Get inspired for indoor Cycling. View the latest posts from our community.';
 
   const toggleButton = document.createElement('button');
+  toggleButton.className = 'w-48 md:self-end p-2 text-sm bg-(--color-bg-button)/40 hover:bg-(--color-hover-button) cursor-pointer transition-transform hover:scale-105 border-none border border-(--color-bg-button) rounded-lg shadow-sm';
   toggleButton.classList.add('feed-toggle-button');
 
   if (state.isLoggedIn && !tag) {
@@ -57,6 +64,7 @@ export async function PostFeed(tag?: string): Promise<HTMLDivElement> {
   const actionButton = document.createElement('button');
   actionButton.id = 'create-post-button';
   actionButton.textContent = 'Create New Post';
+  actionButton.className = 'md:self-end w-28 p-1 text-sm bg-(--color-secondary) hover:bg-(--color-hover-button) cursor-pointer transition-transform hover:scale-105 border border-slate-500 rounded-lg shadow-sm';
   actionButton.style.display = state.isLoggedIn ? '' : 'none';
 
   actionButton.addEventListener('click', () => {
@@ -65,6 +73,7 @@ export async function PostFeed(tag?: string): Promise<HTMLDivElement> {
 
   const postsContainer = document.createElement('div');
   postsContainer.id = 'posts-container';
+  postsContainer.className = 'flex flex-col gap-12 w-full max-w-2xl mt-8';
 
   const sentinel = document.createElement('div');
   sentinel.id = 'infinite-scroll-sentinel';

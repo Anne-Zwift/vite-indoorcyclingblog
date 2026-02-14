@@ -22,7 +22,7 @@ export function PostCard(
   article.classList.add('post-card');
   article.dataset.postId = String(post.id);
   article.className =
-    `flex flex-col items-center justify-center text-sm lg:text-base py-12 w-full px-6 rounded-md shadow-xl ${!isDetailView ? 'cursor-pointer' : ''}`;
+    `relative flex flex-col items-center justify-center text-sm lg:text-base py-12 w-full px-6 rounded-md shadow-xl ${!isDetailView ? 'cursor-pointer' : ''}`;
 
   const mediaContainer = document.createElement('div');
   mediaContainer.classList.add('post-media-container');
@@ -134,6 +134,7 @@ export function PostCard(
       ) || false;
 
     followButton = document.createElement('button');
+    followButton.className = 'absolute top-4 right-4 w-24 p-1 text-sm bg-(--color-secondary) hover:bg-(--color-hover-button) cursor-pointer transition-transform hover:scale-105 border border-slate-500 rounded-lg shadow-sm';
     followButton.classList.add('follow-toggle-button');
 
     const updateButtonState = (following: boolean) => {
@@ -211,7 +212,8 @@ export function PostCard(
     const authorSpan = document.createElement('span');
     const authorNameDisplay = post.author?.name || 'Unknown Author';
     authorSpan.textContent = `By: ${authorNameDisplay}`;
-    authorFollowWrapper.append(authorSpan, followButton);
+    authorFollowWrapper.append(authorSpan);
+    article.appendChild(followButton);
   }
 
   const reactionSymbol = '👍';
@@ -223,7 +225,7 @@ export function PostCard(
     ) || false;
 
   const reactButton = document.createElement('button');
-  reactButton.className = 'w-28 p-1 text-sm bg-(--color-bg-button) hover:bg-(--color-hover-button) cursor-pointer transition-transform hover:scale-105';
+  reactButton.className = 'w-28 p-1.5 text-sm bg-(--color-bg-button)/40 hover:bg-(--color-hover-button) cursor-pointer transition-transform hover:scale-105 border-(--color-bg-button) rounded-lg shadow-sm';
 
   if (hasUserReacted) {
     reactButton.textContent = `${reactionSymbol} Liked`;
@@ -411,13 +413,13 @@ export function PostCard(
   
   const interactionArea = document.createElement('div');
   interactionArea.classList.add('post-interaction');
-  interactionArea.className = 'flex flex-col p-8 mt-6 bg-(--color-secondary) font-mono rounded-md';
+  interactionArea.className = 'flex flex-col items-center p-6 mt-6 bg-slate-50 font-mono rounded-b-md border-t border-sky-100 gap-4';
 
   if (!isDetailView) {
     const readMoreLink = document.createElement('button');
     readMoreLink.textContent = 'Read More ➡️';
     readMoreLink.classList.add('read-more-link');
-    readMoreLink.className = 'w-28 p-1 text-sm bg-(--color-bg-button) hover:bg-(--color-hover-button) cursor-pointer transition-transform hover:scale-105';
+    readMoreLink.className = 'w-28 p-1.5 text-sm bg-(--color-bg-button)/40 hover:bg-(--color-hover-button) cursor-pointer transition-transform hover:scale-105 border-(--color-bg-button) rounded-lg shadow-sm';
 
     readMoreLink.addEventListener('click', (event) => {
       event.stopPropagation();
@@ -441,6 +443,7 @@ export function PostCard(
   interactionArea.append(metadata, reactButton);
 
   article.append(contentWrapper, interactionArea);
+  
 
   return article;
 }
