@@ -372,7 +372,7 @@ export function PostCard(
 
   const postInfoWrapper = document.createElement('div');
   postInfoWrapper.classList.add('post-info-wrapper');
-  postInfoWrapper.className = 'flex flex-col md:flex-row md:gap-4 justify-center text-xs opacity-80';
+  postInfoWrapper.className = 'post-info-wrapper flex flex-wrap items-center justify-center gap-x-4 text-sm text-p-text';
   if (buttonWrapper) {
     metadataArea.appendChild(buttonWrapper);
   }
