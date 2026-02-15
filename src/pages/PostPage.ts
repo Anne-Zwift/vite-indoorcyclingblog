@@ -45,12 +45,14 @@ export function PostPage(postId: string = ''): HTMLDivElement {
         const backButton = document.createElement('button');
         backButton.textContent = '⬅️ Back to Feed';
         backButton.classList.add('back-to-feed-button');
+        backButton.className = 'w-48 p-1.5 md:p-2 text-sm bg-(--color-bg-button) hover:bg-(--color-hover-button) cursor-pointer transition-transform hover:scale-105 rounded-lg shadow-md';
 
         backButton.addEventListener('click', () => {
           navigate('/');
         });
 
         const dynamicTitle = document.createElement('h1');
+        dynamicTitle.className = 'block p-1 m-2 md:text-xl';
         dynamicTitle.textContent = post.title;
 
         const detailElement = PostCard(post, true);
