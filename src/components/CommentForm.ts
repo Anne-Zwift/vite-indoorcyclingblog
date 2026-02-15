@@ -34,7 +34,7 @@ export function CommentForm({
   submitButton.textContent = 'Post Comment';
   submitButton.classList.add('comment-submit-button');
   submitButton.className =
-    'self-end w-28 p-1 text-sm bg-(--color-bg-button) hover:bg-(--color-hover-button) cursor-pointer transition-transform hover:scale-105 border-none';
+    'self-end w-28 p-1.5 text-sm bg-(--color-secondary) hover:bg-(--color-hover-button) cursor-pointer transition-transform hover:scale-105 rounded-lg shadow-md';
 
   form.append(textarea, submitButton);
 
