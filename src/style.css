@@ -1,7 +1,7 @@
 @import 'tailwindcss';
 
 
-:root {
+@theme {
   /* Font families */
   --font-family-main: 'Roboto', sans-serif;
   --font-family-h1: system-ui;
@@ -13,22 +13,23 @@
   --line-height-small: 1.1;
 
   /* Font weights */
-  --font-weight-text: 400;
-  --font-weight-text-bold: 500;
-  --font-weight-text-bolder: 600;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
 
   /* Font sizes */
-  --font-size-small: 16px;
+  --font-size-sm: 16px;
   --font-size-base: 20px;
-  --font-size-large: 24px;
-  --font-size-x-large: 32px;
+  --font-size-lg: 24px;
+  --font-size-xl: 32px;
 
   /* Colors */
   --color-primary: #fff;
-  --color-secondary: #4f5d75;
+  --color-secondary: oklch(86.9% 0.022 252.894);
   --background-color: #bfc0c0;
-  --color-bg-button: #2d3142;
-  --color-hover-button: #ef8354;
+  --color-bg-button: oklch(90.1% 0.058 230.902);
+  --color-hover-button: oklch(82.8% 0.111 230.318);
   --color-text-button: #fff;
   --color-h1-text: #ef8354;
   --color-p-text: #000;
@@ -39,14 +40,7 @@
 }
 
 /* temporary global defaults */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  /*   text-decoration: none;
-  margin: 0;
-  padding: 0; */
-}
+
 
 html {
   scroll-behavior: smooth;
@@ -100,7 +94,7 @@ a {
   color: var(--color-secondary);
 } */
 
-img {
+/* img {
   display: block;
   margin-left: auto;
   margin-right: auto;
@@ -109,16 +103,16 @@ img {
   height: auto;
   border-radius: 18px;
   border: 1px solid #000;
-}
+} */
 
-article.post-card {
+/* article.post-card {
   padding: 5px;
   background-color: var(--color-primary);
   gap: 40px;
   border-top-style: ridge;
   border-bottom-style: ridge;
   border-radius: 8px;
-}
+} */
 
 /* #h1 {
   font-family: var(--font-family-h1);
@@ -172,13 +166,13 @@ article.post-card {
 
 /* temporary global defaults */
 button {
-  font-family: var(--font-family-span);
+/*   font-family: var(--font-family-span); */
   /*   font-size: var(--font-size-base);
   font-weight: var(--font-weight-text-bold);
   background-color: var(--color-bg-button);
   color: var(--color-text-button); */
-  border: 1px solid #0631f2;
-  border-radius: 6px;
+/*   border: 1px solid #0631f2;
+  border-radius: 6px; */
   /*   outline: none;
   margin-top: 20px;
   padding: 10px; */
@@ -191,84 +185,84 @@ button {
   font-size: larger;
 } */
 
-.read-more-link {
+/* .read-more-link {
   max-width: 70%;
   padding: 5px;
   margin-top: 10px;
   align-items: center;
-}
+} */
 
-.react-button {
+/* .react-button {
   width: 120px;
   padding: 5px;
   margin-top: 10px;
   align-items: center;
-}
+} */
 
-.edit-post-button {
+/* .edit-post-button {
   width: 120px;
   padding: 8px 20px;
   margin: 5px;
-}
+} */
 
-.delete-post-button {
+/* .delete-post-button {
   width: 120px;
   padding: 8px 20px;
   margin: 5px;
-}
+} */
 
-span {
+/* span {
   display: inline-flex;
   text-align: center;
   justify-content: center;
   gap: 4px;
   width: 250px;
   padding: 10px;
-}
+} */
 
-.tag-link {
+/* .tag-link {
   display: inline-block;
   color: #000;
   padding-top: 5px;
   padding-bottom: 5px;
   margin: 0 auto;
-}
+} */
 
-.post-info-wrapper {
+/* .post-info-wrapper {
   max-width: 800px;
   margin: 0 auto;
   font-family: var(--font-family-p);
   font-style: var(--color-secondary);
   font-size: var(--font-size-small);
-}
+} */
 
-.post-interaction {
-  font-family: var(--font-family-span);
+/* .post-interaction { */
+/*   font-family: var(--font-family-span);
   color: var(--color-text-button);
-  background-color: var(--color-secondary);
-  margin-top: 40px;
+  background-color: var(--color-secondary); */
+/*   margin-top: 40px;
   margin-bottom: 40px;
   padding: 10px;
-  border-radius: 8px;
-}
+  border-radius: 8px; */
+/* } */
 
-.comment-textarea {
+/* .comment-textarea {
   display: block;
   margin: 0 auto;
   text-align: center;
-}
+} */
 
-.comment-author-link {
+/* .comment-author-link {
   color: var(--color-secondary);
   margin: 0 auto;
-}
+} */
 
-.comment-date {
+/* .comment-date {
   display: block;
   color: var(--color-secondary);
   padding: 10px;
   margin: 0 auto;
-}
+} */
 
 /* PostForm.ts */
 
@@ -345,13 +339,13 @@ input[type='email'] {
 
 /* Profile page */
 
-.profile-avatar {
+/* .profile-avatar {
   width: 200px;
   height: 200px;
   margin-top: 40px;
   border-radius: 50%;
   object-fit: cover;
-}
+} */
 
 /* Create page */
 /* #create-post-form-container,
@@ -395,12 +389,12 @@ input[type='text'] {
   border: none;
 } */
 
-/* Follow Profiles*/
+/*Follow Profiles*/
 
-.profile-header {
+/* .profile-header {
   background-color: #4f5d75;
   color: #fff;
-}
+} */
 
 /* Search Page*/
 
@@ -408,10 +402,10 @@ input[type='text'] {
   background-color: #4f5d7598;
 }
 
-::placeholder {
+/* ::placeholder {
   color: var(--color-p-text);
   padding: 5px 20px;
-}
+} */
 
 .search-button {
   width: 140px;
@@ -426,79 +420,4 @@ input[type='text'] {
   border: 1px solid var(--color-primary);
 }
 
-@media (min-width: 768px) {
-  .main-navigation,
-  a {
-    font-size: var(--font-size-base);
-  }
 
-  img {
-    max-width: 80%;
-  }
-
-  /*   h2 {
-    background-color: var(--color-primary);
-    color: var(--color-secondary);
-  } */
-
-  #create-post-button {
-    display: block;
-    width: 200px;
-    margin: 10px auto;
-  }
-
-  .author-follow-wrapper,
-  span {
-    width: 550px;
-    margin: 0 auto;
-  }
-
-  .follow-toggle-button {
-    width: 120px;
-    margin: 0 auto;
-  }
-
-  .edit-profile-button {
-    display: block;
-    max-width: 260px;
-    margin: 20px auto;
-  }
-
-  .edit-banner-button {
-    display: block;
-    max-width: 260px;
-    margin: 20px auto;
-  }
-}
-
-@media (min-width: 1024px) {
-  img {
-    max-width: 50%;
-  }
-
-  .post-interaction {
-    max-width: 600px;
-    margin: 0 auto;
-  }
-}
-
-@media (min-width: 1440px) {
-  img {
-    max-width: 40%;
-    margin-top: 20px;
-  }
-
-  /*   h2 {
-    background-color: var(--color-primary);
-  } */
-
-  h3 {
-    max-width: 600px;
-    margin: 0 auto;
-  }
-
-  .post-interaction {
-    max-width: 600px;
-    margin: 0 auto;
-  }
-}
