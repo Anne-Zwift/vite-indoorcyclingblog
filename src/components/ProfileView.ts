@@ -94,7 +94,7 @@ const renderProfileHeader = (profileData: Profile): HTMLDivElement => {
   name.className = 'text-3xl font-bold text-gray-900';
 
   const email = document.createElement('p');
-  email.textContent = `Email: ${profileData.email}`;
+  email.textContent = `${profileData.email}`;
 
   const followCount = document.createElement('p');
   followCount.textContent = `Followers: ${profileData._count.followers || 0}`;
