@@ -30,7 +30,7 @@ const renderProfile = (profile: Profile): HTMLDivElement => {
   banner.src = profile.banner?.url || 'placeholder-banner.png';
   banner.alt = profile.banner?.alt || `${profile.name}'s banner`;
   banner.className =
-    'profile-banner w-full aspect-[16/7] object-cover rounded-xl shadow-md';
+    'profile-banner w-full aspect-[16/7] object-cover rounded-xl overflow-hidden shadow-lg';
 
   const avatar = document.createElement('img');
   avatar.src = profile.avatar?.url || 'placeholder-avatar.png';
@@ -81,66 +81,78 @@ const renderProfile = (profile: Profile): HTMLDivElement => {
   if (isCurrentUser) {
     const editActions = document.createElement('div');
     editActions.className =
-      'px-8 flex flex-col md:flex-row gap-4 justify-center md:justify-start items-center mt-6';
+      'flex flex-col gap-2 m-2 -mt-16 md:absolute md:top-4 md:right-4 md:mt-0 md:items-end z-20';
 
     const editButton = document.createElement('button');
     editButton.textContent = '✏️ Update Profile Image';
     editButton.className =
-      'edit-profile-button w-full max-w-xs md:w-55 flex items-center gap-2 bg-blue-500 text-white px-5 py-2.5 rounded-lg text-sm font-bold shadow-md hover:bg-blue-600 transition-all active:scale-95 md:w-60';
+      'edit-profile-button flex justify-between w-24 md:w-64 md:justify-center items-center -mt-16 md:mt-0 gap-2 px-1 py-4 md:px-4 md:py-2 rounded-lg text-xs md:text-sm break-word font-semibold shadow-md bg-white/80 backdrop-blur hover:bg-white transition active:scale-95';
 
     const updateForm = document.createElement('form');
-    updateForm.className = 'update-avatar-form';
-    updateForm.style.display = 'none';
+    updateForm.dataset.open = 'false';
+    updateForm.className =
+      'update-avatar-form max-h-0 opacity-0 data-[open=true]:max-h-96 data-[open=true]:opacity-100 transition-all';
 
     const avatarInput = document.createElement('input');
     avatarInput.type = 'url';
     avatarInput.placeholder = 'New Avatar URL';
     avatarInput.id = 'new-avatar-url';
     avatarInput.value = profile.avatar?.url || '';
+    avatarInput.className =
+      'w-full p-2 mt-2 text-sm font-mono truncate text-(--color-p-text) bg-slate-50 border border-slate-200 rounded-md focus:outline-none focus:ring-2 focus:ring-(--color-secondary) focus:ring-offset-2 transition-all duration-200';
 
     const saveButton = document.createElement('button');
     saveButton.type = 'submit';
     saveButton.textContent = 'Save Avatar';
+    saveButton.className =
+      'self-start bg-(--color-bg-button) hover:bg-(--color-hover-button) w-28 p-1 m-2 rounded transitions-color';
 
     const statusMessage = document.createElement('p');
-    statusMessage.className = 'update-status-message';
+    statusMessage.className =
+      'w-full p-2 mb-2 text-sm text-center font-mono break-words text-(--color-text-ready) bg-(--color-bg-ready) border rounded-md';
     statusMessage.style.display = 'none';
 
     updateForm.append(avatarInput, saveButton, statusMessage);
 
     editButton.addEventListener('click', () => {
-      updateForm.style.display =
-        updateForm.style.display === 'none' ? 'block' : 'none';
+      const isOpen = updateForm.dataset.open === 'true';
+      updateForm.dataset.open = String(!isOpen);
     });
 
     const editBannerButton = document.createElement('button');
     editBannerButton.textContent = '🖼️ Update Banner Image';
     editBannerButton.className =
-      'edit-banner-button w-full max-w-xs md:w-55 flex items-center gap-2 bg-blue-500 text-white px-5 py-2.5 rounded-lg text-sm font-bold shadow-md hover:bg-blue-600 transition-all active:scale-95 md:w-60';
+      'edit-banner-button flex justify-between w-24 md:w-64 md:justify-center items-center -mt-2 md:mt-0 gap-2 px-1 py-4 md:px-4 md:py-2 rounded-lg text-xs md:text-sm break-word font-semibold shadow-md bg-white/80 backdrop-blur hover:bg-white transition active:scale-95';
 
     const updateBannerForm = document.createElement('form');
-    updateBannerForm.className = 'update-banner-form';
-    updateBannerForm.style.display = 'none';
+    updateBannerForm.dataset.open = 'false';
+    updateBannerForm.className =
+      'update-banner-form max-h-0 opacity-0 data-[open=true]:max-h-96 data-[open=true]:opacity-100 transition-all';
 
     const bannerInput = document.createElement('input');
     bannerInput.type = 'url';
     bannerInput.placeholder = 'New Banner URL';
     bannerInput.id = 'new-banner-url';
     bannerInput.value = profile.banner?.url || '';
+    bannerInput.className =
+      'w-full p-2 mt-2 text-sm font-mono truncate text-(--color-p-text) bg-slate-50 border border-slate-200 rounded-md focus:outline-none focus:ring-2 focus:ring-(--color-secondary) focus:ring-offset-2 transition-all duration-200';
 
     const saveBannerButton = document.createElement('button');
     saveBannerButton.type = 'submit';
     saveBannerButton.textContent = 'Save Banner';
+    saveBannerButton.className =
+      'self-start bg-(--color-bg-button) hover:bg-(--color-hover-button) w-28 p-1 m-2 rounded transitions-color';
 
     const bannerStatusMessage = document.createElement('p');
-    bannerStatusMessage.className = 'update-status-message';
+    bannerStatusMessage.className =
+      'w-full p-2 mb-2 text-sm text-center font-mono break-words text-(--color-text-ready) bg-(--color-bg-ready) border rounded-md';
     bannerStatusMessage.style.display = 'none';
 
     updateBannerForm.append(bannerInput, saveBannerButton, bannerStatusMessage);
 
     editBannerButton.addEventListener('click', () => {
-      updateBannerForm.style.display =
-        updateBannerForm.style.display === 'none' ? 'block' : 'none';
+      const isOpen = updateBannerForm.dataset.open === 'true';
+      updateBannerForm.dataset.open = String(!isOpen);
     });
 
     updateForm.addEventListener('submit', async (e) => {
@@ -198,7 +210,7 @@ const renderProfile = (profile: Profile): HTMLDivElement => {
       editBannerButton,
       updateBannerForm,
     );
-    profileContainer.append(editActions);
+    headerWrapper.append(editActions);
   }
 
   const postsHeader = document.createElement('h3');
