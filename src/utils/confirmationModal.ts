@@ -8,7 +8,7 @@ export function showConfirmationModal(message: string): Promise<boolean> {
   return new Promise((resolve) => {
     const modalOverlay = document.createElement('div');
     modalOverlay.className =
-      'modal-overlay fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4';
+      'modal-overlay fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-grayscale p-4';
 
     const modalBox = document.createElement('div');
     modalBox.className =
