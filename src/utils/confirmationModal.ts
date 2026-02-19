@@ -7,16 +7,18 @@
 export function showConfirmationModal(message: string): Promise<boolean> {
   return new Promise((resolve) => {
     const modalOverlay = document.createElement('div');
-    modalOverlay.className = 'modal-overlay';
+    modalOverlay.className =
+      'modal-overlay fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4';
 
     const modalBox = document.createElement('div');
-    modalBox.className = 'modal-box';
+    modalBox.className =
+      'modal-box bg-white p-8 rounded-xl shadow-2xl max-w-sm w-full text-center border border-slate-100 flex flex-col w gap-6 animate-in fade-in zoom-in duration-200';
 
     modalBox.innerHTML = `
-    <p class="text-lg font-semibold mb-4">${message}</p>
-    <div class="flex justify-end space-x-3">
-      <button id="cancelButton" class="modal-button modal-button-cancel">Cancel</button>
-      <button id="confirmButton" class="modal-button modal-button-confirm">Confirm Delete</button>
+    <p class="text-lg font-semibold mb-4 flex justify-center">${message}</p>
+    <div class="flex justify-center space-x-3">
+      <button id="cancelButton" class="modal-button modal-button-cancel w-28 bg-sky-300 hover:bg-sky-500 cursor-pointer p-1.5 m-2 rounded-xl">Cancel</button>
+      <button id="confirmButton" class="modal-button modal-button-confirm w-40 bg-sky-300 hover:bg-sky-500 cursor-pointer p-1.5 m-2 rounded-xl">Confirm Delete</button>
     </div>
     `;
 
@@ -25,8 +27,12 @@ export function showConfirmationModal(message: string): Promise<boolean> {
       resolve(result);
     };
 
-    modalBox.querySelector('#cancelButton')?.addEventListener('click', () => cleanup(false));
-    modalBox.querySelector('#confirmButton')?.addEventListener('click', () => cleanup(true));
+    modalBox
+      .querySelector('#cancelButton')
+      ?.addEventListener('click', () => cleanup(false));
+    modalBox
+      .querySelector('#confirmButton')
+      ?.addEventListener('click', () => cleanup(true));
 
     modalOverlay.appendChild(modalBox);
 
