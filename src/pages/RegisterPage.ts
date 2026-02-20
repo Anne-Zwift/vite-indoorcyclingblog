@@ -13,7 +13,7 @@ export function RegisterPage(): HTMLDivElement {
 
   const card = document.createElement('div');
   card.className =
-    'w-full max-w-md bg-white rounded-xl shadow-lg p-8 border border-gray-100';
+    'w-full max-w-md bg-white dark:bg-slate-800 rounded-xl shadow-lg p-8 border border-gray-100 dark:border-slate-700';
 
   const title = document.createElement('h2');
   title.textContent = 'Register New User';
@@ -31,16 +31,16 @@ export function RegisterPage(): HTMLDivElement {
 
   registerForm.innerHTML = `
   <div class="form-group space-y-1">
-   <label class="block text-sm font-semibold text-gray-700 mb-1 md:text-lg lg:text-xl" for="username">Username:</label>
-   <input class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all outline-none type="text" id="username" name="username" required>
+   <label class="block text-sm font-semibold text-gray-700 dark:text-slate-100 mb-1 md:text-lg lg:text-xl" for="username">Username:</label>
+   <input class="w-full rounded-lg border border-gray-300 dark:border-slate-600 px-4 py-2 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all outline-none type="text" id="username" name="username" required>
   </div>
   <div class="form-group">
-   <label class="block text-sm font-semibold text-gray-700 mb-1 md:text-lg lg:text-xl for="email">Email:</label>
-   <input class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all outline-none type="email" id="email" name="email" required>
+   <label class="block text-sm font-semibold text-gray-700 dark:text-slate-100 mb-1 md:text-lg lg:text-xl for="email">Email:</label>
+   <input class="w-full rounded-lg border border-gray-300 dark:border-slate-600 px-4 py-2 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all outline-none type="email" id="email" name="email" required>
   </div>
   <div class="form-group">
-   <label class="block text-sm font-semibold text-gray-700 mb-1 md:text-lg lg:text-xl for="password">Password:</label>
-   <input class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all outline-none type="password" id="password" name="password" required>
+   <label class="block text-sm font-semibold text-gray-700 dark:text-slate-100 mb-1 md:text-lg lg:text-xl for="password">Password:</label>
+   <input class="w-full rounded-lg border border-gray-300 dark:border-slate-600 px-4 py-2 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all outline-none type="password" id="password" name="password" required>
   </div>
    <button class="w-full bg-sky-600 text-white py-3 rounded-lg font-bold hover:bg-sky-700 active:scale-[0.98] transition-all shadow-md mt-4" type="submit" id="registerSubmitButton">Register</button>
   `;

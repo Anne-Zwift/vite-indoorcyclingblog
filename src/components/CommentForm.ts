@@ -19,7 +19,7 @@ export function CommentForm({
   const form = document.createElement('form');
   form.classList.add('comment-form');
   form.className =
-    'flex flex-col gap-4 p-6 bg-(--color-primary) rounded-lg shadow-inner mt-8 w-full max-w-2xl mx-auto';
+    'flex flex-col gap-4 p-6 bg-(--color-primary) dark:bg-slate-800/50 rounded-lg shadow-inner mt-8 w-full max-w-2xl mx-auto';
 
   const textarea = document.createElement('textarea');
   textarea.name = 'body';
@@ -27,14 +27,14 @@ export function CommentForm({
   textarea.required = true;
   textarea.classList.add('comment-textarea');
   textarea.className =
-    'block w-full p-4 mx-auto text-base text-(--color-p-text) bg-slate-50 border border-slate-200 rounded-md focus:outline-none focus:ring-2 focus:ring-(--color-secondary) focus:ring-offset-2 transition-all duration-200';
+    'block w-full p-4 mx-auto text-base text-(--color-p-text) dark:text-white bg-slate-50 dark:bg-slate-500 border border-slate-200 dark:border-slate-600 rounded-md focus:outline-none focus:ring-2 focus:ring-(--color-secondary) focus:ring-offset-2 transition-all duration-200';
 
   const submitButton = document.createElement('button');
   submitButton.type = 'submit';
   submitButton.textContent = 'Post Comment';
   submitButton.classList.add('comment-submit-button');
   submitButton.className =
-    'self-end w-28 p-1.5 text-sm bg-(--color-secondary) hover:bg-(--color-hover-button) cursor-pointer transition-transform hover:scale-105 rounded-lg shadow-md';
+    'self-end w-28 p-1.5 text-sm bg-(--color-secondary) dark:bg-slate-600 hover:bg-(--color-hover-button) cursor-pointer transition-transform hover:scale-105 rounded-lg shadow-md';
 
   form.append(textarea, submitButton);
 

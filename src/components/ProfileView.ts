@@ -87,11 +87,11 @@ const renderProfileHeader = (profileData: Profile): HTMLDivElement => {
   banner.className = 'profile-banner w-full aspect-[16/7] object-cover rounded-xl shadow-md';
 
   const contentWrapper = document.createElement('div');
-  contentWrapper.className = 'mt-16 md:mt-4 md:ml-60 flex flex-col items-center md:items-start text-center md:text-left';
+  contentWrapper.className = 'mt-16 mb-10 md:mt-4 md:ml-60 flex flex-col items-center md:items-start text-center md:text-left';
 
   const name = document.createElement('h2');
   name.textContent = profileData.name;
-  name.className = 'text-3xl font-bold text-gray-900';
+  name.className = 'text-3xl font-bold text-gray-900 dark:text-slate-100';
 
   const email = document.createElement('p');
   email.textContent = `${profileData.email}`;

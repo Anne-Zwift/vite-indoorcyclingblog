@@ -118,7 +118,7 @@ export const SearchPage = async (): Promise<HTMLDivElement> => {
       if (otherProfiles.length > 0) {
         const otherProfilesHeading = document.createElement('h3');
         otherProfilesHeading.textContent = `Other Profile Matches (${otherProfiles.length})`;
-        otherProfilesHeading.className = 'text-xl font-h1 font-bold mt-8 mb-4 text-p-text self-start';
+        otherProfilesHeading.className = 'text-xl font-h1 font-bold mt-8 mb-4 text-p-text dark:text-slate-100 self-start';
 
         resultsContainer.appendChild(otherProfilesHeading);
         resultsContainer.appendChild(renderProfileResults(otherProfiles));
@@ -126,7 +126,7 @@ export const SearchPage = async (): Promise<HTMLDivElement> => {
 
       if (posts.length > 0) {
         const postsHeading = document.createElement('h3');
-        postsHeading.className = 'text-xl font-h1 font-bold mt-8 mb-4 text-p-text self-start';
+        postsHeading.className = 'text-xl font-h1 font-bold mt-8 mb-4 text-p-text self-start dark:text-slate-100';
         postsHeading.textContent = `Related Posts (${posts.length})`;
         resultsContainer.appendChild(postsHeading);
         resultsContainer.appendChild(renderPostResults(posts));

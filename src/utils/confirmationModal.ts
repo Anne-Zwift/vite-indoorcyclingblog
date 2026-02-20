@@ -12,13 +12,13 @@ export function showConfirmationModal(message: string): Promise<boolean> {
 
     const modalBox = document.createElement('div');
     modalBox.className =
-      'modal-box bg-white p-8 rounded-xl shadow-2xl max-w-sm w-full text-center border border-slate-100 flex flex-col w gap-6 animate-in fade-in zoom-in duration-200';
+      'modal-box bg-white dark:bg-slate-800 p-8 rounded-xl shadow-2xl max-w-sm w-full text-center border border-slate-100 dark:border-slate-600 flex flex-col w gap-6 animate-in fade-in zoom-in duration-200';
 
     modalBox.innerHTML = `
     <p class="text-lg font-semibold mb-4 flex justify-center">${message}</p>
     <div class="flex justify-center space-x-3">
-      <button id="cancelButton" class="modal-button modal-button-cancel w-28 bg-sky-300 hover:bg-sky-500 cursor-pointer p-1.5 m-2 rounded-xl">Cancel</button>
-      <button id="confirmButton" class="modal-button modal-button-confirm w-40 bg-sky-300 hover:bg-sky-500 cursor-pointer p-1.5 m-2 rounded-xl">Confirm Delete</button>
+      <button id="cancelButton" class="modal-button modal-button-cancel w-28 bg-sky-300 hover:bg-sky-500 dark:bg-sky-700 dark:hover:bg-sky-900 cursor-pointer p-1.5 m-2 rounded-xl">Cancel</button>
+      <button id="confirmButton" class="modal-button modal-button-confirm w-40 bg-sky-300 dark:bg-sky-700 hover:bg-sky-500 dark:hover:bg-sky-900 cursor-pointer p-1.5 m-2 rounded-xl">Confirm Delete</button>
     </div>
     `;
 

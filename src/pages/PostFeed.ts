@@ -64,7 +64,7 @@ export async function PostFeed(tag?: string): Promise<HTMLDivElement> {
   const actionButton = document.createElement('button');
   actionButton.id = 'create-post-button';
   actionButton.textContent = 'Create New Post';
-  actionButton.className = 'md:self-end w-28 p-1 text-sm bg-(--color-secondary) hover:bg-(--color-hover-button) cursor-pointer transition-transform hover:scale-105 border border-slate-500 rounded-lg shadow-sm';
+  actionButton.className = 'dark:bg-slate-700 md:self-end w-28 p-1 text-sm bg-(--color-secondary) hover:bg-(--color-hover-button) cursor-pointer transition-transform hover:scale-105 border border-slate-500 rounded-lg shadow-sm';
   actionButton.style.display = state.isLoggedIn ? '' : 'none';
 
   actionButton.addEventListener('click', () => {

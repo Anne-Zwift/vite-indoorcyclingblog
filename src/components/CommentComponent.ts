@@ -10,7 +10,7 @@ import { formatRelativeDate } from "../utils/dateUtils";
 export function CommentComponent(comment: CommentItem): HTMLDivElement {
   const commentContainer = document.createElement('div');
   commentContainer.classList.add('comment-item');
-  commentContainer.className = 'flex flex-col p-4 bg-(--color-primary) mt-2 border-b border-slate-100 last:border-0 w-full max-w-2xl mx-auto mb-4'
+  commentContainer.className = 'flex flex-col p-4 bg-(--color-primary) dark:bg-slate-500 mt-2 rounded border-b border-slate-100 dark:border-slate-600 last:border-0 w-full max-w-2xl mx-auto mb-4'
 
   const header = document.createElement('div');
   header.classList.add('comment-header');
@@ -31,7 +31,7 @@ export function CommentComponent(comment: CommentItem): HTMLDivElement {
   const bodyText = document.createElement('p');
   bodyText.textContent = comment.body;
   bodyText.classList.add('comment-body');
-  bodyText.className = 'text-sm lg:text-base text-(--color-p-text) text-left mt-2 break-words';
+  bodyText.className = 'text-sm lg:text-base text-(--color-p-text) dark:text-white text-left mt-2 break-words';
 
   commentContainer.append(header, bodyText);
 

@@ -47,11 +47,11 @@ const renderProfile = (profile: Profile): HTMLDivElement => {
 
   const name = document.createElement('h2');
   name.textContent = profile.name;
-  name.className = 'text-3xl font-bold text-gray-900';
+  name.className = 'text-3xl font-bold text-gray-900 dark:text-slate-100';
 
   const email = document.createElement('p');
   email.textContent = `${profile.email}`;
-  email.className = 'text-gray-600';
+  email.className = 'text-gray-600 dark:text-slate-100';
 
   const statsRow = document.createElement('div');
   statsRow.className =
@@ -60,7 +60,7 @@ const renderProfile = (profile: Profile): HTMLDivElement => {
   const followersSpan = document.createElement('span');
   followersSpan.className = 'flex flex-col items-center md:items-start';
   const followersCount = document.createElement('strong');
-  followersCount.className = 'text-gray-900 text-lg';
+  followersCount.className = 'text-gray-900 text-lg dark:text-slate-100';
   followersCount.textContent = `Followers: ${profile._count.followers || 0}`;
   const followersLabel = document.createElement('span');
   followersSpan.append(followersCount, followersLabel);
@@ -68,7 +68,7 @@ const renderProfile = (profile: Profile): HTMLDivElement => {
   const postsSpan = document.createElement('span');
   postsSpan.className = 'flex flex-col items-center md:items-start';
   const postsCount = document.createElement('strong');
-  postsCount.className = 'text-gray-900 text-lg';
+  postsCount.className = 'text-gray-900 text-lg dark:text-slate-100';
   postsCount.textContent = ` Posts: ${profile._count?.posts || 0}`;
   const postsLabel = document.createElement('span');
   postsSpan.append(postsCount, postsLabel);
@@ -86,7 +86,7 @@ const renderProfile = (profile: Profile): HTMLDivElement => {
     const editButton = document.createElement('button');
     editButton.textContent = '✏️ Update Profile Image';
     editButton.className =
-      'edit-profile-button flex justify-between w-24 md:w-64 md:justify-center items-center -mt-16 md:mt-0 gap-2 px-1 py-4 md:px-4 md:py-2 rounded-lg text-xs md:text-sm break-word font-semibold shadow-md bg-white/80 backdrop-blur hover:bg-white transition active:scale-95';
+      'edit-profile-button flex justify-between w-24 dark:bg-slate-500 md:w-64 md:justify-center items-center -mt-16 md:mt-0 gap-2 px-1 py-4 md:px-4 md:py-2 rounded-lg text-xs md:text-sm break-word font-semibold shadow-md bg-white/80 backdrop-blur hover:bg-white dark:hover:bg-slate-800 transition active:scale-95';
 
     const updateForm = document.createElement('form');
     updateForm.dataset.open = 'false';
@@ -99,13 +99,13 @@ const renderProfile = (profile: Profile): HTMLDivElement => {
     avatarInput.id = 'new-avatar-url';
     avatarInput.value = profile.avatar?.url || '';
     avatarInput.className =
-      'w-full p-2 mt-2 text-sm font-mono truncate text-(--color-p-text) bg-slate-50 border border-slate-200 rounded-md focus:outline-none focus:ring-2 focus:ring-(--color-secondary) focus:ring-offset-2 transition-all duration-200';
+      'w-full p-2 mt-2 text-sm font-mono truncate text-(--color-p-text) dark:text-slate-200 bg-slate-50 border border-slate-200 dark:border-slate-800 rounded-md focus:outline-none focus:ring-2 focus:ring-(--color-secondary) focus:ring-offset-2 transition-all duration-200 dark:bg-slate-600';
 
     const saveButton = document.createElement('button');
     saveButton.type = 'submit';
     saveButton.textContent = 'Save Avatar';
     saveButton.className =
-      'self-start bg-(--color-bg-button) hover:bg-(--color-hover-button) w-28 p-1 m-2 rounded transitions-color';
+      'self-start bg-(--color-bg-button) dark:bg-slate-600 hover:bg-(--color-hover-button) w-28 p-1 m-2 rounded transitions-color dark:border-slate-400';
 
     const statusMessage = document.createElement('p');
     statusMessage.className =
@@ -122,7 +122,7 @@ const renderProfile = (profile: Profile): HTMLDivElement => {
     const editBannerButton = document.createElement('button');
     editBannerButton.textContent = '🖼️ Update Banner Image';
     editBannerButton.className =
-      'edit-banner-button flex justify-between w-24 md:w-64 md:justify-center items-center -mt-2 md:mt-0 gap-2 px-1 py-4 md:px-4 md:py-2 rounded-lg text-xs md:text-sm break-word font-semibold shadow-md bg-white/80 backdrop-blur hover:bg-white transition active:scale-95';
+      'edit-banner-button flex justify-between w-24 dark:bg-slate-500 md:w-64 md:justify-center items-center -mt-2 md:mt-0 gap-2 px-1 py-4 md:px-4 md:py-2 rounded-lg text-xs md:text-sm break-word font-semibold shadow-md bg-white/80 backdrop-blur hover:bg-white dark:hover:bg-slate-800 transition active:scale-95';
 
     const updateBannerForm = document.createElement('form');
     updateBannerForm.dataset.open = 'false';
@@ -135,13 +135,13 @@ const renderProfile = (profile: Profile): HTMLDivElement => {
     bannerInput.id = 'new-banner-url';
     bannerInput.value = profile.banner?.url || '';
     bannerInput.className =
-      'w-full p-2 mt-2 text-sm font-mono truncate text-(--color-p-text) bg-slate-50 border border-slate-200 rounded-md focus:outline-none focus:ring-2 focus:ring-(--color-secondary) focus:ring-offset-2 transition-all duration-200';
+      'w-full p-2 mt-2 text-sm font-mono truncate text-(--color-p-text) dark:text-slate-200 bg-slate-50 border border-slate-200 dark:border-slate-800 rounded-md focus:outline-none focus:ring-2 focus:ring-(--color-secondary) focus:ring-offset-2 transition-all duration-200 dark:bg-slate-600';
 
     const saveBannerButton = document.createElement('button');
     saveBannerButton.type = 'submit';
     saveBannerButton.textContent = 'Save Banner';
     saveBannerButton.className =
-      'self-start bg-(--color-bg-button) hover:bg-(--color-hover-button) w-28 p-1 m-2 rounded transitions-color';
+      'self-start bg-(--color-bg-button) dark:bg-slate-600 hover:bg-(--color-hover-button) w-28 p-1 m-2 rounded transitions-color dark:border-slate-400';
 
     const bannerStatusMessage = document.createElement('p');
     bannerStatusMessage.className =

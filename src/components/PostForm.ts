@@ -69,7 +69,7 @@ export function PostForm(props: PostFormProps = {}): HTMLDivElement {
   const isEditMode = !!initialData;
   const formContainer = document.createElement('div');
   formContainer.className =
-    'flex flex-col text-center rounded-lg shadow-lg w-full p-8 mb-6 bg-white border border-slate-100';
+    'flex flex-col text-center rounded-lg shadow-lg w-full p-8 mb-6 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-600';
   formContainer.id = isEditMode
     ? `edit-post-container-${initialData.id}`
     : 'create-post-form-container';
@@ -93,7 +93,7 @@ export function PostForm(props: PostFormProps = {}): HTMLDivElement {
 
   const titleInput = document.createElement('input');
   titleInput.className =
-    'block w-full p-3 m-1 mx-auto text-base text-(--color-p-text) bg-slate-50 border border-slate-200 rounded-md focus:outline-none focus:ring-2 focus:ring-(--color-secondary) focus:ring-offset-2 transition-all duration-200';
+    'block w-full p-3 m-1 mx-auto text-base text-(--color-p-text) dark:text-white bg-slate-50 dark:bg-slate-600 border border-slate-200 dark:border-slate-800 rounded-md focus:outline-none focus:ring-2 focus:ring-(--color-secondary) focus:ring-offset-2 transition-all duration-200';
   titleInput.type = 'text';
   titleInput.name = 'title';
   titleInput.placeholder = 'Title (Required)';
@@ -104,7 +104,7 @@ export function PostForm(props: PostFormProps = {}): HTMLDivElement {
 
   const bodyTextarea = document.createElement('textarea');
   bodyTextarea.className =
-    'block w-full p-4 mx-auto text-base text-(--color-p-text) bg-slate-50 border border-slate-200 rounded-md focus:outline-none focus:ring-2 focus:ring-(--color-secondary) transition-all duration-200 resize-y min-h-[150px] [scrollbar-gutter:stable]';
+    'block w-full p-4 mx-auto text-base text-(--color-p-text) dark:text-white bg-slate-50 dark:bg-slate-600 border border-slate-200 dark:border-slate-800 rounded-md focus:outline-none focus:ring-2 focus:ring-(--color-secondary) transition-all duration-200 resize-y min-h-[150px] [scrollbar-gutter:stable]';
   bodyTextarea.name = 'body';
   bodyTextarea.placeholder = 'Body/Content (Optional)';
   if (isEditMode && initialData.body) {
@@ -113,7 +113,7 @@ export function PostForm(props: PostFormProps = {}): HTMLDivElement {
 
   const tagsInput = document.createElement('input');
   tagsInput.className =
-    'block w-full p-3 m-1 mx-auto text-base text-(--color-p-text) bg-slate-50 border border-slate-200 rounded-md focus:outline-none focus:ring-2 focus:ring-(--color-secondary) focus:ring-offset-2 transition-all duration-200';
+    'block w-full p-3 m-1 mx-auto text-base text-(--color-p-text) dark:text-white bg-slate-50 dark:bg-slate-600 border border-slate-200 dark:border-slate-800 rounded-md focus:outline-none focus:ring-2 focus:ring-(--color-secondary) focus:ring-offset-2 transition-all duration-200';
   tagsInput.type = 'text';
   tagsInput.name = 'tags';
   tagsInput.placeholder = 'Tags (e.g., cycling, indoor)';
@@ -123,7 +123,7 @@ export function PostForm(props: PostFormProps = {}): HTMLDivElement {
 
   const mediaUrlInput = document.createElement('input');
   mediaUrlInput.className =
-    'block w-full min-w-0 p-3 m-1 mx-auto text-sm font-mono truncate text-(--color-p-text) bg-slate-50 border border-slate-200 rounded-md focus:outline-none focus:ring-2 focus:ring-(--color-secondary) focus:ring-offset-2 transition-all duration-200';
+    'block w-full min-w-0 p-3 m-1 mx-auto text-sm font-mono truncate text-(--color-p-text) dark:text-white bg-slate-50 dark:bg-slate-600 border border-slate-200 dark:border-slate-800 rounded-md focus:outline-none focus:ring-2 focus:ring-(--color-secondary) focus:ring-offset-2 transition-all duration-200';
   mediaUrlInput.type = 'text';
   mediaUrlInput.name = 'mediaUrl';
   mediaUrlInput.placeholder = 'Media URL (Optional)';
@@ -133,7 +133,7 @@ export function PostForm(props: PostFormProps = {}): HTMLDivElement {
 
   const mediaAltInput = document.createElement('input');
   mediaAltInput.className =
-    'block w-full p-3 m-1 mx-auto text-base text-(--color-p-text) bg-slate-50 border border-slate-200 rounded-md focus:outline-none focus:ring-2 focus:ring-(--color-secondary) focus:ring-offset-2 transition-all duration-200';
+    'block w-full p-3 m-1 mx-auto text-base text-(--color-p-text) dark:text-white bg-slate-50 border dark:bg-slate-600 border-slate-200 dark:border-slate-800 rounded-md focus:outline-none focus:ring-2 focus:ring-(--color-secondary) focus:ring-offset-2 transition-all duration-200';
   mediaAltInput.type = 'text';
   mediaAltInput.name = 'mediaAlt';
   mediaAltInput.placeholder = 'Media Alt Text (Optional)';
@@ -143,7 +143,7 @@ export function PostForm(props: PostFormProps = {}): HTMLDivElement {
 
   const submitButton = document.createElement('button');
   submitButton.className =
-    'w-32 self-end bg-(--color-bg-button) hover:bg-(--color-hover-button) rounded-lg mt-4 mb-2 p-2 font-medium transition-all hover:scale-105 border-none';
+    'w-32 self-end dark:text-slate-100 bg-(--color-bg-button) dark:bg-slate-400 hover:bg-(--color-hover-button) rounded-lg mt-4 mb-2 p-2 font-medium transition-all hover:scale-105 border-none';
   submitButton.type = 'submit';
   submitButton.textContent =
     submitText || (isEditMode ? 'Update Post' : 'Create Post');

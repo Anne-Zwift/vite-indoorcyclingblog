@@ -14,7 +14,7 @@ export function LoginPage(): HTMLDivElement {
 
   const card = document.createElement('div');
   card.className =
-    'w-full max-w-md bg-white rounded-xl shadow-lg p-8 border border-gray-100';
+    'w-full max-w-md bg-white dark:bg-slate-800 rounded-xl shadow-lg p-8 border border-gray-100 dark:border-slate-700';
 
   const title = document.createElement('h2');
   title.textContent = 'Log in to Indoor Cycling!';
@@ -28,18 +28,18 @@ export function LoginPage(): HTMLDivElement {
   messageArea.className = 'text-sm text-red-500 text-center mb-4';
 
   const loginForm = document.createElement('form');
-  /*   loginForm.id = 'loginForm';
-  loginForm.className = 'login-form'; */
+  loginForm.id = 'loginForm';
+  /* loginForm.className = 'login-form'; */
   loginForm.className = 'space-y-4';
 
   loginForm.innerHTML = `
   <div class="form-group space-y-1">
-   <label class="block text-sm font-semibold text-gray-700 mb-1 md:text-lg lg:text-xl" for="email">Email</label>
-   <input type="email" id="email" name="email" required minlength="8" class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all outline-none" >
+   <label class="block text-sm font-semibold text-gray-700 dark:text-slate-100 mb-1 md:text-lg lg:text-xl" for="email">Email</label>
+   <input class="w-full rounded-lg border border-gray-300 dark:border-slate-600 px-4 py-2 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all outline-none" type="email" id="email" name="email" required minlength="8">
   </div>
   <div class="form-group">
-   <label class="block text-sm font-semibold text-gray-700 mb-1 md:text-lg lg:text-xl" for="password">Password</label>
-   <input type="password" id="password" name="password" required minlength="8" class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all outline-none">
+   <label class="block text-sm font-semibold text-gray-700 dark:text-slate-100 mb-1 md:text-lg lg:text-xl" for="password">Password</label>
+   <input type="password" id="password" name="password" required minlength="8" class="w-full rounded-lg border border-gray-300 dark:border-slate-600 px-4 py-2 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all outline-none">
   </div>
    <button type="submit" id="loginSubmitButton" class="w-full bg-sky-600 text-white py-3 rounded-lg font-bold hover:bg-sky-700 active:scale-[0.98] transition-all shadow-md mt-4">Log In</button>
   `;
