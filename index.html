@@ -6,24 +6,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Indoor Cycling Blog</title>
     <script>
-      const isDark =
-        localStorage.theme === 'dark' ||
-        (!('theme' in localStorage) &&
-          window.matchMedia('(prefers-color-scheme: dark)').matches);
+      (function () {
+        const isDark =
+          localStorage.theme === 'dark' ||
+          (!('theme' in localStorage) &&
+            window.matchMedia('(prefers-color-scheme: dark)').matches);
 
-      if (isDark) {
-        document.documentElement.classList.add('dark');
-      }
-      document.addEventListener('DOMContentLoaded', () => {
-        setTimeout(() => {
-          document.body.classList.add('transition-colors', 'duration-500');
-        }, 100);
-      });
+        if (isDark) {
+          document.documentElement.classList.add('dark');
+        }
+
+        const style = document.createElement('style');
+        style.id = 'anti-fouc';
+
+        style.innerHTML = `
+        body { visibility: hidden !important; }
+        html.dark body { background-color: #020617 !important; visibility: visible !important; }
+      `;
+        document.head.appendChild(style);
+      })();
     </script>
   </head>
   <!-- remove the bg-color in body later? -->
   <body
-    class="bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 duration-500 min-h-screen"
+    class="bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-screen"
   >
     <div id="app" class="flex flex-col min-h-screen">
       <h1
