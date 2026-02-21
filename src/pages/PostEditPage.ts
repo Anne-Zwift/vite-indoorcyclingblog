@@ -11,7 +11,7 @@ import { showTempMessage } from '../utils/message';
 
 export function PostEditPage(id?: string): HTMLDivElement {
   const pageContainer = document.createElement('div');
-  /*   pageContainer.classList.add('p-6'); */
+
   pageContainer.className = 'max-w-2xl mx-auto p-6';
   pageContainer.innerHTML = '<h2>Loading Post for Edit...</h2>';
 
@@ -39,8 +39,6 @@ export function PostEditPage(id?: string): HTMLDivElement {
   getPostDetails(id)
     .then((post) => {
       pageContainer.innerHTML = '';
-      /*     const header = document.createElement('h2'); */
-      /*     header.textContent = `Edit Post: ${post.title}`; */
 
       const editForm = PostForm({
         initialData: post,

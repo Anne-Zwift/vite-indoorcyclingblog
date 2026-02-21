@@ -55,12 +55,6 @@ function displayStatus(
     : 'bg-green-50 text-green-700 border-green-200';
   element.className = baseClasses + stateClasses;
   element.style.display = 'block';
-  /* 
-  if (isError) {
-    element.classList.add('status-error');
-  } else {
-    element.classList.add('status-success');
-  } */
 }
 
 export function PostForm(props: PostFormProps = {}): HTMLDivElement {
@@ -83,7 +77,6 @@ export function PostForm(props: PostFormProps = {}): HTMLDivElement {
   const statusMessage = document.createElement('div');
   statusMessage.id = 'post-status-message';
   statusMessage.className = 'status-message';
-  /*   statusMessage.style.display = 'none'; */
 
   const form = document.createElement('form');
   form.className = 'flex flex-col items-stretch gap-2 px-1 py-1 mt-4';

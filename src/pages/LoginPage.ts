@@ -23,13 +23,10 @@ export function LoginPage(): HTMLDivElement {
 
   const messageArea = document.createElement('div');
   messageArea.id = 'loginMessage';
-  /* messageArea.className = 'message-area'; */
-  /* messageArea.style.color = 'red'; */
   messageArea.className = 'text-sm text-red-500 text-center mb-4';
 
   const loginForm = document.createElement('form');
   loginForm.id = 'loginForm';
-  /* loginForm.className = 'login-form'; */
   loginForm.className = 'space-y-4';
 
   loginForm.innerHTML = `

@@ -23,7 +23,6 @@ export function RegisterPage(): HTMLDivElement {
   const messageArea = document.createElement('div');
   messageArea.id = 'registerMessage';
   messageArea.className = 'message-area text-sm text-red-500 text-center mb-4';
-  /* messageArea.style.color = 'black'; */
 
   const registerForm = document.createElement('form');
   registerForm.id = 'registerForm';
@@ -73,7 +72,6 @@ export function RegisterPage(): HTMLDivElement {
       return;
     }
 
-    /*new code*/
     const nameInvalidChars = /[^A-Za-z0-9_]/g;
     if (nameInvalidChars.test(username)) {
       messageArea.textContent =

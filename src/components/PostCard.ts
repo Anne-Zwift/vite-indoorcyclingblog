@@ -19,9 +19,8 @@ export function PostCard(
   isDetailView: boolean = false,
 ): HTMLElement {
   const article = document.createElement('article');
-  article.classList.add('post-card');
   article.dataset.postId = String(post.id);
-  article.className = `relative dark:bg-slate-800 dark:text-slate-100 flex flex-col items-center justify-center text-sm lg:text-base py-12 w-full px-6 mb-4 rounded-md shadow-xl ${!isDetailView ? 'cursor-pointer' : ''}`;
+  article.className = `post-card relative dark:bg-slate-800 dark:text-slate-100 flex flex-col items-center justify-center text-sm lg:text-base py-12 w-full px-6 mb-4 rounded-md shadow-xl ${!isDetailView ? 'cursor-pointer' : ''}`;
 
   const mediaContainer = document.createElement('div');
   mediaContainer.classList.add('post-media-container');
@@ -46,13 +45,12 @@ export function PostCard(
   }
   const placeholderContainer = document.createElement('div');
   placeholderContainer.className = 'w-full flex justify-center p-4';
-  /* media/placeholder */
+
   if (mediaUrl) {
     const imageElement = document.createElement('img');
     imageElement.src = mediaUrl;
     imageElement.alt = mediaAlt || post.title;
-    imageElement.classList.add('post-image');
-    imageElement.className = `w-full object-cover md:w-80 lg:w-96 rounded-lg shadow-md m-4 ${!isDetailView ? 'cursor-pointer' : ''}`;
+    imageElement.className = `post-image w-full object-cover md:w-80 lg:w-96 rounded-lg shadow-md m-4 ${!isDetailView ? 'cursor-pointer' : ''}`;
 
     if (!isDetailView) {
       imageElement.style.cursor = 'pointer';
@@ -89,9 +87,8 @@ export function PostCard(
   if (isAuthor) {
     const editButton = document.createElement('button');
     editButton.textContent = 'Edit';
-    editButton.classList.add('edit-post-button');
     editButton.className =
-      'bg-(--color-bg-button) hover:bg-(--color-hover-button) w-20 p-1 m-2 rounded transition-colors dark:bg-slate-500';
+      'edit-post-button bg-(--color-bg-button) hover:bg-(--color-hover-button) w-20 p-1 m-2 rounded transition-colors dark:bg-slate-500';
 
     editButton.addEventListener('click', (event) => {
       event.preventDefault();
@@ -100,9 +97,8 @@ export function PostCard(
 
     const deleteButton = document.createElement('button');
     deleteButton.textContent = 'Delete';
-    deleteButton.classList.add('delete-post-button');
     deleteButton.className =
-      'bg-(--color-bg-button) hover:bg-(--color-hover-button) w-20 p-1 m-2 rounded transition-colors dark:bg-slate-500';
+      'delete-post-button bg-(--color-bg-button) hover:bg-(--color-hover-button) w-20 p-1 m-2 rounded transition-colors dark:bg-slate-500';
 
     deleteButton.addEventListener('click', async (event) => {
       event.preventDefault();
@@ -129,8 +125,8 @@ export function PostCard(
     });
 
     buttonWrapper = document.createElement('div');
-    buttonWrapper.classList.add('post-actions-wrapper');
-    buttonWrapper.className = 'max-w-64 flex justify-evenly self-auto';
+    buttonWrapper.className =
+      'post-actions-wrapper max-w-64 flex justify-evenly self-auto';
 
     buttonWrapper.appendChild(editButton);
     buttonWrapper.appendChild(deleteButton);
@@ -338,16 +334,15 @@ export function PostCard(
   });
 
   const contentWrapper = document.createElement('div');
-  contentWrapper.classList.add('post-content');
   contentWrapper.className =
-    'w-full md:w-1/2 flex flex-col justify-center items-center p-6 m-2 gap-6 dark:bg-slate-800 dark:text-slate-100 md:font-medium bg-(--color-primary) rounded';
+    'post-content w-full flex flex-col justify-center items-center p-6 m-2 gap-6 dark:bg-slate-800 dark:text-slate-100 md:font-medium bg-(--color-primary) rounded';
 
   const title = document.createElement('h3');
   title.textContent = post.title;
   title.className = 'text-xl font-medium';
 
   const body = document.createElement('p');
-  body.className = 'text-sm font-thin md:text-lg';
+  body.className = 'md:w-1/2 text-sm font-thin md:text-lg text-center';
   if (isDetailView) {
     body.textContent = post.body || '[No content]';
   } else {
@@ -389,7 +384,6 @@ export function PostCard(
   metadataArea.className = '';
 
   const postInfoWrapper = document.createElement('div');
-  postInfoWrapper.classList.add('post-info-wrapper');
   postInfoWrapper.className =
     'post-info-wrapper flex flex-wrap items-center justify-center gap-x-4 text-sm text-p-text dark:text-slate-100';
   if (buttonWrapper) {
@@ -429,23 +423,20 @@ export function PostCard(
   contentWrapper.prepend(metadataArea);
 
   const interactionArea = document.createElement('div');
-  interactionArea.classList.add('post-interaction');
   interactionArea.className =
-    'flex flex-col items-center p-6 mt-6 bg-slate-50 font-mono rounded-b-md border-t border-sky-100 dark:border-slate-700 gap-4 dark:bg-slate-900/40';
+    'post-interaction flex flex-col items-center p-6 mt-6 bg-slate-50 font-mono rounded-b-md border-t border-sky-100 dark:border-slate-700 gap-4 dark:bg-slate-900/40';
 
   if (!isDetailView) {
     const readMoreLink = document.createElement('button');
     readMoreLink.textContent = 'Read More ➡️';
-    readMoreLink.classList.add('read-more-link');
     readMoreLink.className =
-      'w-28 p-1.5 text-sm bg-(--color-bg-button)/40 hover:bg-(--color-hover-button) cursor-pointer transition-transform hover:scale-105 border-(--color-bg-button) rounded-lg shadow-sm';
+      'read-more-link w-28 p-1.5 text-sm bg-(--color-bg-button)/40 hover:bg-(--color-hover-button) cursor-pointer transition-transform hover:scale-105 border-(--color-bg-button) rounded-lg shadow-sm';
 
     readMoreLink.addEventListener('click', (event) => {
       event.stopPropagation();
       navigate(`/post/${post.id}`);
     });
 
-    //article.style.cursor = 'pointer';
     article.addEventListener('click', () => {
       navigate(`/post/${post.id}`);
     });

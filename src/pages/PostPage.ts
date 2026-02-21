@@ -44,8 +44,9 @@ export function PostPage(postId: string = ''): HTMLDivElement {
 
         const backButton = document.createElement('button');
         backButton.textContent = '⬅️ Back to Feed';
-        backButton.classList.add('back-to-feed-button');
-        backButton.className = 'w-48 p-1.5 md:p-2 text-sm bg-(--color-bg-button) hover:bg-(--color-hover-button) dark:bg-slate-500 cursor-pointer transition-transform hover:scale-105 rounded-lg shadow-md';
+
+        backButton.className =
+          'back-to-feed-button w-48 p-1.5 md:p-2 text-sm bg-(--color-bg-button) hover:bg-(--color-hover-button) dark:bg-slate-500 cursor-pointer transition-transform hover:scale-105 rounded-lg shadow-md';
 
         backButton.addEventListener('click', () => {
           navigate('/');
@@ -72,9 +73,8 @@ export function PostPage(postId: string = ''): HTMLDivElement {
         commentForm.classList.add('post-comment-form-wrapper');
 
         const commentsSection = document.createElement('section');
-        commentsSection.classList.add('comments-section');
         commentsSection.className =
-          'flex flex-col gap-4 p-6 bg-(--color-primary) dark:bg-slate-800 rounded-lg shadow-inner mt-8 w-full max-w-2xl mx-auto mb-12';
+          'comments-section flex flex-col gap-4 p-6 bg-(--color-primary) dark:bg-slate-800 rounded-lg shadow-inner mt-8 w-full max-w-2xl mx-auto mb-12';
 
         const commentsHeader = document.createElement('h3');
         commentsHeader.textContent = `Comments (${post._count.comments})`;
