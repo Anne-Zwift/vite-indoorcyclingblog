@@ -8,6 +8,15 @@ School project
 - The Front-end will allow users to perform **CRUD** operations (Create, Read, Update, and Delete) on their own posts.
 - Features such as **following/unfollow users**, **commenting on posts**, and **reacting** to a post with an emoji.
 
+### 🌓 Smart Dark Mode Implementation
+
+A robust theme-switching system that prioritizes user experience and performance.
+
+- **System Synchronization**: Automatically detects and applies the user's OS color preference (Light/Dark) on first load.
+- **Persistence**: Remembers user manual overrides across sessions using `localStorage`.
+- **Anti-FOUC Logic**: Utilizes an inline blocking script in the `<head>` to prevent the "Flash of Unstyled Content", ensuring a smooth visual experience from the first paint.
+- **Granular UI Control**: Built with a custom Tailwind variant (`@custom-variant dark`) to manage complex CSS specificity, allowing for detailed elevation and contrast adjustments across all components.
+
 ## ℹ️Overview
 
 This is a **Front-end for a social media application**, implemented as a **single-page application (SPA)** using **Vite** and **vanilla TypeScript**.
