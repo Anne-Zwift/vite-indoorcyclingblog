@@ -9,24 +9,28 @@ const navContainer = document.getElementById('nav-container');
 const appRoot = document.body;
 
 if (!contentArea || !navContainer) {
-  console.error('FATAL: Required DOM containers (#content-area or #nav-Container) not found');
+  console.error(
+    'FATAL: Required DOM containers (#content-area or #nav-Container) not found',
+  );
   throw new Error('Application failed to initialize.');
 }
 
 async function initializeApp(): Promise<void> {
-  const routerInstance = await initRouter(contentArea as HTMLDivElement);
-
-  state.router = routerInstance;
-  console.log(routerInstance);
-
   const navBar = createNavigation();
-
   navContainer?.appendChild(navBar);
 
   const appFooter = Footer();
   appRoot.appendChild(appFooter);
 
-  console.log('Application initialized. Router listening for URL hash changes.');
+  document.getElementById('anti-fouc')?.remove();
+
+  const routerInstance = await initRouter(contentArea as HTMLDivElement);
+  state.router = routerInstance;
+  console.log(routerInstance);
+
+  console.log(
+    'Application initialized. Router listening for URL hash changes.',
+  );
 }
 
 initializeApp();

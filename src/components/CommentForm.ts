@@ -1,5 +1,5 @@
-import { postComment } from "../api/Client";
-import { showTempMessage } from "../utils/message";
+import { postComment } from '../api/Client';
+import { showTempMessage } from '../utils/message';
 
 interface CommentFormOptions {
   postId: string;
@@ -12,49 +12,57 @@ interface CommentFormOptions {
  * @returns {HTMLFormElement} The comment submission form element.
  */
 
-export function CommentForm({ postId, onCommentSuccess}: CommentFormOptions): HTMLFormElement {
-const form = document.createElement('form');
-form.classList.add('comment-form');
+export function CommentForm({
+  postId,
+  onCommentSuccess,
+}: CommentFormOptions): HTMLFormElement {
+  const form = document.createElement('form');
+  form.className =
+    'comment-form flex flex-col gap-4 p-6 bg-(--color-primary) dark:bg-slate-800/50 rounded-lg shadow-inner mt-8 w-full max-w-2xl mx-auto';
 
-const textarea = document.createElement('textarea');
-textarea.name = 'body';
-textarea.placeholder = 'Write a comment...';
-textarea.required = true;
-textarea.classList.add('comment-textarea');
+  const textarea = document.createElement('textarea');
+  textarea.name = 'body';
+  textarea.placeholder = 'Write a comment...';
+  textarea.required = true;
+  textarea.className =
+    'comment-textarea block w-full p-4 text-base text-(--color-p-text) dark:text-white bg-slate-50 dark:bg-slate-500 border border-slate-200 dark:border-slate-600 rounded-md focus:outline-none focus:ring-2 focus:ring-(--color-secondary) focus:ring-offset-2 transition-all duration-200';
 
-const submitButton = document.createElement('button');
-submitButton.type = 'submit';
-submitButton.textContent = 'Post Comment';
-submitButton.classList.add('comment-submit-button');
+  const submitButton = document.createElement('button');
+  submitButton.type = 'submit';
+  submitButton.textContent = 'Post Comment';
+  submitButton.className =
+    'comment-submit-button self-end w-28 p-1.5 text-sm bg-(--color-secondary) dark:bg-slate-600 hover:bg-(--color-hover-button) cursor-pointer transition-transform hover:scale-105 rounded-lg shadow-md';
 
-form.append(textarea, submitButton);
+  form.append(textarea, submitButton);
 
-form.addEventListener('submit', async (event) => {
-  event.preventDefault();
-  submitButton.disabled = true;
-  const body = textarea.value.trim();
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    submitButton.disabled = true;
+    const body = textarea.value.trim();
 
-  if (!body) {
-    submitButton.disabled = false;
-    return;
-  }
+    if (!body) {
+      submitButton.disabled = false;
+      return;
+    }
 
-  try {
-    await postComment(postId, body);
+    try {
+      await postComment(postId, body);
 
-    showTempMessage(form, 'Comment posted successfully!', false);
+      showTempMessage(form, 'Comment posted successfully!', false);
 
-    textarea.value = '';
-    onCommentSuccess();
-  } catch (error) {
-    console.error('Comment submission failed:', error);
-    showTempMessage(form, 'Failed to post comment. Please check the console.', true);
+      textarea.value = '';
+      onCommentSuccess();
+    } catch (error) {
+      console.error('Comment submission failed:', error);
+      showTempMessage(
+        form,
+        'Failed to post comment. Please check the console.',
+        true,
+      );
+    } finally {
+      submitButton.disabled = false;
+    }
+  });
 
-  } finally {
-    submitButton.disabled = false;
-  }
-});
-
-return form;
-
+  return form;
 }
